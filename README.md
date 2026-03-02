@@ -1,11 +1,30 @@
-# pim-3
+## Objetivo
 
-#Tema: Sistema Web de Restaurante
+Desenvolver um sistema web de pedidos para restaurante com fluxo simples e direto, permitindo ao cliente visualizar o cardápio, realizar pedidos e à equipe interna gerenciar esses pedidos.
 
-Grupo: 3 pessoas 
+## Escopo (MVP)
 
-Frontend: HTML + CSS + JavaScript (vanilla)
+Área Cliente:
+- Visualização de cardápio
+- Carrinho de compras
+- Finalização de pedido (nome, telefone, tipo entrega/retirada)
+- Confirmação de pedido
 
-Backend: C#,  Core Web API (confirmar com Gabriel)
+Área Administrativa:
+- Login de administrador
+- CRUD de produtos
+- Visualização de pedidos
+- Alteração de status do pedido
+- Relatório simples (vendas do dia)
 
-Banco: PostgreSQL
+## Arquitetura
+
+Frontend: HTML + CSS + JavaScript
+Backend: C# ASP.NET Core Web API
+Banco de Dados: PostgreSQL
+
+## Estrutura do Projeto
+
+backend/
+database/
+frontend/
