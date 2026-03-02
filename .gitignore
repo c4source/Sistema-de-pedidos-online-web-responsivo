@@ -1,0 +1,22 @@
+# Node (caso use no frontend futuramente)
+node_modules/
+
+# Logs
+*.log
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# ASP.NET Core
+bin/
+obj/
+
+# Arquivos locais de configuração
+appsettings.Development.json
+
+# Banco local (se algum dia exportar dump)
+*.sql.backup
