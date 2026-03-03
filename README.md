@@ -1,5 +1,7 @@
 ## Objetivo
 
+Projeto acadêmico desenvolvido para a disciplina PIM III – UNIP
+
 Desenvolver um sistema web de pedidos para restaurante com fluxo simples e direto, permitindo ao cliente visualizar o cardápio, realizar pedidos e à equipe interna gerenciar esses pedidos.
 
 ## Escopo (MVP)
@@ -19,8 +21,8 @@ Desenvolver um sistema web de pedidos para restaurante com fluxo simples e diret
 
 ## Arquitetura
 
-Frontend: HTML + CSS + JavaScript
-Backend: C# ASP.NET Core Web API
+Frontend: HTML + CSS + JavaScript  
+Backend: C# ASP.NET Core Web API  
 Banco de Dados: PostgreSQL
 
 ## Estrutura do Projeto
