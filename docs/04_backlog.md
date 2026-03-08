@@ -1,4 +1,4 @@
-# Backlog de Requisitos do Sistema
+# Requisitos Funcionais e não funcionais e backlog do Sistema.
 
 Este documento apresenta o **backlog de requisitos funcionais** levantados para o desenvolvimento do sistema do Projeto Integrador Multidisciplinar (PIM).
 
@@ -111,6 +111,148 @@ O sistema deve permitir que o administrador marque produtos como disponíveis ou
 O sistema deve permitir que o administrador filtre pedidos por status ou data.
 
 ---
+# Requisitos Não Funcionais (RNF)
+
+Esta seção descreve os **requisitos não funcionais** do sistema. Esses requisitos definem **características de qualidade, restrições técnicas e padrões de funcionamento** da aplicação.
+
+Diferentemente dos requisitos funcionais, que descrevem **o que o sistema faz**, os requisitos não funcionais especificam **como o sistema deve se comportar**, considerando aspectos como desempenho, segurança, usabilidade, acessibilidade e manutenção.
+
+Esses requisitos são essenciais para garantir que o sistema seja **eficiente, seguro, estável e fácil de utilizar** pelos diferentes perfis de usuários.
+
+---
+
+## RNF01 — Usabilidade (UX/UI)
+
+O sistema deve seguir princípios de **usabilidade baseados nas heurísticas de Nielsen**, garantindo que a interface seja clara, intuitiva e de fácil aprendizagem.
+
+O fluxo de navegação deve permitir que usuários sem treinamento prévio consigam utilizar o sistema e realizar pedidos de forma simples e compreensível.
+
+Este requisito está relacionado à disciplina de **UX/UI Design**, buscando melhorar a experiência do usuário e reduzir dificuldades de navegação.
+
+---
+
+## RNF02 — Responsividade
+
+O sistema deve adaptar sua interface automaticamente a diferentes tamanhos de tela, garantindo boa visualização e funcionamento em diversos dispositivos.
+
+O sistema deve suportar, no mínimo, as seguintes resoluções:
+
+- **320px** — dispositivos móveis  
+- **768px** — tablets  
+- **1280px ou superior** — computadores
+
+A adaptação da interface não deve causar perda de funcionalidade ou legibilidade.
+
+Este requisito está relacionado à disciplina de **Desenvolvimento Web Responsivo**.
+
+---
+
+## RNF03 — Desempenho
+
+O sistema deve apresentar tempo de resposta adequado para garantir uma boa experiência de uso.
+
+Critérios esperados:
+
+- As páginas do sistema devem carregar em **até 3 segundos** em uma conexão de **10 Mbps**.
+- Operações de **cadastro, edição, remoção e consulta de dados (CRUD)** devem apresentar tempo médio de resposta inferior a **1 segundo**.
+
+Este requisito garante que o sistema permaneça **rápido e eficiente durante sua utilização**.
+
+---
+
+## RNF04 — Segurança e Autenticação
+
+O sistema deve proteger o acesso à área administrativa por meio de **autenticação com login e senha**, impedindo acesso não autorizado.
+
+As senhas cadastradas não devem ser armazenadas em **texto puro**, devendo utilizar mecanismos de **criptografia ou hash** para garantir a proteção das credenciais.
+
+Este requisito contribui para a **segurança das informações e controle de acesso do sistema**.
+
+---
+
+## RNF05 — Disponibilidade
+
+O sistema deve permanecer disponível durante o horário de funcionamento simulado do restaurante.
+
+Horário de operação esperado:
+
+**07h às 23h**
+
+A indisponibilidade do sistema deve ocorrer apenas em casos de manutenção ou falhas externas.
+
+---
+
+## RNF06 — Manutenibilidade
+
+O sistema deve ser desenvolvido seguindo **boas práticas de programação e princípios de orientação a objetos**, permitindo facilidade na manutenção, correção de erros e evolução do software.
+
+O código deve:
+
+- possuir organização modular  
+- utilizar nomes claros para classes, métodos e variáveis  
+- conter comentários nos trechos principais
+
+Este requisito está relacionado à disciplina de **Programação Orientada a Objetos com C#**.
+
+---
+
+## RNF07 — Acessibilidade
+
+A interface do sistema deve seguir recomendações mínimas de acessibilidade baseadas nas diretrizes **WCAG 2.1 nível AA**, garantindo maior inclusão digital.
+
+Entre as práticas recomendadas estão:
+
+- uso de **textos alternativos em imagens**
+- **contraste adequado entre texto e fundo**
+- organização semântica adequada da interface
+
+Além disso, o projeto deve considerar ao menos **uma proposta de recurso inclusivo**, como um glossário de termos relacionados ao sistema em **LIBRAS**.
+
+Este requisito está relacionado à disciplina de **LIBRAS e acessibilidade digital**.
+
+---
+
+## RNF08 — Rastreabilidade de Dados
+
+O sistema deve registrar informações essenciais de cada pedido realizado, permitindo rastreabilidade das operações.
+
+Cada pedido deve conter:
+
+- identificador único do pedido  
+- data de registro  
+- horário do pedido  
+- status atual do pedido  
+
+Essas informações permitem o **acompanhamento do fluxo de pedidos e geração de relatórios para análise de dados**.
+
+---
+
+## RNF09 — Portabilidade
+
+O sistema deve funcionar corretamente nos principais navegadores modernos, sem dependência de plugins externos.
+
+Navegadores suportados:
+
+- **Google Chrome**
+- **Mozilla Firefox**
+- **Microsoft Edge**
+- **Safari**
+
+Este requisito garante maior compatibilidade e acesso ao sistema em diferentes ambientes.
+
+---
+
+## Considerações Finais
+
+Os requisitos não funcionais apresentados definem **padrões de qualidade essenciais para o sistema**, garantindo que a aplicação seja:
+
+- eficiente
+- segura
+- acessível
+- fácil de utilizar
+- fácil de manter
+
+Esses requisitos complementam os **requisitos funcionais**, assegurando que o sistema não apenas execute suas funcionalidades, mas também ofereça **boa experiência de uso, estabilidade e confiabilidade operacional**.
 
 # 2. Melhorias Planejadas
 
@@ -186,3 +328,4 @@ O sistema pode disponibilizar configurações administrativas para controle do f
 
 ## RF32 – Notificação de Status do Pedido
 O sistema pode notificar o cliente quando houver atualização no status do pedido.
+
