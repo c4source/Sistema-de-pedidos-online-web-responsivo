@@ -1,0 +1,53 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam shadowing false
+
+actor "Cliente" as CLI
+actor "Administrador" as ADM
+actor "Operador da Cozinha" as COZ
+
+rectangle "Sistema de Pedidos do Restaurante" {
+
+  usecase "UC01 - Visualizar Cardápio" as UC01
+  usecase "UC02 - Visualizar Detalhes do Produto" as UC02
+  usecase "UC03 - Realizar Pedido" as UC03
+  usecase "UC04 - Informar Dados do Pedido" as UC04
+  usecase "UC05 - Consultar Status do Pedido" as UC05
+
+  usecase "UC06 - Realizar Login" as UC06
+  usecase "UC07 - Acessar Painel Administrativo" as UC07
+  usecase "UC08 - Cadastrar Produto" as UC08
+  usecase "UC09 - Editar Produto" as UC09
+  usecase "UC10 - Remover ou Inativar Produto" as UC10
+  usecase "UC11 - Gerenciar Disponibilidade de Produtos" as UC11
+  usecase "UC12 - Visualizar Pedidos" as UC12
+  usecase "UC13 - Atualizar Status do Pedido" as UC13
+  usecase "UC14 - Filtrar Pedidos" as UC14
+
+  usecase "UC15 - Visualizar Fila de Pedidos" as UC15
+
+  CLI --> UC01
+  CLI --> UC02
+  CLI --> UC03
+  CLI --> UC05
+
+  ADM --> UC06
+  ADM --> UC07
+  ADM --> UC08
+  ADM --> UC09
+  ADM --> UC10
+  ADM --> UC11
+  ADM --> UC12
+  ADM --> UC13
+  ADM --> UC14
+
+  COZ --> UC15
+  COZ --> UC13
+
+  UC03 .> UC04 : <<include>>
+  UC07 .> UC06 : <<include>>
+  UC14 .> UC12 : <<extend>>
+}
+@enduml
