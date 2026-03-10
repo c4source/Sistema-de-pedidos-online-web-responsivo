@@ -1,6 +1,5 @@
+**Projeto Integrador Multidisciplinar (PIM III) – Universidade Paulista (UNIP)**
 # 🍽️ Sistema Web de Pedidos para Restaurante
-
-> **Projeto Integrador Multidisciplinar (PIM III) – Universidade Paulista (UNIP)**
 
 ## 🎯 Objetivo
 Desenvolver um sistema web completo e intuitivo para a gestão de pedidos de um restaurante. O foco da aplicação é oferecer um fluxo de navegação simples e direto, permitindo que o cliente final visualize o cardápio e realize pedidos com facilidade, enquanto a equipe interna gerencia a operação de forma ágil e eficiente.
