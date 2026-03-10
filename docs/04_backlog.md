@@ -1,17 +1,16 @@
 # Requisitos Funcionais e Não funcionais e backlog do Sistema.
 
-# 📄 Documentação de Requisitos (PIM)
-
 Este documento apresenta o **backlog de requisitos funcionais** levantados para o desenvolvimento do sistema do Projeto Integrador Multidisciplinar (PIM).
 
-Durante o processo de levantamento de requisitos, foi realizado um *brainstorming* entre os integrantes da equipe, resultando em diversas propostas de funcionalidades. Após análise técnica e avaliação de escopo, os requisitos foram organizados em três categorias principais:
+Durante o processo de levantamento de requisitos, foi realizado um **brainstorming entre os integrantes da equipe**, resultando em diversas propostas de funcionalidades.
 
-* **🚀 MVP (Minimum Viable Product):** Funcionalidades essenciais e primordiais que serão implementadas no projeto inicial.
-* **⭐ Melhorias Planejadas:** Funcionalidades adicionais que agregam valor e podem ser implementadas caso haja tempo hábil durante o desenvolvimento.
-* **💡 Ideias Futuras (Backlog):** Funcionalidades registradas para uma possível evolução e escalonamento futuro do sistema.
+Após análise técnica e avaliação de escopo, os requisitos foram organizados em três categorias:
 
-Essa organização permite controlar rigorosamente o escopo do projeto e priorizar o desenvolvimento das entregas de maior impacto.
+- **MVP (Minimum Viable Product)** – funcionalidades essenciais que serão implementadas no projeto
+- **Melhorias Planejadas** – funcionalidades adicionais que podem ser implementadas caso haja tempo disponível
+- **Ideias Futuras** – funcionalidades registradas para possível evolução futura do sistema
 
+Essa organização permite controlar o escopo do projeto e priorizar o desenvolvimento das funcionalidades mais importantes.
 ---
 
 ### 📎 Anexo: Documento Original
