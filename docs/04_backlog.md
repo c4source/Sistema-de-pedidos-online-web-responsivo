@@ -14,14 +14,6 @@ Essa organização permite controlar o escopo do projeto e priorizar o desenvolv
 
 ---
 
-### 📎 Anexo: Documento Original
-
-Para acessar a documentação completa com o detalhamento de todos os requisitos na íntegra, consulte o arquivo oficial abaixo:
-
-👉 **[Acessar o Documento de Requisitos Completo (.docx)](.Requisitos_Funcionais.docx)**
-
----
-
 # 1. Requisitos MVP (Implementação Prioritária)
 
 Os requisitos abaixo representam o **conjunto mínimo de funcionalidades necessárias para o funcionamento completo do sistema**.
