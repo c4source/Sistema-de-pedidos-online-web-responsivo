@@ -18,7 +18,7 @@ Essa organização permite controlar o escopo do projeto e priorizar o desenvolv
 
 Para acessar a documentação completa com o detalhamento de todos os requisitos na íntegra, consulte o arquivo oficial abaixo:
 
-👉 **[Acessar o Documento de Requisitos Completo (.docx)](./nome-do-seu-arquivo.docx)**
+👉 **[Acessar o Documento de Requisitos Completo (.docx)](.Requisitos_Funcionais.docx)**
 
 ---
 
