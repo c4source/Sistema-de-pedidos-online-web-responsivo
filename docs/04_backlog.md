@@ -20,6 +20,14 @@ Os requisitos abaixo representam o **conjunto mínimo de funcionalidades necess�
 
 ---
 
+### 📎 Anexo: Documentação Funcional
+
+Para acessar a lista completa de requisitos (MVP) separados por atores (Cliente, Atendente e Administrador), consulte o documento oficial:
+
+👉 **[Acessar Requisitos_Funcionais.docx](./Requisitos_Funcionais.docx)**
+
+---
+
 ## RF01 – Autenticação do Administrador
 O sistema deve permitir que o administrador realize login para acessar a área administrativa.
 
