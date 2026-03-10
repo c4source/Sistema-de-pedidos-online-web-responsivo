@@ -11,6 +11,7 @@ Após análise técnica e avaliação de escopo, os requisitos foram organizados
 - **Ideias Futuras** – funcionalidades registradas para possível evolução futura do sistema
 
 Essa organização permite controlar o escopo do projeto e priorizar o desenvolvimento das funcionalidades mais importantes.
+
 ---
 
 ### 📎 Anexo: Documento Original
