@@ -1,4 +1,4 @@
-# Requisitos Funcionais e não funcionais e backlog do Sistema.
+# Requisitos Funcionais e Não funcionais e backlog do Sistema.
 
 Este documento apresenta o **backlog de requisitos funcionais** levantados para o desenvolvimento do sistema do Projeto Integrador Multidisciplinar (PIM).
 
