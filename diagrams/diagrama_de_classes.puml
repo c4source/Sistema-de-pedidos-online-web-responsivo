@@ -1,0 +1,58 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam classFontStyle bold
+skinparam monochrome true
+
+title Diagrama de Classes - Sistema de Controle de Pedidos
+
+class Produto {
+  - idProduto : int
+  - nome : string
+  - descricao : string
+  - preco : decimal
+  - statusDisponibilidade : string
+  + cadastrar() : void
+  + editar() : void
+  + inativar() : void
+}
+
+class Pedido {
+  - idPedido : int
+  - codigo : string
+  - nomeCliente : string
+  - observacoes : string
+  - dataHora : datetime
+  - status : string
+  - valorTotal : decimal
+  + criarPedido() : void
+  + calcularTotal() : decimal
+  + cancelar() : void
+  + atualizarStatus() : void
+}
+
+class ItemPedido {
+  - idItemPedido : int
+  - quantidade : int
+  - precoUnitario : decimal
+  - subtotal : decimal
+  + calcularSubtotal() : decimal
+}
+
+class Administrador {
+  - idAdministrador : int
+  - nome : string
+  - email : string
+  - senhaHash : string
+  + login() : boolean
+  + cadastrarProduto() : void
+  + editarProduto() : void
+  + inativarProduto() : void
+  + alterarStatusPedido() : void
+}
+
+Pedido "1" *-- "1..*" ItemPedido : possui
+Produto "1" -- "0..*" ItemPedido : refere-se a
+Administrador ..> Produto : gerencia
+Administrador ..> Pedido : gerencia
+@enduml
