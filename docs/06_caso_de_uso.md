@@ -14,7 +14,7 @@ O diagrama de caso de uso apresenta as interações entre os atores do sistema e
 
 ## Descrição
 
-### 👥 Atores e Responsabilidades do Sistema
+###  Atores e Responsabilidades do Sistema
 
 O diagrama de Casos de Uso segmenta as permissões e os fluxos de trabalho de acordo com três perfis operacionais distintos:
 
@@ -24,7 +24,7 @@ O diagrama de Casos de Uso segmenta as permissões e os fluxos de trabalho de ac
 
 ---
 
-### 🔗 Relacionamentos e Dinâmicas (UML)
+###  Relacionamentos e Dinâmicas (UML)
 
 Para garantir a integridade dos processos e a modularidade do sistema, foram aplicados os seguintes estereótipos de relacionamento:
 
