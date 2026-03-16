@@ -25,7 +25,7 @@ A aplicação foi dividida em dois módulos principais para atender às necessid
 
 ---
 
-## 🛠️ Arquitetura e Tecnologias
+##  Arquitetura e Tecnologias
 
 O ecossistema do projeto foi construído utilizando as seguintes tecnologias:
 
