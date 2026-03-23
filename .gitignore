@@ -20,3 +20,5 @@ appsettings.Development.json
 
 # Banco local (se algum dia exportar dump)
 *.sql.backup
+
+.vs
