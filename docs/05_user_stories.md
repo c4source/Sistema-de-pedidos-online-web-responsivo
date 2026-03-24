@@ -92,12 +92,12 @@ Como administrador
 Quero filtrar pedidos por status ou data  
 Para facilitar a auditoria e a gestão operacional.
 
-### US18 – Realizar Pagamento Integrado *(Nova)*
+### US18 – Realizar Pagamento Integrado *(- FUTURO / FORA DO MVP.)* 
 Como cliente  
 Quero selecionar a forma de pagamento (PIX, Cartão) e pagar via sistema  
 Para confirmar meu pedido de forma rápida e segura.
 
-### US19 – Processamento de Pagamento *(Nova)*
+### US19 – Processamento de Pagamento *(- FUTURO / FORA DO MVP.)* 
 Como sistema  
 Quero enviar os dados da transação para o Gateway de Pagamento  
 Para validar a cobrança e liberar o pedido para a cozinha automaticamente.

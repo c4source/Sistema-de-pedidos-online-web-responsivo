@@ -111,6 +111,10 @@ O sistema deve permitir que o administrador marque produtos como disponíveis ou
 O sistema deve permitir que o administrador filtre pedidos por status ou data.
 
 ---
+## RF22 – Carrinho de Compras
+O sistema pode permitir que clientes adicionem produtos a um carrinho antes de finalizar o pedido.
+
+---
 # Requisitos Não Funcionais (RNF)
 
 Esta seção descreve os **requisitos não funcionais** do sistema. Esses requisitos definem **características de qualidade, restrições técnicas e padrões de funcionamento** da aplicação.
@@ -267,11 +271,6 @@ O sistema pode permitir que clientes realizem cadastro na plataforma para acessa
 
 ## RF21 – Login de Cliente
 O sistema pode permitir que clientes autenticados realizem login na plataforma.
-
----
-
-## RF22 – Carrinho de Compras
-O sistema pode permitir que clientes adicionem produtos a um carrinho antes de finalizar o pedido.
 
 ---
 
