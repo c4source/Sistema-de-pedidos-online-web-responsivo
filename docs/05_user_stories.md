@@ -15,7 +15,7 @@ Para que eu possa acessar a área administrativa com segurança.
 ### US02 – Acesso ao painel administrativo
 Como administrador  
 Quero acessar um painel administrativo (Dashboard)  
-Para que eu possa gerenciar produtos, pedidos e visualizar métricas básicas.
+Para que eu possa gerenciar produtos e pedidos.
 
 ### US03 – Cadastro de produtos
 Como administrador  
@@ -32,7 +32,7 @@ Como administrador
 Quero remover ou desativar produtos  
 Para que eles deixem de aparecer no cardápio quando saírem de linha.
 
-### US06 – Visualizar produtos
+### US06 – listar produtos
 Como cliente  
 Quero visualizar os produtos disponíveis divididos por categorias  
 Para escolher o que desejo pedir com mais facilidade.
@@ -54,7 +54,7 @@ Para que o pedido seja identificado corretamente e preparado ao meu gosto.
 
 ### US10 – Gerar código do pedido
 Como sistema  
-Quero gerar um código único (hash ou numérico) para cada pedido  
+Quero gerar código único numérico para cada pedido  
 Para permitir o rastreamento unívoco do pedido no banco de dados.
 
 ### US11 – Registrar data e hora
@@ -79,8 +79,7 @@ Para saber em tempo real quando ele estará pronto para retirada ou entrega.
 
 ### US15 – Visualizar fila de pedidos
 Como operador da cozinha  
-Quero visualizar a lista de pedidos em andamento em formato de esteira (Kanban)  
-Para organizar a preparação dos pratos de forma eficiente.
+Quero visualizar visualizar pedidos em andamento em lista organizada por status.
 
 ### US16 – Controlar disponibilidade de produtos
 Como administrador  

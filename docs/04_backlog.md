@@ -45,7 +45,7 @@ O sistema deve permitir ao administrador remover ou inativar produtos para que d
 
 ---
 
-## RF06 – Listagem de Produtos
+## RF06 – Listar Produtos
 O sistema deve exibir aos clientes a lista de produtos disponíveis para realização de pedidos.
 
 ---
