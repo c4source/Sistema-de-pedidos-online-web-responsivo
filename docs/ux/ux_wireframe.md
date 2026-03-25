@@ -85,3 +85,23 @@ Cada produto contém:
 - Usuário entende o que está disponível
 - Usuário consegue iniciar um pedido com poucos cliques
 - Interface clara, simples e funcional
+
+---
+
+## Tela: Detalhe do Produto
+
+### Objetivo
+
+Permitir que o usuário visualize informações detalhadas de um produto e o adicione ao pedido de forma simples e rápida.
+
+### Estrutura da Tela
+
+- Imagem do produto em destaque
+- Nome e preço
+- Descrição
+- Controle de quantidade
+- Botão de ação “Adicionar ao pedido”
+
+### Wireframe
+
+![Wireframe Detalhe](./wireframes/wireframe-detalhe-produto.png)
