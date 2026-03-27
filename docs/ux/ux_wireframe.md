@@ -105,3 +105,89 @@ Permitir que o usuário visualize informações detalhadas de um produto e o adi
 ### Wireframe
 
 ![Wireframe Detalhe](./wireframes/wireframe-detalhe-produto.png)
+
+#  Wireframe — Tela de Carrinho de Compras
+
+##  Descrição
+Esta tela representa o carrinho de compras do sistema, onde o usuário pode visualizar os produtos adicionados ao pedido, alterar quantidades, remover itens e visualizar o valor total antes de finalizar.
+
+O objetivo principal é permitir a montagem do pedido de forma simples, clara e eficiente.
+
+---
+
+##  Objetivo da Tela
+- Exibir os produtos adicionados ao carrinho
+- Permitir alteração de quantidade
+- Permitir remoção de itens
+- Atualizar o valor total automaticamente
+- Permitir a finalização do pedido
+
+---
+
+##  Estrutura do Wireframe
+
+###  Cabeçalho
+- Botão de voltar
+- Título: **Carrinho**
+
+---
+
+###  Lista de Produtos
+Cada item contém:
+
+- Imagem do produto (representada por um placeholder)
+- Nome do produto
+- Preço unitário
+- Controle de quantidade:
+  - (-) diminuir
+  - quantidade atual
+  - (+) aumentar
+- Botão **Remover**
+
+---
+
+###  Total do Pedido
+- Exibição do valor total atualizado
+
+---
+
+###  Ação Principal
+- Botão **Finalizar Pedido**
+
+---
+
+##  Decisões de UX
+
+- Wireframe de baixa fidelidade para focar na estrutura
+- Uso de placeholder de imagem para melhorar identificação visual
+- Botão "Remover" alinhado à direita do nome do produto
+- Layout simples e funcional, respeitando o escopo do projeto
+
+---
+
+##  Fora de Escopo
+
+- Tamanho da pizza
+- Meio a meio
+- Adicionais
+- Cupons ou descontos
+
+---
+
+##  Critérios de Pronto
+
+- Usuário visualiza os itens
+- Usuário altera quantidades
+- Usuário remove itens
+- Total atualizado corretamente
+- Possibilidade de finalizar pedido
+
+---
+
+##  Wireframe
+
+![Wireframe Carrinho](./wireframes/carrinho.png)
+
+---
+
+
