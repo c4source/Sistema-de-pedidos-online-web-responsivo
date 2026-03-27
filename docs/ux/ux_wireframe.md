@@ -186,7 +186,7 @@ Cada item contém:
 
 ##  Wireframe
 
-![Wireframe Carrinho](./wireframes/carrinho.png)
+![Wireframe Carrinho](./wireframes/wireframe-carrinho.png)
 
 ---
 
