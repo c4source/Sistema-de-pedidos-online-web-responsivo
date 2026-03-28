@@ -60,8 +60,15 @@ O sistema deve permitir que o cliente realize pedidos selecionando produtos e qu
 
 ---
 
-## RF09 – Registro de Informações do Pedido
-O sistema deve registrar informações necessárias para a realização do pedido, como nome do cliente e observações.
+## RF09 – Registro de Dados do Pedido
+
+O sistema deve registrar os dados necessários para a realização do pedido, incluindo:
+
+- Nome do cliente  
+- Telefone para contato  
+- Tipo de entrega (`entrega` ou `retirada`)  
+- Observações do pedido  
+- Dados de endereço (rua, número, bairro e complemento), quando o pedido for do tipo **entrega**.
 
 ---
 

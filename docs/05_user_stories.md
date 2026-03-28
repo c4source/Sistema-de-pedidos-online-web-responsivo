@@ -48,9 +48,10 @@ Quero adicionar produtos a um carrinho e realizar um pedido
 Para solicitar os itens desejados ao estabelecimento.
 
 ### US09 – Informar dados do pedido
+
 Como cliente  
-Quero informar meu nome, método de entrega/mesa e observações no pedido  
-Para que o pedido seja identificado corretamente e preparado ao meu gosto.
+Quero informar meu nome, telefone, tipo de entrega (entrega ou retirada), endereço quando necessário e observações no pedido  
+Para que o pedido seja identificado corretamente e entregue ou preparado da forma esperada.
 
 ### US10 – Gerar código do pedido
 Como sistema  

@@ -27,6 +27,11 @@ Essas regras devem ser aplicadas principalmente na **camada de back-end**, poden
 | RN04 | Disponibilidade de Itens | O sistema não deve permitir a inclusão de um produto em um pedido se o status do produto estiver marcado como **Indisponível** ou **Inativo**. |
 | RN05 | Pedido com Itens Obrigatórios | Um pedido não pode ser finalizado ou enviado para preparo sem conter pelo menos **um item válido** em sua lista. |
 | RN06 | Identificação Única do Pedido | Todo pedido deve possuir um **identificador único**, gerado automaticamente pelo sistema, garantindo rastreabilidade das operações. |
+| RN07 | Identificação do Cliente | Todo pedido deve conter o nome do cliente válido (não vazio). |
+| RN08 | Telefone Obrigatório | Todo pedido deve conter um telefone válido para contato. |
+| RN09 | Tipo de Entrega Obrigatório | Todo pedido deve definir o tipo de entrega: `entrega` ou `retirada`. |
+| RN10 | Endereço Obrigatório para Entrega | Quando o tipo de entrega for `entrega`, os campos rua, número e bairro devem ser obrigatoriamente preenchidos. |
+| RN11 | Endereço Opcional para Retirada | Quando o tipo de entrega for `retirada`, os campos de endereço não são obrigatórios. |
 
 ---
 
@@ -34,9 +39,9 @@ Essas regras devem ser aplicadas principalmente na **camada de back-end**, poden
 
 | ID | Regra de Negócio | Descrição |
 |----|------------------|-----------|
-| RN07 | Fluxo Sequencial de Status | O status de um pedido deve seguir obrigatoriamente a sequência: **Recebido → Em Preparo → Pronto → Finalizado**. Não é permitido pular etapas. |
-| RN08 | Restrição de Cancelamento | Um pedido só pode ser cancelado quando estiver no status **Recebido**. Caso já esteja **Em Preparo**, **Pronto** ou **Finalizado**, o cancelamento deve ser restrito ao administrador. |
-| RN09 | Imutabilidade de Pedidos Finalizados | Após atingir o status **Finalizado** ou **Cancelado**, o pedido torna-se apenas leitura (*read-only*), não sendo permitidas alterações em seus itens ou valores. |
+| RN12 | Fluxo Sequencial de Status | O status de um pedido deve seguir obrigatoriamente a sequência: **Recebido → Em Preparo → Pronto → Finalizado**. Não é permitido pular etapas. |
+| RN13 | Restrição de Cancelamento | Um pedido só pode ser cancelado quando estiver no status **Recebido**. Caso já esteja **Em Preparo**, **Pronto** ou **Finalizado**, o cancelamento deve ser restrito ao administrador. |
+| RN14 | Imutabilidade de Pedidos Finalizados | Após atingir o status **Finalizado** ou **Cancelado**, o pedido torna-se apenas leitura (*read-only*), não sendo permitidas alterações em seus itens ou valores. |
 
 ---
 
@@ -44,8 +49,8 @@ Essas regras devem ser aplicadas principalmente na **camada de back-end**, poden
 
 | ID | Regra de Negócio | Descrição |
 |----|------------------|-----------|
-| RN10 | Criptografia de Senha | Senhas de administradores não podem ser armazenadas em texto puro no banco de dados. O sistema deve utilizar **hash criptográfico** antes da persistência. |
-| RN11 | Autenticação Administrativa | Apenas usuários autenticados com perfil **Administrador** podem acessar funcionalidades administrativas do sistema, como cadastro de produtos ou alteração de status de pedidos. |
+| RN15 | Criptografia de Senha | Senhas de administradores não podem ser armazenadas em texto puro no banco de dados. O sistema deve utilizar **hash criptográfico** antes da persistência. |
+| RN16 | Autenticação Administrativa | Apenas usuários autenticados com perfil **Administrador** podem acessar funcionalidades administrativas do sistema, como cadastro de produtos ou alteração de status de pedidos. |
 
 ---
  Resumo

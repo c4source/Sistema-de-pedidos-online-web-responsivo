@@ -13,7 +13,7 @@ A aplicação foi dividida em dois módulos principais para atender às necessid
 ###  Área do Cliente
 - [x] **Catálogo Digital:** Visualização dinâmica do cardápio de produtos.
 - [x] **Carrinho de Compras:** Gestão temporária de itens selecionados.
-- [x] **Checkout Simplificado:** Finalização de pedido com captura de dados essenciais (Nome, Telefone, Modalidade: Entrega/Retirada).
+- [x] **Checkout Simplificado: finalização de pedido com captura de dados essenciais (Nome, Telefone, Modalidade: Entrega/Retirada e Endereço para entrega quando aplicável).
 - [x] **Confirmação:** Feedback visual de pedido realizado com sucesso.
 
 ###  Área Administrativa
