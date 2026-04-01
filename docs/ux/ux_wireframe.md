@@ -4,6 +4,78 @@ Este documento apresenta os wireframes desenvolvidos para o sistema de controle 
 
 ---
 
+# Fluxo de Navegação do Usuário (User Flow)
+
+Este fluxo representa a jornada do usuário desde a navegação no cardápio até a finalização do pedido, considerando o comportamento de compra com múltiplos itens e o processo de checkout simplificado.
+
+---
+
+## Diagrama do Fluxo
+
+![Fluxo do Usuário](./wireframes/fluxo-user.png)
+
+---
+
+## Estrutura do Fluxo
+
+Cardápio → Detalhe do Produto → Adicionar ao Carrinho  
+↘  
+(Loop de compra - usuário pode continuar navegando)  
+↘  
+Carrinho → Checkout → Confirmação  
+
+---
+
+## Fluxo Detalhado
+
+Cardápio  
+↓  
+Detalhe do Produto  
+↓  
+Adicionar ao Carrinho  
+↓  
+Decisão: Adicionar mais itens?  
+→ Sim: retorna ao Cardápio  
+→ Não: segue para Carrinho  
+
+Carrinho  
+↓  
+Finalizar Pedido  
+↓  
+Checkout  
+↓  
+Decisão: Tipo de entrega?  
+→ Entrega: preencher endereço (na mesma tela)  
+→ Retirada: não exige endereço  
+
+↓  
+Confirmar Pedido  
+↓  
+Pedido Confirmado  
+
+---
+
+## Decisões de UX
+
+- O fluxo permite navegação contínua (loop de compra)  
+- O carrinho funciona como ponto central de revisão do pedido  
+- O checkout concentra todos os dados do pedido em uma única tela  
+- O endereço é exibido apenas quando necessário (entrega)  
+- O sistema não utiliza autenticação no MVP, priorizando rapidez  
+
+---
+
+## Integração com o Sistema
+
+- Compatível com a estrutura da tabela `pedido`  
+- Suporta múltiplos itens via `item_pedido`  
+- Atende às regras de negócio RN07–RN11  
+- Alinhado com a user story US09  
+
+---
+
+---
+
 ## Tela: Cardápio (Lista de Produtos)
 
 ### Objetivo
