@@ -19,9 +19,9 @@ Este fluxo representa a jornada do usuário desde a navegação no cardápio at�
 ## Estrutura do Fluxo
 
 Cardápio → Detalhe do Produto → Adicionar ao Carrinho  
-↘  
+  
 (Loop de compra - usuário pode continuar navegando)  
-↘  
+  
 Carrinho → Checkout → Confirmação  
 
 ---
