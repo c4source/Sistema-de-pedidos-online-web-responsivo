@@ -1,247 +1,170 @@
 # Wireframes do Sistema
 
-Este documento apresenta os wireframes desenvolvidos para o sistema de controle de pedidos, com foco na experiência do usuário (UX) e na definição das principais telas.
+Este documento apresenta os wireframes do sistema de pedidos, com foco na experiência do usuário (UX) e na definição das principais telas.
 
 ---
 
 # Fluxo de Navegação do Usuário (User Flow)
 
 ## Objetivo
+Representar a jornada do usuário do cardápio até a confirmação do pedido.
 
-Representar a jornada do usuário desde o acesso ao cardápio até a finalização do pedido.
-
-## Diagrama do Fluxo
-
+## Diagrama
 ![Fluxo do Usuário](./wireframes/fluxo-user.png)
 
-## Estrutura do Fluxo
-
-Cardápio → Detalhe do Produto → Carrinho → Checkout → Pedido Confirmado
+## Fluxo Resumido
+Cardápio → Detalhe → Carrinho → Checkout → Pedido Confirmado
 
 ## Fluxo Detalhado
 
-Cardápio  
-↓  
-Detalhe do Produto  
-↓  
-Adicionar ao Carrinho  
-↓  
-Decisão: Adicionar mais itens?  
-→ Sim: retorna ao Cardápio  
-→ Não: segue para Carrinho  
+Cardápio → Detalhe → Adicionar ao carrinho  
+↳ Continuar comprando?  
+• Sim → volta ao Cardápio  
+• Não → Carrinho  
 
-Carrinho  
-↓  
-Finalizar Pedido  
-↓  
-Checkout  
-↓  
-Decisão: Tipo de entrega?  
-→ Entrega: preencher endereço  
-→ Retirada: não exige endereço  
+Carrinho → Finalizar Pedido → Checkout  
+↳ Tipo de entrega?  
+• Entrega → preencher endereço  
+• Retirada → sem endereço  
 
-↓  
-Confirmar Pedido  
-↓  
-Pedido Confirmado  
+→ Confirmar Pedido → Pedido Confirmado  
 
 ## Decisões de UX
 
-- Fluxo com navegação contínua (loop de compra)
-- Carrinho como ponto central de revisão
+- Navegação contínua (loop de compra)
 - Checkout simplificado em uma única tela
-- Exibição condicional de endereço
-- Sistema sem autenticação (MVP)
-
-## Integração com o Sistema
-
-- Tabela `pedido`
-- Tabela `item_pedido`
-- Regras RN07–RN11
-- User Story US09
+- Endereço exibido apenas quando necessário
+- Sistema sem login (MVP)
 
 ---
 
 # Telas do Sistema
 
----
-
 ## Tela: Cardápio
 
-### Objetivo
-
-Permitir que o cliente visualize os produtos disponíveis de forma rápida e intuitiva.
-
-### Estrutura da Tela
-
-- Header
-- Campo de busca
-- Filtro por categorias
-- Lista de produtos
-
-### Card de Produto
-
-- Imagem
-- Nome
-- Preço
-- Botão “+ Adicionar”
-
-### Comportamento
-
-- Clique abre detalhe
-- Botão adiciona direto ao pedido
-- Scroll contínuo
-
-### Decisões de UX
-
-- Mobile-first
-- Layout em lista
-- Interface simples
-- Foco na ação principal
-
-### Integração
-
-- Tabela `produto`
-- User Story US06
-
 ### Wireframe
-
 ![Wireframe Cardápio](./wireframes/wireframe-cardapio.png)
+
+### Objetivo
+Permitir visualizar produtos e iniciar o pedido rapidamente.
+
+### Elementos
+- Lista de produtos
+- Campo de busca
+- Filtros
+- Cards com imagem, nome, preço e ação
+
+### Ações
+- Abrir detalhe do produto
+- Adicionar direto ao carrinho
+- Navegar por scroll
+
+### Observações de UX
+- Layout simples e direto
+- Foco na ação de compra
+- Mobile-first
 
 ---
 
 ## Tela: Detalhe do Produto
 
+### Wireframe
+![Wireframe Detalhe](./wireframes/wireframe-detalhe-produto.png)
+
 ### Objetivo
+Exibir informações do produto e permitir adicioná-lo ao pedido.
 
-Exibir informações detalhadas do produto e permitir adição ao pedido.
-
-### Estrutura
-
+### Elementos
 - Imagem
 - Nome e preço
 - Descrição
 - Controle de quantidade
-- Botão “Adicionar ao pedido”
+- Botão de ação
 
-### Wireframe
-
-![Wireframe Detalhe](./wireframes/wireframe-detalhe-produto.png)
+### Ações
+- Ajustar quantidade
+- Adicionar ao carrinho
 
 ---
 
 ## Tela: Carrinho
 
-### Objetivo
+### Wireframe
+![Wireframe Carrinho](./wireframes/wireframe-carrinho.png)
 
+### Objetivo
 Permitir revisão do pedido antes da finalização.
 
-### Estrutura
-
-#### Cabeçalho
-- Botão voltar
-- Título
-
-#### Lista de Produtos
-- Imagem
-- Nome
-- Preço
-- Quantidade (+ / -)
+### Elementos
+- Lista de itens
+- Controles de quantidade
 - Botão remover
-
-#### Total
-- Valor total atualizado
-
-#### Ação
+- Total do pedido
 - Botão “Finalizar Pedido”
 
-### Decisões de UX
-
-- Layout simples
-- Baixa fidelidade
-- Foco na funcionalidade
-
-### Fora de Escopo
-
-- Tamanho da pizza
-- Meio a meio
-- Adicionais
-- Cupons
-
-### Critérios
-
-- Visualizar itens
+### Ações
 - Alterar quantidade
 - Remover itens
-- Ver total
-- Finalizar pedido
+- Avançar para checkout
 
-### Wireframe
-
-![Wireframe Carrinho](./wireframes/wireframe-carrinho.png)
+### Observações de UX
+- Interface simples e clara
+- Foco na revisão do pedido
 
 ---
 
 ## Tela: Checkout
 
+### Wireframe
+![Wireframe Checkout](./wireframes/checkout.png)
+
 ### Objetivo
+Finalizar o pedido com dados do cliente e tipo de entrega.
 
-Permitir finalização do pedido com dados do cliente e escolha de entrega.
+### Elementos
+- Nome e telefone
+- Opção de entrega ou retirada
+- Campos de endereço (condicional)
+- Resumo do pedido
+- Total
+- Botão de confirmação
 
-### Estrutura
+### Ações
+- Preencher dados
+- Escolher tipo de entrega
+- Confirmar pedido
 
-#### Dados do Cliente
-- Nome
-- Telefone
-
-#### Tipo de Entrega
-- Entrega
-- Retirada
-
-#### Endereço (condicional)
-- Rua
-- Número
-- Bairro
-
-> Exibido apenas se “Entrega”
-
-#### Resumo
-- Lista de produtos
-- Total do pedido
-
-#### Ação
-- Botão “Confirmar Pedido”
-
-### Regras
-
+### Regras de Negócio
 - Nome e telefone obrigatórios
 - Tipo de entrega obrigatório
-- Endereço obrigatório se entrega
-- Exibição do resumo antes de confirmar
+- Endereço obrigatório apenas para entrega
 
-### Wireframe
-
-![Wireframe Checkout](./wireframes/checkout.png)
+### Observações de UX
+- Seções bem separadas
+- Exibição condicional evita excesso de informação
 
 ---
 
 ## Tela: Pedido Confirmado
 
+### Wireframe
+![Wireframe Pedido Confirmado](./wireframes/pedido-confirmado.png)
+
 ### Objetivo
+Confirmar ao usuário que o pedido foi realizado.
 
-Informar ao usuário que o pedido foi realizado com sucesso.
-
-### Estrutura
-
-- Mensagem de confirmação
+### Elementos
+- Mensagem de sucesso
 - Resumo do pedido
 - Tipo de entrega
 - Endereço (se houver)
 - Tempo estimado
-- Botão “Voltar ao cardápio”
+- Botão de retorno
 
-### Wireframe
+### Ações
+- Visualizar confirmação
+- Voltar ao cardápio
 
-![Wireframe Pedido Confirmado](./wireframes/pedido-confirmado.png)
-
----
+### Observações de UX
+- Feedback claro ao usuário
+- Reforço de segurança (mostrar pedido realizado)
