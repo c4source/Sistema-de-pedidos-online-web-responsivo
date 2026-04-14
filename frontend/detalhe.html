@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhe do Produto | Pizzaria MVP</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="detail-header">
+      <button class="back-button" type="button" aria-label="Voltar">←</button>
+      <h1 class="detail-title">Detalhe do Produto</h1>
+    </header>
+
+    <main>
+      <section class="detail-image-section" aria-label="Imagem do produto">
+        <div class="detail-image" aria-hidden="true">IMG</div>
+      </section>
+
+      <section class="detail-info" aria-label="Informações do produto">
+        <h2 class="detail-product-name">Pizza de Frango</h2>
+        <p class="detail-product-price">R$ 39,90</p>
+      </section>
+
+      <section class="detail-description" aria-label="Descrição do produto">
+        <strong class="detail-description-title">Descrição do produto</strong>
+        <p class="detail-description-text">Pizza com frango, queijo e molho especial.</p>
+      </section>
+
+      <section class="detail-quantity" aria-label="Controle de quantidade">
+        <span class="quantity-label">Quantidade:</span>
+        <div class="quantity-control">
+          <button class="quantity-button" type="button" data-action="decrease" aria-label="Diminuir quantidade">-</button>
+          <span class="quantity-value" id="quantity-value">1</span>
+          <button class="quantity-button" type="button" data-action="increase" aria-label="Aumentar quantidade">+</button>
+        </div>
+      </section>
+
+      <section class="detail-action" aria-label="Ação principal">
+        <button class="primary-button" type="button">Adicionar ao pedido</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="./detalhe.js"></script>
+</body>
+</html>
