@@ -148,23 +148,41 @@ Finalizar o pedido com dados do cliente e tipo de entrega.
 ## Tela: Pedido Confirmado
 
 ### Wireframe
+
 ![Wireframe Pedido Confirmado](./wireframes/pedido-confirmado.png)
 
+
 ### Objetivo
-Confirmar ao usuário que o pedido foi realizado.
 
-### Elementos
-- Mensagem de sucesso
-- Resumo do pedido
-- Tipo de entrega
-- Endereço (se houver)
-- Tempo estimado
-- Botão de retorno
+Confirmar ao usuário que o pedido foi realizado com sucesso, exibindo um resumo simples da compra.
 
-### Ações
-- Visualizar confirmação
-- Voltar ao cardápio
+
+### Elementos da Tela
+
+- Mensagem de confirmação
+- Resumo do pedido (itens e quantidades)
+- Valor total
+- Botão de retorno ao cardápio
+
+
+### Ações do Usuário
+
+- Visualizar confirmação do pedido
+- Conferir itens e valor total
+- Retornar ao cardápio para novo pedido
+
+
+### Regras de Negócio
+
+- A tela deve ser exibida após a confirmação do pedido
+- O sistema deve apresentar os itens do pedido realizado
+- O valor total deve ser exibido corretamente
+- O usuário deve ter opção de retornar ao fluxo principal
+
 
 ### Observações de UX
-- Feedback claro ao usuário
-- Reforço de segurança (mostrar pedido realizado)
+
+- Tela simples e direta, focada na confirmação
+- Evita excesso de informações desnecessárias
+- Exibe apenas o essencial para garantir clareza ao usuário
+- Botão de ação posicionado ao final da tela
