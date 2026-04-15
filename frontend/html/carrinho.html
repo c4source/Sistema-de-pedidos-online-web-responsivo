@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho | Pizzaria MVP</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="cart-header">
+      <button class="back-button" type="button" aria-label="Voltar">←</button>
+      <h1 class="cart-title">Carrinho</h1>
+    </header>
+
+    <main>
+      <section class="cart-list" aria-label="Itens do carrinho">
+        <article class="cart-item" data-item data-price="30.00">
+          <div class="cart-item-top">
+            <div class="cart-item-info">
+              <div class="cart-item-image" aria-hidden="true">IMG</div>
+              <div class="cart-item-text">
+                <h2 class="cart-item-name">Pizza Calabresa</h2>
+                <p class="cart-item-price">R$ 30,00</p>
+              </div>
+            </div>
+            <button class="remove-button" type="button" data-action="remove">Remover</button>
+          </div>
+
+          <div class="cart-item-actions">
+            <div class="quantity-control">
+              <button class="quantity-button" type="button" data-action="decrease" aria-label="Diminuir quantidade">-</button>
+              <span class="quantity-value" data-quantity>1</span>
+              <button class="quantity-button" type="button" data-action="increase" aria-label="Aumentar quantidade">+</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="cart-item" data-item data-price="35.00">
+          <div class="cart-item-top">
+            <div class="cart-item-info">
+              <div class="cart-item-image" aria-hidden="true">IMG</div>
+              <div class="cart-item-text">
+                <h2 class="cart-item-name">Pizza Frango</h2>
+                <p class="cart-item-price">R$ 35,00</p>
+              </div>
+            </div>
+            <button class="remove-button" type="button" data-action="remove">Remover</button>
+          </div>
+
+          <div class="cart-item-actions">
+            <div class="quantity-control">
+              <button class="quantity-button" type="button" data-action="decrease" aria-label="Diminuir quantidade">-</button>
+              <span class="quantity-value" data-quantity>2</span>
+              <button class="quantity-button" type="button" data-action="increase" aria-label="Aumentar quantidade">+</button>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="cart-total-section" aria-label="Total do pedido">
+        <p class="cart-total-text">Total: <span id="cart-total">R$ 100,00</span></p>
+      </section>
+
+      <section class="cart-footer" aria-label="Ação principal">
+        <button class="primary-button" type="button">Finalizar Pedido</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/carrinho.js"></script>
+</body>
+</html>
