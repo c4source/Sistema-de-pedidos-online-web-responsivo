@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedido Confirmado | Pizzaria MVP</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app confirmation-app">
+    <header class="confirmation-header">
+      <button class="back-button" id="confirmation-back-button" type="button" aria-label="Voltar">←</button>
+    </header>
+
+    <main class="confirmation-main">
+      <section class="confirmation-hero" aria-label="Mensagem de confirmação">
+        <div class="confirmation-icon" aria-hidden="true">✓</div>
+        <h1 class="confirmation-title">Pedido Confirmado</h1>
+        <p class="confirmation-message">Seu pedido está sendo preparado.</p>
+      </section>
+
+      <section class="confirmation-summary" aria-label="Resumo do pedido">
+        <h2 class="confirmation-summary-title">Resumo do pedido:</h2>
+
+        <ul class="confirmation-summary-list">
+          <li class="confirmation-summary-item">- Pizza Calabresa x1</li>
+          <li class="confirmation-summary-item">- Pizza Frango x2</li>
+        </ul>
+
+        <p class="confirmation-total">Total: R$ 100,00</p>
+      </section>
+
+      <section class="confirmation-footer" aria-label="Ação principal">
+        <button class="primary-button" id="confirmation-home-button" type="button">Voltar ao Cardápio</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/confirmacao.js"></script>
+</body>
+</html>

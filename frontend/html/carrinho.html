@@ -9,12 +9,12 @@
 <body>
   <div class="app">
     <header class="cart-header">
-      <button class="back-button" type="button" aria-label="Voltar">←</button>
+      <button class="back-button" id="cart-back-button" type="button" aria-label="Voltar">←</button>
       <h1 class="cart-title">Carrinho</h1>
     </header>
 
-    <main>
-      <section class="cart-list" aria-label="Itens do carrinho">
+    <main class="cart-main">
+      <section class="cart-list" id="cart-list" aria-label="Itens do carrinho">
         <article class="cart-item" data-item data-price="30.00">
           <div class="cart-item-top">
             <div class="cart-item-info">
@@ -58,12 +58,18 @@
         </article>
       </section>
 
-      <section class="cart-total-section" aria-label="Total do pedido">
+      <section class="cart-total-section" id="cart-total-section" aria-label="Total do pedido">
         <p class="cart-total-text">Total: <span id="cart-total">R$ 100,00</span></p>
       </section>
 
-      <section class="cart-footer" aria-label="Ação principal">
-        <button class="primary-button" type="button">Finalizar Pedido</button>
+      <section class="cart-footer" id="cart-footer" aria-label="Ação principal">
+        <button class="primary-button" id="cart-checkout-button" type="button">Finalizar Pedido</button>
+      </section>
+
+      <section class="empty-cart" id="empty-cart" aria-label="Carrinho vazio" hidden>
+        <h2 class="empty-cart-title">Seu carrinho está vazio</h2>
+        <p class="empty-cart-text">Adicione itens do cardápio para continuar</p>
+        <button class="primary-button" id="empty-cart-button" type="button">Ir para o Cardápio</button>
       </section>
     </main>
   </div>
