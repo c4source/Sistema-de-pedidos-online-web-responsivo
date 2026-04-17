@@ -3,10 +3,29 @@ var decreaseButton = document.querySelector('[data-action="decrease"]');
 var increaseButton = document.querySelector('[data-action="increase"]');
 var detailBackButton = document.getElementById('detail-back-button');
 var detailAddButton = document.getElementById('detail-add-button');
+var productNameElement = document.querySelector('.detail-product-name');
+var productPriceElement = document.querySelector('.detail-product-price');
 var quantity = 1;
 
 function updateQuantity() {
   quantityValueElement.textContent = quantity;
+}
+
+function getProductPrice() {
+  var priceText = productPriceElement.textContent;
+  return Number(priceText.replace('R$', '').replace(/\s/g, '').replace('.', '').replace(',', '.'));
+}
+
+function saveProductToCart() {
+  var cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+  var product = {
+    nome: productNameElement.textContent,
+    preco: getProductPrice(),
+    quantidade: quantity
+  };
+
+  cart.push(product);
+  localStorage.setItem('carrinho', JSON.stringify(cart));
 }
 
 increaseButton.addEventListener('click', function () {
@@ -26,5 +45,8 @@ detailBackButton.addEventListener('click', function () {
 });
 
 detailAddButton.addEventListener('click', function () {
+  saveProductToCart();
+  
+  //redireciona para o carrinho
   window.location.href = './carrinho.html';
 });

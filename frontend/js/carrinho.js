@@ -1,4 +1,3 @@
-var cartItems = document.querySelectorAll('[data-item]');
 var totalElement = document.getElementById('cart-total');
 var cartListElement = document.getElementById('cart-list');
 var cartTotalSection = document.getElementById('cart-total-section');
@@ -7,22 +6,18 @@ var emptyCartElement = document.getElementById('empty-cart');
 var cartBackButton = document.getElementById('cart-back-button');
 var cartCheckoutButton = document.getElementById('cart-checkout-button');
 var emptyCartButton = document.getElementById('empty-cart-button');
+var cart = JSON.parse(localStorage.getItem('carrinho')) || [];
 
 function formatPrice(value) {
   return 'R$ ' + value.toFixed(2).replace('.', ',');
 }
 
-function hasItemsInCart() {
-  return document.querySelectorAll('[data-item]').length > 0;
+function saveCart() {
+  localStorage.setItem('carrinho', JSON.stringify(cart));
 }
 
 function updateCartState() {
-  var hasItems = hasItemsInCart();
-
-  cartListElement.hidden = !hasItems;
-  cartTotalSection.hidden = !hasItems;
-  cartFooter.hidden = !hasItems;
-  emptyCartElement.hidden = hasItems;
+  var hasItems = cart.length > 0;
 
   cartListElement.style.display = hasItems ? '' : 'none';
   cartTotalSection.style.display = hasItems ? '' : 'none';
@@ -31,55 +26,87 @@ function updateCartState() {
 }
 
 function updateTotal() {
-  if (!hasItemsInCart()) {
-    return;
-  }
-
   var total = 0;
 
-  cartItems.forEach(function (item) {
-    if (!item.isConnected) {
-      return;
-    }
-
-    var price = Number(item.getAttribute('data-price'));
-    var quantity = Number(item.querySelector('[data-quantity]').textContent);
-    total += price * quantity;
+  cart.forEach(function (item) {
+    total += item.preco * item.quantidade;
   });
 
   totalElement.textContent = formatPrice(total);
 }
 
-cartItems.forEach(function (item) {
-  var quantityElement = item.querySelector('[data-quantity]');
-  var decreaseButton = item.querySelector('[data-action="decrease"]');
-  var increaseButton = item.querySelector('[data-action="increase"]');
-  var removeButton = item.querySelector('[data-action="remove"]');
+function createCartItem(item, index) {
+  return [
+    '<article class="cart-item" data-index="' + index + '">',
+    '  <div class="cart-item-top">',
+    '    <div class="cart-item-info">',
+    '      <div class="cart-item-image" aria-hidden="true">IMG</div>',
+    '      <div class="cart-item-text">',
+    '        <h2 class="cart-item-name">' + item.nome + '</h2>',
+    '        <p class="cart-item-price">' + formatPrice(item.preco) + '</p>',
+    '      </div>',
+    '    </div>',
+    '    <button class="remove-button" type="button" data-action="remove">Remover</button>',
+    '  </div>',
+    '',
+    '  <div class="cart-item-actions">',
+    '    <div class="quantity-control">',
+    '      <button class="quantity-button" type="button" data-action="decrease" aria-label="Diminuir quantidade">-</button>',
+    '      <span class="quantity-value" data-quantity>' + item.quantidade + '</span>',
+    '      <button class="quantity-button" type="button" data-action="increase" aria-label="Aumentar quantidade">+</button>',
+    '    </div>',
+    '  </div>',
+    '</article>'
+  ].join('\n');
+}
 
-  decreaseButton.addEventListener('click', function () {
-    var quantity = Number(quantityElement.textContent);
+function renderCart() {
+  cartListElement.innerHTML = '';
 
-    if (quantity > 1) {
-      quantityElement.textContent = quantity - 1;
+  cart.forEach(function (item, index) {
+    cartListElement.innerHTML += createCartItem(item, index);
+  });
+
+  bindCartItemEvents();
+  updateCartState();
+  updateTotal();
+}
+
+function bindCartItemEvents() {
+  var cartItems = document.querySelectorAll('.cart-item');
+
+  cartItems.forEach(function (itemElement) {
+    var itemIndex = Number(itemElement.getAttribute('data-index'));
+    var quantityElement = itemElement.querySelector('[data-quantity]');
+    var decreaseButton = itemElement.querySelector('[data-action="decrease"]');
+    var increaseButton = itemElement.querySelector('[data-action="increase"]');
+    var removeButton = itemElement.querySelector('[data-action="remove"]');
+
+    decreaseButton.addEventListener('click', function () {
+      if (cart[itemIndex].quantidade > 1) {
+        cart[itemIndex].quantidade -= 1;
+        quantityElement.textContent = cart[itemIndex].quantidade;
+        saveCart();
+        updateTotal();
+      }
+    });
+
+    increaseButton.addEventListener('click', function () {
+      cart[itemIndex].quantidade += 1;
+      quantityElement.textContent = cart[itemIndex].quantidade;
+      saveCart();
       updateTotal();
-    }
-  });
+    });
 
-  increaseButton.addEventListener('click', function () {
-    var quantity = Number(quantityElement.textContent);
-    quantityElement.textContent = quantity + 1;
-    updateTotal();
+    removeButton.addEventListener('click', function () {
+      cart.splice(itemIndex, 1);
+      saveCart();
+      renderCart();
+    });
   });
+}
 
-  removeButton.addEventListener('click', function () {
-    item.remove();
-    updateCartState();
-    updateTotal();
-  });
-});
-
-updateCartState();
-updateTotal();
+renderCart();
 
 cartBackButton.addEventListener('click', function () {
   window.location.href = './detalhe.html';
