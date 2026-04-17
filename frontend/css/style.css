@@ -1,9 +1,26 @@
+/* =========================================================
+   RESET GERAL
+   ---------------------------------------------------------
+   Remove margens/paddings padrão do navegador e faz
+   todo elemento usar box-sizing: border-box.
+   Isso ajuda muito no controle de tamanho dos elementos.
+========================================================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* =========================================================
+   BASE DA PÁGINA
+   ---------------------------------------------------------
+   Aqui fica o estilo geral do body:
+   - altura mínima da tela
+   - cor de fundo geral
+   - cor padrão do texto
+   - fonte
+   - espaçamento externo
+========================================================= */
 body {
   min-height: 100vh;
   background: #f4f1ea;
@@ -12,6 +29,12 @@ body {
   padding: 12px;
 }
 
+/* =========================================================
+   CONTAINER PRINCIPAL DO APP
+   ---------------------------------------------------------
+   Essa é a "caixa do celular/app" que aparece centralizada.
+   Todas as telas usam essa base.
+========================================================= */
 .app {
   max-width: 420px;
   min-height: 700px;
@@ -22,10 +45,13 @@ body {
   overflow: hidden;
 }
 
-/* =========================
+/* =========================================================
    CARDÁPIO
-========================= */
+   ---------------------------------------------------------
+   Tudo aqui mexe SOMENTE na tela do cardápio/index.
+========================================================= */
 
+/* Borda inferior dos blocos principais do cardápio */
 .app-header,
 .search-section,
 .filter-section,
@@ -33,20 +59,24 @@ body {
   border-bottom: 2px solid #2f241f;
 }
 
+/* Cabeçalho da tela do cardápio */
 .app-header {
   padding: 28px 20px;
   text-align: center;
 }
 
+/* Título principal "Pizzaria MVP" */
 .app-title {
   font-size: 1.75rem;
   font-weight: 700;
 }
 
+/* Área da busca */
 .search-section {
   padding: 20px;
 }
 
+/* Caixa visual/campo da busca */
 .search-box {
   padding: 14px 16px;
   border: 2px solid #2f241f;
@@ -54,16 +84,19 @@ body {
   font-size: 1rem;
 }
 
+/* Área dos filtros: Pizza / Bebida / Combo */
 .filter-section {
   padding: 24px 20px;
 }
 
+/* Lista dos filtros lado a lado */
 .filter-list {
   display: flex;
   justify-content: space-between;
   gap: 12px;
 }
 
+/* Botões/chips dos filtros */
 .filter-chip {
   flex: 1;
   padding: 12px 10px;
@@ -74,16 +107,19 @@ body {
   cursor: default;
 }
 
+/* Card de cada produto */
 .product-card {
   padding: 28px 20px 32px;
   cursor: pointer;
   transition: background-color 0.18s ease;
 }
 
+/* Remove a borda do último card */
 .product-card:last-child {
   border-bottom: none;
 }
 
+/* Placeholder/imagem do produto */
 .product-image {
   width: 72px;
   height: 72px;
@@ -97,17 +133,20 @@ body {
   font-weight: 700;
 }
 
+/* Nome do produto */
 .product-name {
   margin-bottom: 14px;
   font-size: 1.5rem;
   font-weight: 400;
 }
 
+/* Preço do produto */
 .product-price {
   margin-bottom: 24px;
   font-size: 1.6rem;
 }
 
+/* Botão "Adicionar" do cardápio */
 .add-button {
   min-width: 78px;
   padding: 12px 18px;
@@ -120,13 +159,22 @@ body {
   transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-/* =========================
+/* =========================================================
    COMPONENTES GERAIS
-========================= */
+   ---------------------------------------------------------
+   Aqui ficam componentes reutilizados em várias telas.
+   Exemplo:
+   - botão de voltar
+   - botões principais
+   - botões secundários
+   - botões de quantidade
+========================================================= */
 
+/* Estilo-base compartilhado entre vários botões */
 .back-button,
 .quantity-button,
-.primary-button {
+.primary-button,
+.secondary-button {
   border: 2px solid #2f241f;
   border-radius: 12px;
   background: #fff;
@@ -135,6 +183,7 @@ body {
   transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
+/* Botão pequeno de voltar */
 .back-button {
   width: 44px;
   height: 44px;
@@ -147,6 +196,7 @@ body {
   flex-shrink: 0;
 }
 
+/* Caixa que envolve -, quantidade e + */
 .quantity-control {
   display: flex;
   align-items: center;
@@ -156,6 +206,7 @@ body {
   border-radius: 14px;
 }
 
+/* Botões de quantidade */
 .quantity-button {
   width: 42px;
   height: 42px;
@@ -166,6 +217,7 @@ body {
   font-weight: 600;
 }
 
+/* Número da quantidade */
 .quantity-value {
   min-width: 30px;
   text-align: center;
@@ -173,6 +225,8 @@ body {
   font-weight: 700;
 }
 
+/* Botão principal do sistema
+   Ex.: finalizar pedido, confirmar pedido */
 .primary-button {
   width: 100%;
   padding: 14px 18px;
@@ -180,10 +234,33 @@ body {
   font-weight: 700;
 }
 
-/* =========================
-   DETALHE DO PRODUTO
-========================= */
+/* Botão secundário
+   Ex.: continuar comprando */
+.secondary-button {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #2f241f;
+  border-radius: 12px;
+  background: #fff;
+  color: #2f241f;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
+/* Hover do botão secundário */
+.secondary-button:hover {
+  background: #f3eadc;
+}
+
+/* =========================================================
+   DETALHE DO PRODUTO
+   ---------------------------------------------------------
+   Tudo aqui mexe SOMENTE na tela detalhe.html
+========================================================= */
+
+/* Cabeçalho do detalhe */
 .detail-header {
   display: flex;
   align-items: center;
@@ -191,6 +268,7 @@ body {
   padding: 20px;
 }
 
+/* Título da tela detalhe */
 .detail-title {
   flex: 1;
   font-size: 1rem;
@@ -198,6 +276,7 @@ body {
   text-align: left;
 }
 
+/* Blocos internos da tela de detalhe */
 .detail-image-section,
 .detail-info,
 .detail-description,
@@ -207,11 +286,13 @@ body {
   border-bottom: 2px solid #2f241f;
 }
 
+/* Centraliza a imagem do produto */
 .detail-image-section {
   display: flex;
   justify-content: center;
 }
 
+/* Placeholder/imagem principal do detalhe */
 .detail-image {
   width: 140px;
   height: 140px;
@@ -225,16 +306,19 @@ body {
   font-weight: 700;
 }
 
+/* Nome do produto no detalhe */
 .detail-product-name {
   margin-bottom: 18px;
   font-size: 1.6rem;
   font-weight: 400;
 }
 
+/* Preço do produto no detalhe */
 .detail-product-price {
   font-size: 1.9rem;
 }
 
+/* Título da descrição e label da quantidade */
 .detail-description-title,
 .quantity-label {
   display: block;
@@ -243,11 +327,13 @@ body {
   font-weight: 700;
 }
 
+/* Texto da descrição */
 .detail-description-text {
   font-size: 1.4rem;
   line-height: 1.4;
 }
 
+/* Ajustes específicos do controle de quantidade no detalhe */
 .detail-quantity .quantity-control {
   display: inline-flex;
   justify-content: center;
@@ -256,25 +342,31 @@ body {
   border-radius: 12px;
 }
 
+/* Botões - e + menores no detalhe */
 .detail-quantity .quantity-button {
   width: 36px;
   height: 36px;
   font-size: 1.2rem;
 }
 
+/* Número da quantidade menor no detalhe */
 .detail-quantity .quantity-value {
   min-width: 18px;
   font-size: 1.2rem;
 }
 
+/* Última seção não precisa de borda inferior */
 .detail-action {
   border-bottom: none;
 }
 
-/* =========================
+/* =========================================================
    CARRINHO
-========================= */
+   ---------------------------------------------------------
+   Tudo aqui mexe SOMENTE na tela carrinho.html
+========================================================= */
 
+/* Cabeçalho do carrinho */
 .cart-header {
   display: flex;
   align-items: center;
@@ -283,22 +375,26 @@ body {
   border-bottom: 2px solid #2f241f;
 }
 
+/* Título "Carrinho" */
 .cart-title {
   font-size: 1.45rem;
   font-weight: 700;
 }
 
+/* Área principal da tela do carrinho */
 .cart-main {
   display: flex;
   flex: 1;
   flex-direction: column;
 }
 
+/* Cada item do carrinho */
 .cart-item {
   padding: 20px;
   border-bottom: 2px solid #2f241f;
 }
 
+/* Linha superior de cada item */
 .cart-item-top {
   display: flex;
   align-items: flex-start;
@@ -307,6 +403,7 @@ body {
   margin-bottom: 18px;
 }
 
+/* Bloco com imagem + informações */
 .cart-item-info {
   display: flex;
   align-items: flex-start;
@@ -315,6 +412,7 @@ body {
   min-width: 0;
 }
 
+/* Texto interno do item */
 .cart-item-text {
   display: flex;
   flex-direction: column;
@@ -324,6 +422,7 @@ body {
   padding-top: 2px;
 }
 
+/* Imagem/placeholder do item no carrinho */
 .cart-item-image {
   width: 58px;
   height: 58px;
@@ -337,6 +436,7 @@ body {
   font-weight: 700;
 }
 
+/* Nome do item no carrinho */
 .cart-item-name {
   margin-bottom: 0;
   line-height: 1.2;
@@ -344,11 +444,13 @@ body {
   font-weight: 400;
 }
 
+/* Preço do item no carrinho */
 .cart-item-price {
   font-size: 1.2rem;
   line-height: 1.2;
 }
 
+/* Botão Remover */
 .remove-button {
   min-width: 126px;
   padding: 10px 14px;
@@ -361,10 +463,12 @@ body {
   transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
+/* Linha do controle de quantidade do item */
 .cart-item-actions {
   padding-left: 72px;
 }
 
+/* Ajuste específico do controle de quantidade dentro do carrinho */
 .cart-item-actions .quantity-control {
   display: inline-flex;
   align-items: center;
@@ -375,6 +479,7 @@ body {
   border-radius: 0;
 }
 
+/* Botões pequenos de + e - no carrinho */
 .cart-item-actions .quantity-button {
   width: 28px;
   height: 28px;
@@ -385,36 +490,48 @@ body {
   line-height: 1;
 }
 
+/* Número da quantidade dentro do carrinho */
 .cart-item-actions .quantity-value {
   min-width: 16px;
   font-size: 1.2rem;
   line-height: 1;
 }
 
+/* Bloco do total */
 .cart-total-section {
   padding: 24px 20px;
   border-bottom: 2px solid #2f241f;
 }
 
+/* Texto do total */
 .cart-total-text {
   font-size: 1.6rem;
 }
 
+/* Rodapé do carrinho:
+   aqui estão os botões principais */
 .cart-footer {
   padding: 24px 20px 28px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   display: flex;
   justify-content: center;
 }
 
+/* Limita largura dos botões do rodapé */
+.cart-footer .secondary-button,
 .cart-footer .primary-button {
   width: 100%;
   max-width: 300px;
 }
 
+/* Empty state escondido quando tiver hidden */
 .empty-cart[hidden] {
   display: none;
 }
 
+/* Estado vazio do carrinho */
 .empty-cart {
   display: flex;
   flex: 1;
@@ -425,12 +542,14 @@ body {
   text-align: center;
 }
 
+/* Título do estado vazio */
 .empty-cart-title {
   margin-bottom: 12px;
   font-size: 1.6rem;
   font-weight: 700;
 }
 
+/* Texto do estado vazio */
 .empty-cart-text {
   max-width: 260px;
   margin-bottom: 28px;
@@ -438,26 +557,32 @@ body {
   line-height: 1.4;
 }
 
+/* Botão do empty state */
 .empty-cart .primary-button {
   width: 100%;
   max-width: 280px;
 }
 
-/* =========================
+/* =========================================================
    CHECKOUT
-========================= */
+   ---------------------------------------------------------
+   Tudo aqui mexe SOMENTE na tela checkout.html
+========================================================= */
 
+/* Estrutura geral da tela checkout */
 .checkout-app {
   display: flex;
   flex-direction: column;
 }
 
+/* Área principal do checkout */
 .checkout-main {
   display: flex;
   flex: 1;
   flex-direction: column;
 }
 
+/* Cabeçalho do checkout */
 .checkout-header {
   display: flex;
   align-items: center;
@@ -467,6 +592,7 @@ body {
   border-bottom: 2px solid #2f241f;
 }
 
+/* Título "Checkout" */
 .checkout-title {
   flex: 1;
   text-align: right;
@@ -474,25 +600,30 @@ body {
   font-weight: 700;
 }
 
+/* Cada seção do checkout */
 .checkout-section {
   padding: 20px;
   border-bottom: 2px solid #2f241f;
 }
 
+/* Título das seções */
 .checkout-section-title {
   margin-bottom: 16px;
   font-size: 1.35rem;
   font-weight: 700;
 }
 
+/* Campo do formulário */
 .checkout-field {
   margin-bottom: 16px;
 }
 
+/* Último campo sem margem */
 .checkout-field:last-child {
   margin-bottom: 0;
 }
 
+/* Label dos campos */
 .checkout-label {
   display: block;
   margin-bottom: 8px;
@@ -500,6 +631,7 @@ body {
   font-weight: 700;
 }
 
+/* Inputs do checkout */
 .checkout-input {
   width: 100%;
   padding: 12px 14px;
@@ -509,16 +641,19 @@ body {
   font-size: 1rem;
 }
 
+/* Campo telefone menor */
 .checkout-input[type="tel"] {
   max-width: 260px;
 }
 
+/* Grupo dos radios entrega/retirada */
 .checkout-radio-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+/* Cada opção de rádio */
 .checkout-radio {
   display: flex;
   align-items: center;
@@ -526,49 +661,60 @@ body {
   font-size: 1.2rem;
 }
 
+/* Bolinha do rádio */
 .checkout-radio input {
   width: 18px;
   height: 18px;
 }
 
+/* Seção de endereço escondida */
 .checkout-address-section[hidden] {
   display: none;
 }
 
+/* Observação/título do endereço */
 .checkout-address-note {
   margin-bottom: 18px;
   font-size: 1.1rem;
   font-weight: 700;
 }
 
+/* Campo número menor */
 .checkout-number-field {
   max-width: 120px;
 }
 
+/* Lista do resumo do pedido */
 .checkout-summary-list {
   list-style: none;
   margin-bottom: 20px;
 }
 
+/* Cada item do resumo */
 .checkout-summary-item {
   margin-bottom: 10px;
   font-size: 1.2rem;
 }
 
+/* Último item sem margem */
 .checkout-summary-item:last-child {
   margin-bottom: 0;
 }
 
+/* Total do checkout */
 .checkout-total {
   font-size: 1.5rem;
   font-weight: 700;
 }
 
+/* Rodapé do checkout */
 .checkout-footer {
   margin-top: auto;
   padding: 24px 20px 24px;
 }
 
+/* Padroniza largura dos botões principais
+   dessas telas finais */
 .checkout-footer .primary-button,
 .detail-action .primary-button,
 .confirmation-footer .primary-button {
@@ -578,31 +724,38 @@ body {
   margin: 0 auto;
 }
 
-/* =========================
+/* =========================================================
    CONFIRMAÇÃO DO PEDIDO
-========================= */
+   ---------------------------------------------------------
+   Tudo aqui mexe SOMENTE na tela confirmacao.html
+========================================================= */
 
+/* Estrutura principal da confirmação */
 .confirmation-app {
   display: flex;
   flex-direction: column;
 }
 
+/* Área principal da confirmação */
 .confirmation-main {
   display: flex;
   flex: 1;
   flex-direction: column;
 }
 
+/* Cabeçalho da confirmação */
 .confirmation-header {
   padding: 20px;
 }
 
+/* Bloco principal com ícone e mensagem */
 .confirmation-hero {
   padding: 8px 20px 28px;
   border-bottom: 2px solid #2f241f;
   text-align: center;
 }
 
+/* Ícone de confirmação */
 .confirmation-icon {
   width: 82px;
   height: 50px;
@@ -617,12 +770,14 @@ body {
   font-weight: 700;
 }
 
+/* Título principal */
 .confirmation-title {
   margin-bottom: 10px;
   font-size: 1.8rem;
   font-weight: 700;
 }
 
+/* Texto da confirmação */
 .confirmation-message {
   max-width: 280px;
   margin: 0 auto;
@@ -630,36 +785,43 @@ body {
   line-height: 1.4;
 }
 
+/* Bloco do resumo final */
 .confirmation-summary {
   padding: 24px 20px;
   border-bottom: 2px solid #2f241f;
 }
 
+/* Título do resumo */
 .confirmation-summary-title {
   margin-bottom: 18px;
   font-size: 1.4rem;
   font-weight: 700;
 }
 
+/* Lista do resumo */
 .confirmation-summary-list {
   list-style: none;
   margin-bottom: 20px;
 }
 
+/* Item do resumo */
 .confirmation-summary-item {
   margin-bottom: 10px;
   font-size: 1.3rem;
 }
 
+/* Último item sem margem */
 .confirmation-summary-item:last-child {
   margin-bottom: 0;
 }
 
+/* Total final */
 .confirmation-total {
   font-size: 1.6rem;
   font-weight: 700;
 }
 
+/* Rodapé da confirmação */
 .confirmation-footer {
   display: flex;
   justify-content: center;
@@ -667,10 +829,18 @@ body {
   padding: 24px 20px 24px;
 }
 
+/* Botão da confirmação */
 .confirmation-footer .primary-button {
   max-width: 280px;
 }
 
+/* =========================================================
+   EFEITOS DE INTERAÇÃO
+   ---------------------------------------------------------
+   Hover e clique dos componentes interativos
+========================================================= */
+
+/* Hover aplicado só em dispositivos que suportam hover */
 @media (hover: hover) {
   .product-card:hover {
     background: #f7f0e5;
@@ -678,6 +848,7 @@ body {
 
   .add-button:hover,
   .primary-button:hover,
+  .secondary-button:hover,
   .back-button:hover,
   .quantity-button:hover,
   .remove-button:hover {
@@ -686,18 +857,23 @@ body {
   }
 }
 
+/* Efeito de clique */
 .add-button:active,
 .primary-button:active,
+.secondary-button:active,
 .back-button:active,
 .quantity-button:active,
 .remove-button:active {
   transform: scale(0.97);
 }
 
-/* =========================
+/* =========================================================
    RESPONSIVIDADE
-========================= */
+   ---------------------------------------------------------
+   Ajustes para telas menores e maiores
+========================================================= */
 
+/* Ajustes para telas pequenas */
 @media (max-width: 420px) {
   .cart-item-top {
     flex-direction: column;
@@ -717,6 +893,7 @@ body {
   }
 }
 
+/* Ajustes para telas maiores */
 @media (min-width: 768px) {
   body {
     padding: 24px;

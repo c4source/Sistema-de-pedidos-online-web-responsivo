@@ -6,6 +6,7 @@ var emptyCartElement = document.getElementById('empty-cart');
 var cartBackButton = document.getElementById('cart-back-button');
 var cartCheckoutButton = document.getElementById('cart-checkout-button');
 var emptyCartButton = document.getElementById('empty-cart-button');
+var continueShoppingButton = document.getElementById('continue-shopping-button');
 var cart = JSON.parse(localStorage.getItem('carrinho')) || [];
 
 function formatPrice(value) {
@@ -117,5 +118,9 @@ cartCheckoutButton.addEventListener('click', function () {
 });
 
 emptyCartButton.addEventListener('click', function () {
+  window.location.href = './index.html';
+});
+
+continueShoppingButton.addEventListener('click', function () {
   window.location.href = './index.html';
 });
