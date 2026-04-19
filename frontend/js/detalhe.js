@@ -3,8 +3,12 @@ var decreaseButton = document.querySelector('[data-action="decrease"]');
 var increaseButton = document.querySelector('[data-action="increase"]');
 var detailBackButton = document.getElementById('detail-back-button');
 var detailAddButton = document.getElementById('detail-add-button');
+var detailTitleElement = document.querySelector('.detail-title');
+var detailImageElement = document.querySelector('.detail-image');
 var productNameElement = document.querySelector('.detail-product-name');
 var productPriceElement = document.querySelector('.detail-product-price');
+var productDescriptionElement = document.querySelector('.detail-description-text');
+var selectedProduct = JSON.parse(localStorage.getItem('produtoSelecionado'));
 var quantity = 1;
 
 function updateQuantity() {
@@ -28,6 +32,22 @@ function saveProductToCart() {
   localStorage.setItem('carrinho', JSON.stringify(cart));
 }
 
+function loadSelectedProduct() {
+  if (!selectedProduct) {
+    return;
+  }
+
+  detailTitleElement.textContent = selectedProduct.nome;
+  detailImageElement.textContent = 'IMG';
+  productNameElement.textContent = selectedProduct.nome;
+  productPriceElement.textContent = getFormattedPrice(selectedProduct.preco);
+  productDescriptionElement.textContent = selectedProduct.descricao;
+}
+
+function getFormattedPrice(price) {
+  return 'R$ ' + price.toFixed(2).replace('.', ',');
+}
+
 increaseButton.addEventListener('click', function () {
   quantity += 1;
   updateQuantity();
@@ -46,7 +66,7 @@ detailBackButton.addEventListener('click', function () {
 
 detailAddButton.addEventListener('click', function () {
   saveProductToCart();
-  
-  //redireciona para o carrinho
   window.location.href = './carrinho.html';
 });
+
+loadSelectedProduct();

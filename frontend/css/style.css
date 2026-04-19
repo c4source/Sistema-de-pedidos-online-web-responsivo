@@ -78,7 +78,10 @@ body {
 
 /* Caixa visual/campo da busca */
 .search-box {
+  width: 100%;
   padding: 14px 16px;
+  background: #fff;
+  color: #2f241f;
   border: 2px solid #2f241f;
   border-radius: 12px;
   font-size: 1rem;
@@ -104,7 +107,11 @@ body {
   border: 2px solid #2f241f;
   border-radius: 12px;
   font-size: 1rem;
-  cursor: default;
+  cursor: pointer;
+}
+
+.filter-chip.is-active {
+  background: #f1e8dc;
 }
 
 /* Card de cada produto */
@@ -331,6 +338,7 @@ body {
 .detail-description-text {
   font-size: 1.4rem;
   line-height: 1.4;
+  white-space: pre-line;
 }
 
 /* Ajustes específicos do controle de quantidade no detalhe */
