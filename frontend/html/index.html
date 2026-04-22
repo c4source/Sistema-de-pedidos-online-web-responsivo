@@ -9,19 +9,84 @@
 <body>
   <div class="app">
     <header class="app-header">
-      <h1 class="app-title">Pizzaria MVP</h1>
+      <div class="app-header-content">
+        <div class="app-brand">
+          <h1 class="app-title">Pizzaria MVP</h1>
+          <p class="app-meta" aria-label="Localização e status da pizzaria">
+            <span class="app-location">
+              <svg class="location-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s7-6.1 7-12A7 7 0 0 0 5 9c0 5.9 7 12 7 12Z"></path>
+                <circle cx="12" cy="9" r="2.5"></circle>
+              </svg>
+              Marília - SP
+            </span>
+            <span class="app-meta-divider" aria-hidden="true">•</span>
+            <span class="store-status store-status-open">
+              <span class="status-dot" aria-hidden="true"></span>
+              Aberto agora
+            </span>
+          </p>
+        </div>
+
+        <a class="cart-shortcut" href="./carrinho.html" aria-label="Abrir carrinho">
+          <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.2 6h15l-1.7 8.5a2 2 0 0 1-2 1.6H8.7a2 2 0 0 1-2-1.7L5.4 3.8H2.8"></path>
+            <circle cx="9" cy="20" r="1.4"></circle>
+            <circle cx="18" cy="20" r="1.4"></circle>
+          </svg>
+          <span class="cart-badge" id="cart-badge" hidden>0</span>
+        </a>
+      </div>
     </header>
 
     <main class="menu-screen">
       <section class="search-section" aria-label="Busca visual do cardápio">
-        <input class="search-box" id="search-input" type="search" placeholder="Buscar produto..." aria-label="Buscar produto">
+        <div class="search-control">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+          <input class="search-box" id="search-input" type="search" placeholder="Buscar produto..." aria-label="Buscar produto">
+        </div>
       </section>
 
       <section class="filter-section" aria-label="Categorias do cardápio">
+        <h2 class="filter-title">Categorias</h2>
         <div class="filter-list">
-          <button class="filter-chip" type="button" data-category="pizza">Pizza</button>
-          <button class="filter-chip" type="button" data-category="bebida">Bebida</button>
-          <button class="filter-chip" type="button" data-category="combo">Combo</button>
+          <button class="filter-chip" type="button" data-category="pizza">
+            <svg class="filter-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 19 19 5c-4.2-1-7.8-.3-10.4 2.2S4.1 14.8 5 19Z"></path>
+              <path d="M8.5 15.5 6.7 17.3"></path>
+              <circle cx="10" cy="10" r="1"></circle>
+              <circle cx="14" cy="8" r="1"></circle>
+              <circle cx="13" cy="13" r="1"></circle>
+            </svg>
+            Pizza
+          </button>
+          <button class="filter-chip" type="button" data-category="doce">
+            <svg class="filter-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 10h10l-1 8a2 2 0 0 1-2 1.7h-4A2 2 0 0 1 8 18l-1-8Z"></path>
+              <path d="M8.5 10c.4-2.9 1.8-4.7 3.5-4.7s3.1 1.8 3.5 4.7"></path>
+              <path d="M10 14h4"></path>
+            </svg>
+            Doce
+          </button>
+          <button class="filter-chip" type="button" data-category="bebida">
+            <svg class="filter-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5h8l-1 15H9L8 5Z"></path>
+              <path d="M9 10h6"></path>
+              <path d="M15.5 5 18 2.5"></path>
+            </svg>
+            Bebida
+          </button>
+          <button class="filter-chip" type="button" data-category="combo">
+            <svg class="filter-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 8 12 4.5 19 8l-7 3.5L5 8Z"></path>
+              <path d="M5 8v7.5l7 4 7-4V8"></path>
+              <path d="M12 11.5v8"></path>
+            </svg>
+            Combo
+          </button>
         </div>
       </section>
 

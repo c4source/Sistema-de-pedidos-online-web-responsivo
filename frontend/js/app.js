@@ -4,7 +4,7 @@ var products = [
     nome: 'Pizza Calabresa',
     categoria: 'pizza',
     preco: 39.9,
-    imagem: '../assets/pizza-calabresa.jpg',
+    imagem: '/img/calabresa800.jpg',
     descricao: 'Pizza de calabresa com cebola e queijo'
   },
   {
@@ -12,7 +12,7 @@ var products = [
     nome: 'Pizza Frango',
     categoria: 'pizza',
     preco: 39.9,
-    imagem: '../assets/pizza-frango.jpg',
+    imagem: '/img/frango800.jpg',
     descricao: 'Pizza com frango, queijo e molho especial'
   },
   {
@@ -20,8 +20,32 @@ var products = [
     nome: 'Pizza 4 Queijos',
     categoria: 'pizza',
     preco: 42.9,
-    imagem: '../assets/pizza-4-queijos.jpg',
+    imagem: '/img/4queijos800.jpg',
     descricao: 'Pizza com mistura de quatro queijos'
+  },
+  {
+    id: 10,
+    nome: 'Pizza Chocolate',
+    categoria: 'doce',
+    preco: 44.9,
+    imagem: '/img/4queijos800.jpg',
+    descricao: 'Pizza doce com chocolate cremoso e granulado'
+  },
+  {
+    id: 11,
+    nome: 'Pizza Banana com Canela',
+    categoria: 'doce',
+    preco: 41.9,
+    imagem: '/img/frango800.jpg',
+    descricao: 'Pizza doce com banana, canela e toque de açúcar'
+  },
+  {
+    id: 12,
+    nome: 'Pizza Romeu e Julieta',
+    categoria: 'doce',
+    preco: 43.9,
+    imagem: '/img/calabresa800.jpg',
+    descricao: 'Pizza doce com queijo cremoso e goiabada'
   },
   {
     id: 4,
@@ -100,6 +124,7 @@ var products = [
 var productSection = document.getElementById('product-section');
 var searchInput = document.getElementById('search-input');
 var filterChips = document.querySelectorAll('.filter-chip');
+var cartBadgeElement = document.getElementById('cart-badge');
 var selectedCategory = '';
 
 function formatPrice(value) {
@@ -119,8 +144,9 @@ function getFilteredProducts() {
 function createProductCard(product) {
   return [
     '<article class="product-card" data-id="' + product.id + '">',
-    '  <div class="product-image" aria-hidden="true">IMG</div>',
+    '   <img class="product-image" src="' + product.imagem + '" alt="' + product.nome + '">',
     '  <h2 class="product-name">' + product.nome + '</h2>',
+    '  <p class="product-description">' + product.descricao + '</p>',
     '  <p class="product-price">' + formatPrice(product.preco) + '</p>',
     '  <button class="add-button" type="button">Adicionar</button>',
     '</article>'
@@ -168,6 +194,31 @@ function renderProducts() {
   updateActiveFilter();
 }
 
+function getCartItems() {
+  try {
+    return JSON.parse(localStorage.getItem('carrinho')) || [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function updateCartBadge() {
+  var cart = getCartItems();
+  var totalItems = 0;
+
+  cart.forEach(function (item) {
+    totalItems += Number(item.quantidade) || 0;
+  });
+
+  if (totalItems > 0) {
+    cartBadgeElement.textContent = totalItems;
+    cartBadgeElement.hidden = false;
+    return;
+  }
+
+  cartBadgeElement.hidden = true;
+}
+
 searchInput.addEventListener('input', renderProducts);
 
 filterChips.forEach(function (chip) {
@@ -179,3 +230,4 @@ filterChips.forEach(function (chip) {
 });
 
 renderProducts();
+updateCartBadge();
