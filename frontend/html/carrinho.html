@@ -9,7 +9,11 @@
 <body>
   <div class="app">
     <header class="cart-header">
-      <button class="back-button" id="cart-back-button" type="button" aria-label="Voltar">←</button>
+      <button class="back-button" id="cart-back-button" type="button" aria-label="Voltar">
+        <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
       <h1 class="cart-title">Carrinho</h1>
     </header>
 
@@ -18,7 +22,7 @@
         <article class="cart-item" data-item data-price="30.00">
           <div class="cart-item-top">
             <div class="cart-item-info">
-              <div class="cart-item-image" aria-hidden="true">IMG</div>
+              <div class="cart-item-image cart-item-image-placeholder" aria-hidden="true">IMG</div>
               <div class="cart-item-text">
                 <h2 class="cart-item-name">Pizza Calabresa</h2>
                 <p class="cart-item-price">R$ 30,00</p>
@@ -39,7 +43,7 @@
         <article class="cart-item" data-item data-price="35.00">
           <div class="cart-item-top">
             <div class="cart-item-info">
-              <div class="cart-item-image" aria-hidden="true">IMG</div>
+              <div class="cart-item-image cart-item-image-placeholder" aria-hidden="true">IMG</div>
               <div class="cart-item-text">
                 <h2 class="cart-item-name">Pizza Frango</h2>
                 <p class="cart-item-price">R$ 35,00</p>
@@ -59,7 +63,8 @@
       </section>
 
       <section class="cart-total-section" id="cart-total-section" aria-label="Total do pedido">
-        <p class="cart-total-text">Total: <span id="cart-total">R$ 100,00</span></p>
+        <p class="cart-total-label">Total do pedido</p>
+        <p class="cart-total-text"><span id="cart-total">R$ 100,00</span></p>
       </section>
 
       <section class="cart-footer" id="cart-footer" aria-label="Ação principal">
@@ -69,7 +74,7 @@
 
       <section class="empty-cart" id="empty-cart" aria-label="Carrinho vazio" hidden>
         <h2 class="empty-cart-title">Seu carrinho está vazio</h2>
-        <p class="empty-cart-text">Adicione itens do cardápio para continuar</p>
+        <p class="empty-cart-text">Adicione produtos pelo cardápio para continuar.</p>
         <button class="primary-button" id="empty-cart-button" type="button">Ir para o Cardápio</button>
       </section>
     </main>

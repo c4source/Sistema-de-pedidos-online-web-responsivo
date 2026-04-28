@@ -23,12 +23,26 @@ function getProductPrice() {
 function saveProductToCart() {
   var cart = JSON.parse(localStorage.getItem('carrinho')) || [];
   var product = {
+    id: selectedProduct ? selectedProduct.id : null,
     nome: productNameElement.textContent,
     preco: getProductPrice(),
-    quantidade: quantity
+    quantidade: quantity,
+    imagem: selectedProduct ? selectedProduct.imagem : ''
   };
+  var existingProduct = cart.find(function (item) {
+    if (item.id && product.id) {
+      return item.id === product.id;
+    }
 
-  cart.push(product);
+    return item.nome === product.nome;
+  });
+
+  if (existingProduct) {
+    existingProduct.quantidade += product.quantidade;
+  } else {
+    cart.push(product);
+  }
+
   localStorage.setItem('carrinho', JSON.stringify(cart));
 }
 
@@ -38,7 +52,8 @@ function loadSelectedProduct() {
   }
 
   detailTitleElement.textContent = selectedProduct.nome;
-  detailImageElement.textContent = 'IMG';
+  detailImageElement.src = selectedProduct.imagem;
+  detailImageElement.alt = selectedProduct.nome;
   productNameElement.textContent = selectedProduct.nome;
   productPriceElement.textContent = getFormattedPrice(selectedProduct.preco);
   productDescriptionElement.textContent = selectedProduct.descricao;

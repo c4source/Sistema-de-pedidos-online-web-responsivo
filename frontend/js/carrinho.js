@@ -8,6 +8,15 @@ var cartCheckoutButton = document.getElementById('cart-checkout-button');
 var emptyCartButton = document.getElementById('empty-cart-button');
 var continueShoppingButton = document.getElementById('continue-shopping-button');
 var cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+var cartItemImagesByName = {
+  'Pizza Calabresa': '/img/calabresa800.jpg',
+  'Pizza Frango': '/img/frango800.jpg',
+  'Pizza de Frango': '/img/frango800.jpg',
+  'Pizza 4 Queijos': '/img/4queijos800.jpg',
+  'Pizza Chocolate': '/img/4queijos800.jpg',
+  'Pizza Banana com Canela': '/img/frango800.jpg',
+  'Pizza Romeu e Julieta': '/img/calabresa800.jpg'
+};
 
 function formatPrice(value) {
   return 'R$ ' + value.toFixed(2).replace('.', ',');
@@ -15,6 +24,34 @@ function formatPrice(value) {
 
 function saveCart() {
   localStorage.setItem('carrinho', JSON.stringify(cart));
+}
+
+function isSameCartItem(firstItem, secondItem) {
+  if (firstItem.id && secondItem.id) {
+    return firstItem.id === secondItem.id;
+  }
+
+  return firstItem.nome === secondItem.nome;
+}
+
+function mergeRepeatedCartItems() {
+  var mergedCart = [];
+
+  cart.forEach(function (item) {
+    var existingItem = mergedCart.find(function (mergedItem) {
+      return isSameCartItem(mergedItem, item);
+    });
+
+    if (existingItem) {
+      existingItem.quantidade += item.quantidade;
+      return;
+    }
+
+    mergedCart.push(item);
+  });
+
+  cart = mergedCart;
+  saveCart();
 }
 
 function updateCartState() {
@@ -36,12 +73,22 @@ function updateTotal() {
   totalElement.textContent = formatPrice(total);
 }
 
+function getCartItemImageMarkup(item) {
+  var itemImage = item.imagem || cartItemImagesByName[item.nome];
+
+  if (itemImage) {
+    return '<img class="cart-item-image" src="' + itemImage + '" alt="' + item.nome + '">';
+  }
+
+  return '<div class="cart-item-image cart-item-image-placeholder" aria-hidden="true">IMG</div>';
+}
+
 function createCartItem(item, index) {
   return [
     '<article class="cart-item" data-index="' + index + '">',
     '  <div class="cart-item-top">',
     '    <div class="cart-item-info">',
-    '      <div class="cart-item-image" aria-hidden="true">IMG</div>',
+    '      ' + getCartItemImageMarkup(item),
     '      <div class="cart-item-text">',
     '        <h2 class="cart-item-name">' + item.nome + '</h2>',
     '        <p class="cart-item-price">' + formatPrice(item.preco) + '</p>',
@@ -107,6 +154,7 @@ function bindCartItemEvents() {
   });
 }
 
+mergeRepeatedCartItems();
 renderCart();
 
 cartBackButton.addEventListener('click', function () {
