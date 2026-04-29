@@ -1098,6 +1098,19 @@ body {
   box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
 }
 
+.checkout-input.input-error {
+  border-color: #E63946;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+}
+
+.checkout-error-message {
+  display: block;
+  margin-top: 6px;
+  color: #E63946;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
 .checkout-input::placeholder {
   color: #ADB5BD;
 }

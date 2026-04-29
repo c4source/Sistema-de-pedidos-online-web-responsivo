@@ -54,41 +54,111 @@ function updateAddressSection() {
   var isDelivery = getSelectedDeliveryType() === 'entrega';
 
   addressSection.hidden = !isDelivery;
+
+  if (!isDelivery) {
+    clearFieldError(ruaInput, 'rua-error');
+    clearFieldError(numeroInput, 'numero-error');
+    clearFieldError(bairroInput, 'bairro-error');
+  }
+}
+
+function getPhoneDigits() {
+  return telefoneInput.value.replace(/\D/g, '');
+}
+
+function isValidName(name) {
+  var cleanedName = name.trim().replace(/\s+/g, ' ');
+  var letters = cleanedName.match(/[A-Za-zÀ-ÖØ-öø-ÿ]/g) || [];
+  var hasOnlyLettersAndSpaces = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(cleanedName);
+  var hasAtLeastTwoWords = cleanedName.split(' ').length >= 2;
+
+  return cleanedName.length >= 3 &&
+         letters.length >= 3 &&
+         hasOnlyLettersAndSpaces &&
+         hasAtLeastTwoWords;
+}
+
+function isValidPhone(phoneDigits) {
+  var hasValidLength = phoneDigits.length === 10 || phoneDigits.length === 11;
+  var allSameDigits = /^(\d)\1+$/.test(phoneDigits);
+
+  return hasValidLength && !allSameDigits;
+}
+
+function showFieldError(input, errorElementId, message) {
+  var errorElement = document.getElementById(errorElementId);
+
+  input.classList.add('input-error');
+
+  if (errorElement) {
+    errorElement.textContent = message;
+  }
+}
+
+function clearFieldError(input, errorElementId) {
+  var errorElement = document.getElementById(errorElementId);
+
+  input.classList.remove('input-error');
+
+  if (errorElement) {
+    errorElement.textContent = '';
+  }
+}
+
+function clearCheckoutErrors() {
+  clearFieldError(nomeInput, 'nome-error');
+  clearFieldError(telefoneInput, 'telefone-error');
+  clearFieldError(ruaInput, 'rua-error');
+  clearFieldError(numeroInput, 'numero-error');
+  clearFieldError(bairroInput, 'bairro-error');
 }
 
 function validateCheckout() {
   var tipoEntrega = getSelectedDeliveryType();
+  var nome = nomeInput.value.trim();
+  var telefoneDigits = getPhoneDigits();
+  var firstInvalidField = null;
 
-  if (!nomeInput.value.trim()) {
-    alert('Informe o nome.');
-    return false;
+  clearCheckoutErrors();
+
+  if (!isValidName(nome)) {
+    showFieldError(nomeInput, 'nome-error', 'Informe um nome válido.');
+    firstInvalidField = firstInvalidField || nomeInput;
   }
 
-  if (!telefoneInput.value.trim()) {
-    alert('Informe o telefone.');
-    return false;
+  if (!isValidPhone(telefoneDigits)) {
+    showFieldError(telefoneInput, 'telefone-error', 'Informe um telefone válido com DDD.');
+    firstInvalidField = firstInvalidField || telefoneInput;
   }
 
   if (!tipoEntrega) {
-    alert('Selecione o tipo de entrega.');
     return false;
   }
 
   if (tipoEntrega === 'entrega') {
     if (!ruaInput.value.trim()) {
-      alert('Informe a rua.');
-      return false;
+      showFieldError(ruaInput, 'rua-error', 'Informe a rua.');
+      firstInvalidField = firstInvalidField || ruaInput;
     }
 
     if (!numeroInput.value.trim()) {
-      alert('Informe o número.');
-      return false;
+      showFieldError(numeroInput, 'numero-error', 'Informe o número.');
+      firstInvalidField = firstInvalidField || numeroInput;
     }
 
     if (!bairroInput.value.trim()) {
-      alert('Informe o bairro.');
-      return false;
+      showFieldError(bairroInput, 'bairro-error', 'Informe o bairro.');
+      firstInvalidField = firstInvalidField || bairroInput;
     }
+  } else {
+    clearFieldError(ruaInput, 'rua-error');
+    clearFieldError(numeroInput, 'numero-error');
+    clearFieldError(bairroInput, 'bairro-error');
+  }
+
+  if (firstInvalidField) {
+    firstInvalidField.focus();
+    return false;
   }
 
   return true;
@@ -110,7 +180,7 @@ function createOrder() {
     codigo: 'PED-' + Date.now(),
     cliente: {
       nome: nomeInput.value.trim(),
-      telefone: telefoneInput.value.trim()
+      telefone: getPhoneDigits()
     },
     tipoEntrega: tipoEntrega,
     endereco: endereco,
@@ -145,8 +215,20 @@ if (telefoneInput) {
     }
 
     e.target.value = value;
+    clearFieldError(telefoneInput, 'telefone-error');
   });
 }
+
+[
+  { input: nomeInput, errorId: 'nome-error' },
+  { input: ruaInput, errorId: 'rua-error' },
+  { input: numeroInput, errorId: 'numero-error' },
+  { input: bairroInput, errorId: 'bairro-error' }
+].forEach(function (field) {
+  field.input.addEventListener('input', function () {
+    clearFieldError(field.input, field.errorId);
+  });
+});
 
 checkoutBackButton.addEventListener('click', function () {
   window.location.href = './carrinho.html';
