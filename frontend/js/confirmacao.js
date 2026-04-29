@@ -1,37 +1,44 @@
 var confirmationBackButton = document.getElementById('confirmation-back-button');
 var confirmationHomeButton = document.getElementById('confirmation-home-button');
+var confirmationMessage = document.querySelector('.confirmation-message');
 var confirmationSummaryList = document.querySelector('.confirmation-summary-list');
 var confirmationTotalElement = document.querySelector('.confirmation-total');
-var cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+var pedidoAtual = JSON.parse(localStorage.getItem('pedidoAtual'));
+
+if (!pedidoAtual) {
+  window.location.href = './index.html';
+}
 
 function formatPrice(value) {
   return 'R$ ' + value.toFixed(2).replace('.', ',');
 }
 
 function renderConfirmationSummary() {
-  var total = 0;
+  var tipoEntregaLabel = pedidoAtual.tipoEntrega === 'entrega' ? 'Entrega' : 'Retirada';
 
+  confirmationMessage.textContent = 'Pedido ' + pedidoAtual.codigo + ' - Status: Recebido - ' + tipoEntregaLabel;
   confirmationSummaryList.innerHTML = '';
 
-  if (cart.length === 0) {
+  if (!pedidoAtual.itens || pedidoAtual.itens.length === 0) {
     confirmationSummaryList.innerHTML = '<li class="confirmation-summary-item">Nenhum item no pedido</li>';
     confirmationTotalElement.textContent = 'Total: R$ 0,00';
     return;
   }
 
-  cart.forEach(function (item) {
+  pedidoAtual.itens.forEach(function (item) {
     var listItem = document.createElement('li');
     listItem.className = 'confirmation-summary-item';
     listItem.textContent = '- ' + item.nome + ' x' + item.quantidade;
     confirmationSummaryList.appendChild(listItem);
-
-    total += item.preco * item.quantidade;
   });
 
-  confirmationTotalElement.textContent = 'Total: ' + formatPrice(total);
+  confirmationTotalElement.textContent = 'Total: ' + formatPrice(pedidoAtual.total);
 }
 
-renderConfirmationSummary();
+if (pedidoAtual) {
+  renderConfirmationSummary();
+  localStorage.removeItem('carrinho');
+}
 
 confirmationBackButton.addEventListener('click', function () {
   window.location.href = './checkout.html';
@@ -39,5 +46,6 @@ confirmationBackButton.addEventListener('click', function () {
 
 confirmationHomeButton.addEventListener('click', function () {
   localStorage.removeItem('carrinho');
+  localStorage.removeItem('pedidoAtual');
   window.location.href = './index.html';
 });
