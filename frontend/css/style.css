@@ -455,6 +455,9 @@ body {
   padding: 14px 18px;
   font-size: 1.15rem;
   font-weight: 700;
+  transition: transform 0.2s ease,
+              box-shadow 0.2s ease,
+              background-color 0.2s ease;
 }
 
 /* Botão secundário
@@ -981,6 +984,7 @@ body {
 .checkout-app {
   display: flex;
   flex-direction: column;
+  background: #F8F9FA;
 }
 
 /* Área principal do checkout */
@@ -988,42 +992,77 @@ body {
   display: flex;
   flex: 1;
   flex-direction: column;
+  gap: 16px;
+  padding: 0 16px 28px;
+  background: #F8F9FA;
 }
 
 /* Cabeçalho do checkout */
 .checkout-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  padding: 20px;
-  border-bottom: 2px solid #2f241f;
+  padding: 24px 18px 12px;
+  margin-bottom: 16px;
+  background: #F8F9FA;
+}
+
+.checkout-header .back-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 10px;
+  color: #212529;
+  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.08);
 }
 
 /* Título "Checkout" */
 .checkout-title {
   flex: 1;
-  text-align: right;
-  font-size: 1.45rem;
+  min-width: 0;
+  color: #212529;
+  font-size: 1.2rem;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 /* Cada seção do checkout */
 .checkout-section {
-  padding: 20px;
-  border-bottom: 2px solid #2f241f;
+  padding: 0;
+}
+
+/* Card principal dos dados do checkout */
+.checkout-form-card,
+.checkout-summary-section {
+  padding: 18px;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(33, 37, 41, 0.06);
+}
+
+.checkout-form-card .checkout-section + .checkout-section {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(33, 37, 41, 0.08);
 }
 
 /* Título das seções */
 .checkout-section-title {
   margin-bottom: 16px;
-  font-size: 1.35rem;
+  color: #212529;
+  font-size: 1.12rem;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 /* Campo do formulário */
 .checkout-field {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 /* Último campo sem margem */
@@ -1034,23 +1073,38 @@ body {
 /* Label dos campos */
 .checkout-label {
   display: block;
-  margin-bottom: 8px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  margin-bottom: 6px;
+  color: #6C757D;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
 /* Inputs do checkout */
 .checkout-input {
   width: 100%;
-  padding: 12px 14px;
-  border: 2px solid #2f241f;
-  border-radius: 10px;
-  background: #fff;
+  padding: 13px 14px;
+  border: 1px solid rgba(33, 37, 41, 0.14);
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: #212529;
   font-size: 1rem;
+  line-height: 1.35;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.checkout-input:focus {
+  border-color: rgba(230, 57, 70, 0.55);
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+}
+
+.checkout-input::placeholder {
+  color: #ADB5BD;
 }
 
 /* Campo telefone menor */
 .checkout-input[type="tel"] {
+  width: 70%;
   max-width: 260px;
 }
 
@@ -1058,7 +1112,7 @@ body {
 .checkout-radio-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* Cada opção de rádio */
@@ -1066,13 +1120,29 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.2rem;
+  min-height: 42px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid rgba(33, 37, 41, 0.1);
+  border-radius: 12px;
+  color: #212529;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.checkout-radio:has(input:checked) {
+  background: rgba(239, 143, 143, 0.06);
+  border-color: rgba(150, 36, 44, 0.4);
+  box-shadow: 0 6px 14px rgba(230, 57, 70, 0.12);
 }
 
 /* Bolinha do rádio */
 .checkout-radio input {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
+  accent-color: #E63946;
 }
 
 /* Seção de endereço escondida */
@@ -1082,43 +1152,56 @@ body {
 
 /* Observação/título do endereço */
 .checkout-address-note {
-  margin-bottom: 18px;
-  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: #212529;
+  font-size: 1.12rem;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 /* Campo número menor */
 .checkout-number-field {
-  max-width: 120px;
+  width: 38%;
+  max-width: 140px;
+  min-width: 104px;
 }
 
 /* Lista do resumo do pedido */
 .checkout-summary-list {
   list-style: none;
-  margin-bottom: 20px;
+  display: grid;
+  gap: 0;
+  margin-bottom: 16px;
 }
 
 /* Cada item do resumo */
 .checkout-summary-item {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(33, 37, 41, 0.08);
+  color: #495057;
+  font-size: 0.98rem;
+  line-height: 1.35;
 }
 
-/* Último item sem margem */
+/* Último item sem divisor */
 .checkout-summary-item:last-child {
-  margin-bottom: 0;
+  border-bottom: 0;
 }
 
 /* Total do checkout */
 .checkout-total {
-  font-size: 1.5rem;
-  font-weight: 700;
+  padding-top: 16px;
+  border-top: 1px solid rgba(33, 37, 41, 0.08);
+  color: #E63946;
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 /* Rodapé do checkout */
 .checkout-footer {
   margin-top: auto;
-  padding: 24px 20px 24px;
+  padding: 4px 0 0;
 }
 
 /* Padroniza largura dos botões principais
@@ -1127,8 +1210,23 @@ body {
 .confirmation-footer .primary-button {
   display: block;
   width: 100%;
-  max-width: 300px;
   margin: 0 auto;
+}
+
+.confirmation-footer .primary-button {
+  max-width: 300px;
+}
+
+.checkout-footer .primary-button {
+  max-width: none;
+  padding: 13px 18px;
+  background: #E63946;
+  border: 1px solid #E63946;
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(230, 57, 70, 0.18);
 }
 
 /* =========================================================
@@ -1262,12 +1360,11 @@ body {
   }
 
   .add-button:hover,
-  .primary-button:hover,
   .secondary-button:hover,
   .back-button:hover,
   .quantity-button:hover,
   .remove-button:hover {
-    background: #f1e8dc;
+    background: #d62f3d;
     box-shadow: 0 2px 0 rgba(47, 36, 31, 0.12);
   }
 
@@ -1309,8 +1406,15 @@ body {
     transform: translateY(-2px);
   }
 
+  .checkout-header .back-button:hover {
+    background: #f8f9fa;
+    border-color: rgba(33, 37, 41, 0.12);
+    box-shadow: 0 6px 14px rgba(33, 37, 41, 0.10);
+  }
+
   .cart-footer .primary-button:hover,
-  .empty-cart .primary-button:hover {
+  .empty-cart .primary-button:hover,
+  .checkout-footer .primary-button:hover {
     background: #d62f3d;
     box-shadow: 0 12px 24px rgba(230, 57, 70, 0.26);
     transform: scale(1.015);
@@ -1348,6 +1452,16 @@ body {
 .cart-header .back-button:active {
   transform: scale(0.95);
 }
+/* Checkout - botão confirmar (override correto) */
+@media (hover: hover) {
+  .checkout-container .primary-button:hover {
+    background: #d62f3d;
+    box-shadow: 0 12px 24px rgba(230, 57, 70, 0.26);
+    transform: scale(1.015);
+  }
+}
+
+
 
 /* =========================================================
    RESPONSIVIDADE

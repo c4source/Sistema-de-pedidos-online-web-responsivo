@@ -9,11 +9,16 @@
 <body>
   <div class="app checkout-app">
     <header class="checkout-header">
-      <button class="back-button" id="checkout-back-button" type="button" aria-label="Voltar">←</button>
+      <button class="back-button" id="checkout-back-button" type="button" aria-label="Voltar">
+        <svg class="back-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
       <h1 class="checkout-title">Checkout</h1>
     </header>
 
     <main class="checkout-main">
+      <div class="checkout-form-card">
       <section class="checkout-section" aria-label="Dados do cliente">
         <h2 class="checkout-section-title">Dados do cliente</h2>
 
@@ -63,7 +68,9 @@
         </div>
       </section>
 
-      <section class="checkout-section" aria-label="Resumo do pedido">
+      </div>
+
+      <section class="checkout-section checkout-summary-section" aria-label="Resumo do pedido">
         <h2 class="checkout-section-title">Resumo do pedido</h2>
 
         <ul class="checkout-summary-list">
