@@ -29,9 +29,11 @@ No estado atual do MVP, a persistencia temporaria do fluxo no navegador e feita 
 Principais informacoes armazenadas:
 
 - `produtoSelecionado`: produto escolhido no cardapio para exibicao na tela de detalhe.
-- `carrinho`: lista de itens adicionados ao pedido, com nome, preco e quantidade.
+- `carrinho`: lista de itens adicionados ao pedido, com nome, preco, quantidade e, quando disponivel, imagem do produto.
+- `pedidoAtual`: pedido confirmado no checkout. Essa chave armazena os dados do cliente, tipo de entrega, endereco quando necessario, itens, total, status e codigo do pedido. Ela e utilizada pela tela de confirmacao para apresentar o resumo final do pedido confirmado.
+
+Essas informacoes permitem que o usuario avance entre as telas sem perder o estado do fluxo. A persistencia ainda e local e temporaria, adequada ao comportamento do frontend no MVP.
 
 ## Integracao futura
 
 A integracao com API, backend e banco de dados sera tratada em outra etapa do projeto. Portanto, esta documentacao descreve o comportamento atual do frontend estatico e interativo, sem assumir persistencia definitiva em servidor.
-

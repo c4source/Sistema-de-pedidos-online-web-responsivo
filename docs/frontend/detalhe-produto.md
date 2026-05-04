@@ -9,16 +9,18 @@ A tela de detalhe do produto apresenta informacoes especificas do item seleciona
 - Exibicao do nome do produto.
 - Exibicao do preco formatado.
 - Exibicao da descricao do produto.
-- Area visual reservada para imagem ou representacao do produto.
+- Exibicao da imagem real do produto selecionado.
 - Controle de quantidade com botoes de aumentar e diminuir.
 - Botao para adicionar o item ao pedido.
 - Botao de retorno ao cardapio.
 
 ## Regras e comportamento
 
-A tela utiliza o produto salvo em `produtoSelecionado` no `localStorage`. Quando esse dado existe, as informacoes do produto sao carregadas na interface.
+A tela utiliza o produto salvo em `produtoSelecionado` no `localStorage`. Quando esse dado existe, as informacoes do produto sao carregadas na interface, incluindo nome, preco, descricao e imagem.
 
-O controle de quantidade inicia em 1. O botao de diminuir nao permite reduzir a quantidade abaixo de 1. Ao clicar em "Adicionar ao pedido", o produto e salvo no `localStorage` dentro da chave `carrinho`, contendo nome, preco e quantidade escolhida. Depois disso, o usuario e direcionado para a tela de carrinho.
+O controle de quantidade inicia em 1. O botao de diminuir nao permite reduzir a quantidade abaixo de 1. Ao clicar em "Adicionar ao pedido", o produto e salvo no `localStorage` dentro da chave `carrinho`, contendo identificador, nome, preco, quantidade escolhida e imagem quando disponivel. Depois disso, o usuario e direcionado para a tela de carrinho.
+
+Quando o produto adicionado ja existe no carrinho, a logica soma a nova quantidade ao item existente em vez de criar uma entrada duplicada. Esse agrupamento e tratado pela logica do carrinho a partir do identificador do produto ou, quando necessario, pelo nome.
 
 ## Fluxo do usuario
 
@@ -29,4 +31,3 @@ O usuario chega a esta tela apos selecionar um produto no cardapio. Ele revisa a
 - HTML: `frontend/html/detalhe.html`
 - CSS: `frontend/css/style.css`
 - JS: `frontend/js/detalhe.js`
-

@@ -7,7 +7,7 @@ A tela de cardapio permite que o cliente visualize os produtos da pizzaria e ini
 ## Funcionalidades
 
 - Exibicao dos produtos cadastrados no array local do frontend.
-- Cards com imagem, nome, descricao, preco e botao de acao.
+- Cards com imagens reais dos produtos, nome, descricao, preco e botao de acao.
 - Campo de busca para localizar produtos pelo nome.
 - Filtros por categoria.
 - Cabecalho com nome da pizzaria, localizacao, status da loja e atalho para o carrinho.
@@ -26,7 +26,7 @@ As categorias disponiveis no cardapio sao:
 
 A busca filtra os produtos conforme o texto digitado no campo de pesquisa. Os filtros utilizam a categoria do produto e podem ser ativados ou desativados ao clicar nos chips. A categoria `Doce` segue o mesmo comportamento das demais categorias.
 
-Ao clicar em um card de produto, o sistema salva o produto selecionado no `localStorage` e direciona o usuario para a tela de detalhe do produto. O badge do carrinho soma as quantidades dos itens existentes em `carrinho` e permanece oculto quando nao ha itens.
+Ao clicar em um card de produto, o sistema salva o produto selecionado no `localStorage`, na chave `produtoSelecionado`, e direciona o usuario para a tela de detalhe do produto. O badge do carrinho soma as quantidades dos itens existentes em `carrinho` e permanece oculto quando nao ha itens.
 
 ## Fluxo do usuario
 
@@ -37,4 +37,3 @@ O usuario acessa o cardapio, pesquisa ou filtra os produtos e seleciona um item 
 - HTML: `frontend/html/index.html`
 - CSS: `frontend/css/style.css`
 - JS: `frontend/js/app.js`
-

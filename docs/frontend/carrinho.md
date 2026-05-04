@@ -7,7 +7,7 @@ A tela de carrinho permite que o cliente revise os itens adicionados antes de pr
 ## Funcionalidades
 
 - Listagem dos itens armazenados no carrinho.
-- Exibicao do nome, preco e quantidade de cada item.
+- Exibicao da imagem real, nome, preco e quantidade de cada item.
 - Controle para aumentar ou diminuir a quantidade.
 - Remocao de itens individuais.
 - Calculo automatico do total do pedido.
@@ -17,7 +17,9 @@ A tela de carrinho permite que o cliente revise os itens adicionados antes de pr
 
 ## Regras e comportamento
 
-Os itens sao carregados a partir da chave `carrinho` no `localStorage`. Ao alterar a quantidade ou remover um item, o carrinho e atualizado novamente no `localStorage`.
+Os itens sao carregados a partir da chave `carrinho` no `localStorage`. O carrinho ainda utiliza essa persistencia local para manter os produtos durante o fluxo do pedido. Ao alterar a quantidade ou remover um item, o carrinho e atualizado novamente no `localStorage`.
+
+Produtos repetidos sao agrupados pela logica do carrinho. Quando dois itens representam o mesmo produto, suas quantidades sao somadas, evitando duplicidade visual na lista.
 
 O total do pedido e calculado multiplicando o preco de cada item pela sua quantidade e somando todos os resultados. Quando o carrinho nao possui itens, a lista, o total e as acoes principais sao ocultados, e a tela exibe uma mensagem de carrinho vazio com opcao de retorno ao cardapio.
 
@@ -32,4 +34,3 @@ O usuario chega ao carrinho apos adicionar um produto pela tela de detalhe. Ness
 - HTML: `frontend/html/carrinho.html`
 - CSS: `frontend/css/style.css`
 - JS: `frontend/js/carrinho.js`
-
