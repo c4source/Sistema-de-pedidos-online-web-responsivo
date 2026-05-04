@@ -1,6 +1,9 @@
 var confirmationBackButton = document.getElementById('confirmation-back-button');
 var confirmationHomeButton = document.getElementById('confirmation-home-button');
-var confirmationMessage = document.querySelector('.confirmation-message');
+var confirmationOrderCode = document.getElementById('confirmation-order-code');
+var confirmationOrderStatus = document.getElementById('confirmation-order-status');
+var confirmationOrderType = document.getElementById('confirmation-order-type');
+var confirmationOrderTime = document.getElementById('confirmation-order-time');
 var confirmationSummaryList = document.querySelector('.confirmation-summary-list');
 var confirmationTotalElement = document.querySelector('.confirmation-total');
 var pedidoAtual = JSON.parse(localStorage.getItem('pedidoAtual'));
@@ -13,26 +16,45 @@ function formatPrice(value) {
   return 'R$ ' + value.toFixed(2).replace('.', ',');
 }
 
+function formatStatus(status) {
+  if (!status) {
+    return 'Recebido';
+  }
+
+  return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
 function renderConfirmationSummary() {
   var tipoEntregaLabel = pedidoAtual.tipoEntrega === 'entrega' ? 'Entrega' : 'Retirada';
-
-  confirmationMessage.textContent = 'Pedido ' + pedidoAtual.codigo + ' - Status: Recebido - ' + tipoEntregaLabel;
+  var codigoCurto = pedidoAtual.codigo.replace('PED-', '').slice(-6);
+  
+  confirmationOrderCode.textContent = '#' + codigoCurto;
+  confirmationOrderStatus.textContent = formatStatus(pedidoAtual.status);
+  confirmationOrderType.textContent = tipoEntregaLabel;
+  confirmationOrderTime.textContent = '30–45 min';
   confirmationSummaryList.innerHTML = '';
 
   if (!pedidoAtual.itens || pedidoAtual.itens.length === 0) {
-    confirmationSummaryList.innerHTML = '<li class="confirmation-summary-item">Nenhum item no pedido</li>';
-    confirmationTotalElement.textContent = 'Total: R$ 0,00';
+    confirmationSummaryList.innerHTML = '<li class="confirmation-summary-item"><span>Nenhum item no pedido</span><strong>x0</strong></li>';
+    confirmationTotalElement.innerHTML = '<span>Total do pedido</span><strong>R$ 0,00</strong>';
     return;
   }
 
   pedidoAtual.itens.forEach(function (item) {
     var listItem = document.createElement('li');
+    var itemName = document.createElement('span');
+    var itemQuantity = document.createElement('strong');
+
     listItem.className = 'confirmation-summary-item';
-    listItem.textContent = '- ' + item.nome + ' x' + item.quantidade;
+    itemName.textContent = item.nome;
+    itemQuantity.textContent = 'x' + item.quantidade;
+
+    listItem.appendChild(itemName);
+    listItem.appendChild(itemQuantity);
     confirmationSummaryList.appendChild(listItem);
   });
 
-  confirmationTotalElement.textContent = 'Total: ' + formatPrice(pedidoAtual.total);
+  confirmationTotalElement.innerHTML = '<span>Total do pedido</span><strong>' + formatPrice(pedidoAtual.total) + '</strong>';
 }
 
 if (pedidoAtual) {

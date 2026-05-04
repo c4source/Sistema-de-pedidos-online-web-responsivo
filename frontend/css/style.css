@@ -1252,6 +1252,7 @@ body {
 .confirmation-app {
   display: flex;
   flex-direction: column;
+  background: #F8F9FA;
 }
 
 /* Área principal da confirmação */
@@ -1259,97 +1260,249 @@ body {
   display: flex;
   flex: 1;
   flex-direction: column;
+  gap: 14px;
+  padding: 0 16px 24px;
+  background: #F8F9FA;
 }
 
 /* Cabeçalho da confirmação */
 .confirmation-header {
-  padding: 20px;
+  display: flex;
+  align-items: center;
+  padding: 24px 18px 8px;
+  background: #F8F9FA;
+}
+
+.confirmation-header .back-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 10px;
+  color: #212529;
+  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.08);
 }
 
 /* Bloco principal com ícone e mensagem */
 .confirmation-hero {
-  padding: 8px 20px 28px;
-  border-bottom: 2px solid #2f241f;
+  padding: 4px 12px 10px;
   text-align: center;
 }
 
 /* Ícone de confirmação */
 .confirmation-icon {
-  width: 82px;
-  height: 50px;
+  width: 74px;
+  height: 74px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 16px;
-  border: 2px solid #2f241f;
-  border-radius: 12px;
-  background: #fff;
-  font-size: 1.75rem;
-  font-weight: 700;
+  border: 1px solid rgba(22, 163, 74, 0.18);
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #16A34A;
+  box-shadow: 0 10px 24px rgba(22, 163, 74, 0.13);
+}
+
+.confirmation-check-icon {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Título principal */
 .confirmation-title {
-  margin-bottom: 10px;
-  font-size: 1.8rem;
-  font-weight: 700;
+  margin-bottom: 8px;
+  color: #212529;
+  font-size: 1.68rem;
+  font-weight: 800;
+  line-height: 1.15;
 }
 
 /* Texto da confirmação */
 .confirmation-message {
-  max-width: 280px;
+  max-width: 300px;
   margin: 0 auto;
-  font-size: 1.15rem;
-  line-height: 1.4;
+  color: #6C757D;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.confirmation-message p + p {
+  margin-top: 2px;
+}
+
+/* Card com dados do pedido */
+.confirmation-order-card {
+  display: grid;
+  gap: 0;
+  padding: 16px 18px;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(33, 37, 41, 0.06);
+}
+
+.confirmation-order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(33, 37, 41, 0.08);
+}
+
+.confirmation-order-row:first-child {
+  padding-top: 0;
+}
+
+.confirmation-order-row:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.confirmation-order-label {
+  color: #6C757D;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.confirmation-order-value {
+  color: #212529;
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: right;
+}
+
+#confirmation-order-code {
+  color: #495057;
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+
+.confirmation-status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 5px 9px;
+  background: rgba(230, 57, 70, 0.06);
+  border: 1px solid rgba(230, 57, 70, 0.16);
+  border-radius: 999px;
+  color: #E63946;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 /* Bloco do resumo final */
 .confirmation-summary {
-  padding: 24px 20px;
-  border-bottom: 2px solid #2f241f;
+  padding: 16px 18px 18px;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(33, 37, 41, 0.06);
 }
 
 /* Título do resumo */
 .confirmation-summary-title {
-  margin-bottom: 18px;
-  font-size: 1.4rem;
+  margin-bottom: 14px;
+  color: #212529;
+  font-size: 1.12rem;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 /* Lista do resumo */
 .confirmation-summary-list {
   list-style: none;
-  margin-bottom: 20px;
+  display: grid;
+  gap: 0;
+  margin-bottom: 14px;
 }
 
 /* Item do resumo */
 .confirmation-summary-item {
-  margin-bottom: 10px;
-  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(33, 37, 41, 0.08);
+  color: #495057;
+  font-size: 0.98rem;
+  line-height: 1.35;
 }
 
 /* Último item sem margem */
 .confirmation-summary-item:last-child {
-  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+.confirmation-summary-item span {
+  min-width: 0;
+}
+
+.confirmation-summary-item strong {
+  color: #212529;
+  font-size: 0.98rem;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 /* Total final */
 .confirmation-total {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(33, 37, 41, 0.08);
+}
+
+.confirmation-total span {
+  color: #6C757D;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.confirmation-total strong {
+  color: #E63946;
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: right;
+  white-space: nowrap;
 }
 
 /* Rodapé da confirmação */
 .confirmation-footer {
   display: flex;
   justify-content: center;
-  margin-top: auto;
-  padding: 24px 20px 24px;
+  margin-top: 0;
+  padding: 0 0 4px;
 }
 
 /* Botão da confirmação */
 .confirmation-footer .primary-button {
-  max-width: 280px;
+  max-width: none;
+  padding: 13px 18px;
+  background: #E63946;
+  border: 1px solid #E63946;
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(230, 57, 70, 0.18);
 }
 
 /* =========================================================
@@ -1419,7 +1572,8 @@ body {
     transform: translateY(-2px);
   }
 
-  .checkout-header .back-button:hover {
+  .checkout-header .back-button:hover,
+  .confirmation-header .back-button:hover {
     background: #f8f9fa;
     border-color: rgba(33, 37, 41, 0.12);
     box-shadow: 0 6px 14px rgba(33, 37, 41, 0.10);
@@ -1427,7 +1581,8 @@ body {
 
   .cart-footer .primary-button:hover,
   .empty-cart .primary-button:hover,
-  .checkout-footer .primary-button:hover {
+  .checkout-footer .primary-button:hover,
+  .confirmation-footer .primary-button:hover {
     background: #d62f3d;
     box-shadow: 0 12px 24px rgba(230, 57, 70, 0.26);
     transform: scale(1.015);
