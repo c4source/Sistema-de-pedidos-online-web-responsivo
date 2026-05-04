@@ -1662,4 +1662,162 @@ body {
   body {
     padding: 24px;
   }
+
+  .app {
+    width: 100%;
+    max-width: 640px;
+    min-height: auto;
+    border-radius: 28px;
+  }
+
+  .menu-app {
+    max-width: 720px;
+  }
+
+  .detail-app {
+    max-width: 620px;
+  }
+
+  .cart-app {
+    max-width: 620px;
+  }
+
+  .checkout-app {
+    max-width: 640px;
+  }
+
+  .confirmation-app {
+    max-width: 580px;
+  }
+
+  .app-header {
+    padding: 32px 28px 18px;
+  }
+
+  .search-section {
+    padding: 16px 28px 20px;
+  }
+
+  .filter-section {
+    padding: 0 28px 18px;
+  }
+
+  .filter-list {
+    gap: 10px;
+  }
+
+  .filter-chip {
+    flex: 1 0 130px;
+  }
+
+  .product-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    padding: 0 28px 32px;
+  }
+
+  .product-card {
+    height: 100%;
+  }
+
+  .product-image {
+    height: 190px;
+  }
+
+  .detail-header,
+  .cart-header,
+  .checkout-header {
+    padding: 28px 28px 12px;
+  }
+
+  .confirmation-header {
+    padding: 28px 28px 8px;
+  }
+
+  .detail-screen,
+  .cart-main,
+  .checkout-main,
+  .confirmation-main {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .detail-image {
+    height: 260px;
+  }
+
+  .cart-footer {
+    flex-direction: row;
+  }
+
+  .cart-footer .secondary-button,
+  .cart-footer .primary-button {
+    flex: 1;
+  }
+
+  .checkout-radio-group {
+    flex-direction: row;
+  }
+
+  .checkout-radio {
+    flex: 1;
+  }
+
+  .checkout-number-field {
+    width: 160px;
+    max-width: 180px;
+  }
+
+  .confirmation-main {
+    gap: 16px;
+  }
+
+  .checkout-footer {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    padding: 32px;
+  }
+
+  .app {
+    max-width: 700px;
+    min-height: auto;
+  }
+
+  .menu-app {
+    max-width: 1080px;
+  }
+
+  .detail-app {
+    max-width: 660px;
+  }
+
+  .cart-app {
+    max-width: 680px;
+  }
+
+  .checkout-app {
+    max-width: 700px;
+  }
+
+  .confirmation-app {
+    max-width: 620px;
+  }
+
+  .product-section {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .product-image {
+    height: 180px;
+  }
+
+  .filter-chip {
+    flex-grow: 0;
+    min-width: 140px;
+  }
 }
