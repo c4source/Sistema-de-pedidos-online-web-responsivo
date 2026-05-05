@@ -191,6 +191,19 @@ function createOrder() {
   };
 }
 
+function saveOrderToHistory(order) {
+  var pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+
+  var alreadyExists = pedidos.some(function (pedido) {
+    return pedido.codigo === order.codigo;
+  });
+
+  if (!alreadyExists) {
+    pedidos.push(order);
+    localStorage.setItem('pedidos', JSON.stringify(pedidos));
+  }
+}
+
 deliveryOptions.forEach(function (option) {
   option.addEventListener('change', updateAddressSection);
 });
@@ -247,6 +260,7 @@ checkoutConfirmButton.addEventListener('click', function () {
 
   var pedidoAtual = createOrder();
   localStorage.setItem('pedidoAtual', JSON.stringify(pedidoAtual));
+  saveOrderToHistory(pedidoAtual);
 
   window.location.href = './confirmacao.html';
 });
