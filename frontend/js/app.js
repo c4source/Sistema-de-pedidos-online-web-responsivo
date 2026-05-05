@@ -1,4 +1,4 @@
-var products = [
+var defaultProducts = [
   {
     id: 1,
     nome: 'Pizza Calabresa',
@@ -121,6 +121,38 @@ var products = [
   }
 ];
 
+function normalizeProducts(productsList) {
+  return productsList.map(function (product) {
+    return {
+      id: product.id,
+      nome: product.nome,
+      categoria: product.categoria,
+      preco: product.preco,
+      imagem: product.imagem,
+      descricao: product.descricao,
+      disponivel: product.disponivel !== false
+    };
+  });
+}
+
+function loadProducts() {
+  var storedProducts = localStorage.getItem('produtos');
+
+  if (storedProducts) {
+    try {
+      return normalizeProducts(JSON.parse(storedProducts));
+    } catch (error) {
+      return normalizeProducts(defaultProducts);
+    }
+  }
+
+  var initialProducts = normalizeProducts(defaultProducts);
+  localStorage.setItem('produtos', JSON.stringify(initialProducts));
+  return initialProducts;
+}
+
+var products = loadProducts();
+
 var productSection = document.getElementById('product-section');
 var searchInput = document.getElementById('search-input');
 var filterChips = document.querySelectorAll('.filter-chip');
@@ -135,9 +167,10 @@ function getFilteredProducts() {
   var searchTerm = searchInput.value.trim().toLowerCase();
 
   return products.filter(function (product) {
+    var isAvailable = product.disponivel !== false;
     var matchesCategory = !selectedCategory || product.categoria === selectedCategory;
     var matchesSearch = product.nome.toLowerCase().includes(searchTerm);
-    return matchesCategory && matchesSearch;
+    return isAvailable && matchesCategory && matchesSearch;
   });
 }
 
