@@ -183,7 +183,7 @@ function setupNavigation() {
   });
 
   kitchenLink.addEventListener('click', function () {
-    window.location.href = './admin-pedidos.html';
+    window.location.href = './admin-cozinha.html';
   });
 }
 
