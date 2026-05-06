@@ -1,4 +1,5 @@
 var deliveryOptions = document.querySelectorAll('input[name="tipo-entrega"]');
+var paymentOptions = document.querySelectorAll('input[name="forma-pagamento"]');
 var addressSection = document.getElementById('checkout-address-section');
 var checkoutBackButton = document.getElementById('checkout-back-button');
 var checkoutConfirmButton = document.getElementById('checkout-confirm-button');
@@ -48,6 +49,16 @@ function getSelectedDeliveryType() {
   var selectedOption = document.querySelector('input[name="tipo-entrega"]:checked');
 
   return selectedOption ? selectedOption.value : '';
+}
+
+function getSelectedPaymentMethod() {
+  var selectedPayment = document.querySelector('input[name="forma-pagamento"]:checked');
+
+  return selectedPayment ? selectedPayment.value : '';
+}
+
+function isValidPaymentMethod(paymentMethod) {
+  return paymentMethod === 'dinheiro' || paymentMethod === 'cartao' || paymentMethod === 'pix';
 }
 
 function updateAddressSection() {
@@ -105,16 +116,30 @@ function clearFieldError(input, errorElementId) {
   }
 }
 
+function showPaymentError(message) {
+  var errorElement = document.getElementById('payment-error');
+
+  if (errorElement) {
+    errorElement.textContent = message;
+  }
+}
+
+function clearPaymentError() {
+  showPaymentError('');
+}
+
 function clearCheckoutErrors() {
   clearFieldError(nomeInput, 'nome-error');
   clearFieldError(telefoneInput, 'telefone-error');
   clearFieldError(ruaInput, 'rua-error');
   clearFieldError(numeroInput, 'numero-error');
   clearFieldError(bairroInput, 'bairro-error');
+  clearPaymentError();
 }
 
 function validateCheckout() {
   var tipoEntrega = getSelectedDeliveryType();
+  var formaPagamento = getSelectedPaymentMethod();
   var nome = nomeInput.value.trim();
   var telefoneDigits = getPhoneDigits();
   var firstInvalidField = null;
@@ -132,6 +157,11 @@ function validateCheckout() {
   }
 
   if (!tipoEntrega) {
+    return false;
+  }
+
+  if (!isValidPaymentMethod(formaPagamento)) {
+    showPaymentError('Selecione uma forma de pagamento.');
     return false;
   }
 
@@ -166,6 +196,7 @@ function validateCheckout() {
 
 function createOrder() {
   var tipoEntrega = getSelectedDeliveryType();
+  var formaPagamento = getSelectedPaymentMethod();
   var endereco = null;
 
   if (tipoEntrega === 'entrega') {
@@ -187,7 +218,12 @@ function createOrder() {
     itens: cart,
     total: getCartTotal(),
     status: 'recebido',
-    dataHora: new Date().toISOString()
+    dataHora: new Date().toISOString(),
+    pagamento: {
+      formaPagamento: formaPagamento,
+      statusPagamento: 'pendente',
+      valorPago: getCartTotal()
+    }
   };
 }
 
@@ -206,6 +242,10 @@ function saveOrderToHistory(order) {
 
 deliveryOptions.forEach(function (option) {
   option.addEventListener('change', updateAddressSection);
+});
+
+paymentOptions.forEach(function (option) {
+  option.addEventListener('change', clearPaymentError);
 });
 
 updateAddressSection();

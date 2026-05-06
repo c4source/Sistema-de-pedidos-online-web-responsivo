@@ -4,6 +4,8 @@ var confirmationOrderCode = document.getElementById('confirmation-order-code');
 var confirmationOrderStatus = document.getElementById('confirmation-order-status');
 var confirmationOrderType = document.getElementById('confirmation-order-type');
 var confirmationOrderTime = document.getElementById('confirmation-order-time');
+var confirmationPaymentMethod = document.getElementById('confirmation-payment-method');
+var confirmationPaymentStatus = document.getElementById('confirmation-payment-status');
 var confirmationSummaryList = document.querySelector('.confirmation-summary-list');
 var confirmationTotalElement = document.querySelector('.confirmation-total');
 var pedidoAtual = JSON.parse(localStorage.getItem('pedidoAtual'));
@@ -24,6 +26,38 @@ function formatStatus(status) {
   return status.charAt(0).toUpperCase() + status.slice(1);
 }
 
+function formatPaymentMethod(method) {
+  if (method === 'dinheiro') {
+    return 'Dinheiro';
+  }
+
+  if (method === 'cartao') {
+    return 'CartÃ£o';
+  }
+
+  if (method === 'pix') {
+    return 'Pix';
+  }
+
+  return 'Nao informado';
+}
+
+function formatPaymentStatus(status) {
+  if (status === 'pendente') {
+    return 'Pendente';
+  }
+
+  if (status === 'pago') {
+    return 'Pago';
+  }
+
+  if (status === 'cancelado') {
+    return 'Cancelado';
+  }
+
+  return 'Nao informado';
+}
+
 function renderConfirmationSummary() {
   var tipoEntregaLabel = pedidoAtual.tipoEntrega === 'entrega' ? 'Entrega' : 'Retirada';
   var codigoCurto = pedidoAtual.codigo.replace('PED-', '').slice(-6);
@@ -31,6 +65,8 @@ function renderConfirmationSummary() {
   confirmationOrderCode.textContent = '#' + codigoCurto;
   confirmationOrderStatus.textContent = formatStatus(pedidoAtual.status);
   confirmationOrderType.textContent = tipoEntregaLabel;
+  confirmationPaymentMethod.textContent = formatPaymentMethod(pedidoAtual.pagamento && pedidoAtual.pagamento.formaPagamento);
+  confirmationPaymentStatus.textContent = formatPaymentStatus(pedidoAtual.pagamento && pedidoAtual.pagamento.statusPagamento);
   confirmationOrderTime.textContent = '30–45 min';
   confirmationSummaryList.innerHTML = '';
 

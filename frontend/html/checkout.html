@@ -73,6 +73,29 @@
         </div>
       </section>
 
+      <section class="checkout-section checkout-payment-section" id="checkout-payment-section" aria-label="Forma de pagamento">
+        <h2 class="checkout-section-title">Forma de pagamento</h2>
+
+        <div class="checkout-radio-group checkout-payment-group">
+          <label class="checkout-radio checkout-payment-option">
+            <input type="radio" name="forma-pagamento" value="dinheiro">
+            <span>Dinheiro</span>
+          </label>
+
+          <label class="checkout-radio checkout-payment-option">
+            <input type="radio" name="forma-pagamento" value="cartao">
+            <span>Cart&atilde;o</span>
+          </label>
+
+          <label class="checkout-radio checkout-payment-option">
+            <input type="radio" name="forma-pagamento" value="pix" checked>
+            <span>Pix</span>
+          </label>
+        </div>
+
+        <span class="checkout-error-message" id="payment-error"></span>
+      </section>
+
       </div>
 
       <section class="checkout-section checkout-summary-section" aria-label="Resumo do pedido">

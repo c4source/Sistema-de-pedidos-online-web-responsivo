@@ -44,6 +44,38 @@ function formatStatus(status) {
   return status || 'Sem status';
 }
 
+function formatPaymentMethod(method) {
+  if (method === 'dinheiro') {
+    return 'Dinheiro';
+  }
+
+  if (method === 'cartao') {
+    return 'CartÃ£o';
+  }
+
+  if (method === 'pix') {
+    return 'Pix';
+  }
+
+  return 'Nao informado';
+}
+
+function formatPaymentStatus(status) {
+  if (status === 'pendente') {
+    return 'Pendente';
+  }
+
+  if (status === 'pago') {
+    return 'Pago';
+  }
+
+  if (status === 'cancelado') {
+    return 'Cancelado';
+  }
+
+  return 'Nao informado';
+}
+
 function formatDeliveryType(tipoEntrega) {
   return tipoEntrega === 'entrega' ? 'Entrega' : 'Retirada';
 }
@@ -255,6 +287,8 @@ function createOrderCard(order) {
   details.appendChild(createInfoRow('Tipo', formatDeliveryType(order.tipoEntrega)));
   details.appendChild(createInfoRow('Total', formatPrice(order.total)));
   details.appendChild(createInfoRow('Data/hora', formatDateTime(order.dataHora)));
+  details.appendChild(createInfoRow('Pagamento', formatPaymentMethod(order.pagamento && order.pagamento.formaPagamento)));
+  details.appendChild(createInfoRow('Status do pagamento', formatPaymentStatus(order.pagamento && order.pagamento.statusPagamento)));
 
   if (order.tipoEntrega === 'entrega') {
     details.appendChild(createInfoRow('Endereço', createAddressText(order.endereco)));

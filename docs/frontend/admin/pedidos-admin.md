@@ -28,6 +28,8 @@ Cada card de pedido exibe:
 - Total.
 - Data/hora.
 - Status.
+- Forma de pagamento.
+- Status do pagamento.
 
 ## Regras de Negocio
 
@@ -48,6 +50,8 @@ recebido -> em_preparo -> pronto -> finalizado
 
 O cancelamento e permitido apenas quando o pedido esta com status `recebido`. Pedidos `finalizado` ou `cancelado` sao exibidos em modo somente leitura, sem acoes de avancar status.
 
+O pagamento e exibido apenas como informacao operacional. Nesta etapa, o Admin Pedidos nao altera forma de pagamento nem status do pagamento.
+
 ## Fluxo da Tela
 
 O administrador acessa a tela, visualiza os pedidos e pode filtrar por status. Em cada card, as acoes disponiveis dependem do status atual do pedido.
@@ -59,6 +63,8 @@ Quando o pedido esta recebido, o administrador pode iniciar o preparo ou cancela
 Ao alterar o status de um pedido, o sistema atualiza o objeto correspondente dentro do array `pedidos` e salva novamente em `localStorage.pedidos`.
 
 Essa persistencia local permite que o Dashboard e a Fila da Cozinha reflitam as alteracoes quando carregados novamente.
+
+Quando o pedido possui o objeto `pagamento`, a tela exibe a forma escolhida pelo cliente e o status do pagamento. Pedidos antigos sem esse objeto continuam compativeis e mostram pagamento como nao informado.
 
 ## Observacoes
 
@@ -74,3 +80,5 @@ A tela Admin Pedidos representa a visao administrativa completa do pedido. Ela p
 - Alteracao de `pronto` para `finalizado`.
 - Cancelamento apenas quando o pedido esta recebido.
 - Reflexo das alteracoes no Dashboard.
+- Exibicao de forma de pagamento e status do pagamento.
+- Compatibilidade com pedidos antigos sem dados de pagamento.

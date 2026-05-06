@@ -11,6 +11,7 @@ A tela de confirmacao informa ao cliente que o pedido foi concluido no fluxo do 
 - Exibicao de codigo curto do pedido.
 - Exibicao do status do pedido.
 - Exibicao do tipo de entrega.
+- Exibicao da forma de pagamento e do status do pagamento.
 - Exibicao do tempo estimado.
 - Resumo dos itens do pedido.
 - Exibicao do total final.
@@ -21,7 +22,9 @@ A tela de confirmacao informa ao cliente que o pedido foi concluido no fluxo do 
 
 O resumo final e carregado a partir da chave `pedidoAtual` no `localStorage`. Essa chave e criada no checkout depois que os dados do pedido passam pela validacao. Se nao houver `pedidoAtual`, o usuario e redirecionado para o cardapio.
 
-A tela exibe um codigo curto do pedido, o status, o tipo de entrega, o tempo estimado, o resumo dos itens e o total. Depois que a confirmacao e renderizada com sucesso, o carrinho e limpo do `localStorage`, pois o pedido ja foi consolidado em `pedidoAtual`.
+A tela exibe um codigo curto do pedido, o status, o tipo de entrega, a forma de pagamento, o status do pagamento, o tempo estimado, o resumo dos itens e o total. Depois que a confirmacao e renderizada com sucesso, o carrinho e limpo do `localStorage`, pois o pedido ja foi consolidado em `pedidoAtual`.
+
+O pagamento exibido e informativo. No MVP, o status do pagamento e registrado inicialmente como pendente e nao representa uma confirmacao real de pagamento online.
 
 Ao clicar em "Voltar ao Cardapio", o sistema remove `carrinho` e `pedidoAtual` do `localStorage` e redireciona o usuario para a tela de cardapio. Esse comportamento prepara o fluxo para uma nova compra.
 
