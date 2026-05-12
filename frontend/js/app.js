@@ -153,6 +153,21 @@ function loadProducts() {
 
 var products = loadProducts();
 
+async function loadProductsFromApi() {
+  if (typeof buscarProdutos !== 'function') {
+    return;
+  }
+
+  try {
+    var apiProducts = await buscarProdutos();
+    products = normalizeProducts(apiProducts);
+    localStorage.setItem('produtos', JSON.stringify(products));
+    renderProducts();
+  } catch (error) {
+    console.error('Nao foi possivel carregar produtos da API. Usando fallback local.', error);
+  }
+}
+
 var productSection = document.getElementById('product-section');
 var searchInput = document.getElementById('search-input');
 var filterChips = document.querySelectorAll('.filter-chip');
@@ -264,3 +279,4 @@ filterChips.forEach(function (chip) {
 
 renderProducts();
 updateCartBadge();
+loadProductsFromApi();

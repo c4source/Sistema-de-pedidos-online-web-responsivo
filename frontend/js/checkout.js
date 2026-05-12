@@ -227,6 +227,35 @@ function createOrder() {
   };
 }
 
+function createCheckoutPayload() {
+  return {
+    nomeCliente: nomeInput.value.trim(),
+    telefoneCliente: getPhoneDigits(),
+    tipoEntrega: getSelectedDeliveryType(),
+    rua: ruaInput.value.trim(),
+    numero: numeroInput.value.trim(),
+    bairro: bairroInput.value.trim(),
+    complemento: '',
+    observacoes: '',
+    formaPagamento: getSelectedPaymentMethod(),
+    itens: cart.map(function (item) {
+      return {
+        idProduto: item.id,
+        quantidade: item.quantidade,
+        precoUnitario: item.preco
+      };
+    })
+  };
+}
+
+function mergeOrderWithApiResponse(order, apiResponse) {
+  order.codigo = apiResponse.codigo || order.codigo;
+  order.status = apiResponse.status || order.status;
+  order.total = Number(apiResponse.valorTotal) || order.total;
+  order.idPedido = apiResponse.idPedido || apiResponse.id_pedido;
+  return order;
+}
+
 function saveOrderToHistory(order) {
   var pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
 
@@ -287,7 +316,7 @@ checkoutBackButton.addEventListener('click', function () {
   window.location.href = './carrinho.html';
 });
 
-checkoutConfirmButton.addEventListener('click', function () {
+checkoutConfirmButton.addEventListener('click', async function () {
   if (cart.length === 0) {
     alert('Seu carrinho está vazio.');
     window.location.href = './carrinho.html';
@@ -299,8 +328,20 @@ checkoutConfirmButton.addEventListener('click', function () {
   }
 
   var pedidoAtual = createOrder();
-  localStorage.setItem('pedidoAtual', JSON.stringify(pedidoAtual));
-  saveOrderToHistory(pedidoAtual);
+  var payload = createCheckoutPayload();
 
-  window.location.href = './confirmacao.html';
+  try {
+    checkoutConfirmButton.disabled = true;
+    var apiResponse = await finalizarPedido(payload);
+    pedidoAtual = mergeOrderWithApiResponse(pedidoAtual, apiResponse);
+    localStorage.setItem('pedidoAtual', JSON.stringify(pedidoAtual));
+    saveOrderToHistory(pedidoAtual);
+    localStorage.removeItem('carrinho');
+
+    window.location.href = './confirmacao.html';
+  } catch (error) {
+    checkoutConfirmButton.disabled = false;
+    console.error('Erro ao finalizar pedido.', error);
+    alert('Nao foi possivel finalizar o pedido. Tente novamente.');
+  }
 });
