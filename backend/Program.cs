@@ -65,7 +65,7 @@ namespace Pim
             // 3. BANCO DE DADOS
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+                options.UseNpgsql(connectionString));
 
             // 4. AUTENTICAÇÃO JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

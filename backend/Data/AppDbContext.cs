@@ -14,6 +14,7 @@ namespace Pim.Data
 
         public DbSet<Pedido> Pedido { get; set; }
         public DbSet<ItemPedido> ItemPedido { get; set; }
+        public DbSet<Pagamento> Pagamento { get; set; }
         public DbSet<Colaborador> Colaborador { get; set; }
         public DbSet<Carrinho> Carrinho { get; set; }
         public DbSet<ItemCarrinho> ItemCarrinho { get; set; }
@@ -30,7 +31,13 @@ namespace Pim.Data
                 .HasMany(p => p.Itens)
                 .WithOne(i => i.Pedido)
                 .HasForeignKey(i => i.IdPedido)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Pedido>()
+                .HasOne(p => p.Pagamento)
+                .WithOne(p => p.Pedido)
+                .HasForeignKey<Pagamento>(p => p.IdPedido)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ItemCarrinho>()
                 .HasOne(i => i.Produto)

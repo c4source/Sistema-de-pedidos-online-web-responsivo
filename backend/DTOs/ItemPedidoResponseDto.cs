@@ -8,6 +8,5 @@ namespace Pim.DTOs
         public int Quantidade { get; set; }
         public decimal PrecoUnitario { get; set; }
         public decimal Subtotal { get; set; }
-        public string? Observacoes { get; set; }
     }
 }

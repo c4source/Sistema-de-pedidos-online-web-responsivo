@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Pim.Data;
 using Pim.DTOs;
 using Pim.Models;
-using System.Security.Claims;
 
 namespace Pim.Controllers
 {
@@ -12,7 +11,6 @@ namespace Pim.Controllers
     [ApiController]
     public class PedidoController : ControllerBase
     {
-        private const decimal TaxaEntregaFixa = 10m;
         private readonly AppDbContext _context;
 
         public PedidoController(AppDbContext context)
@@ -27,13 +25,14 @@ namespace Pim.Controllers
             var pedidos = await _context.Pedido
                                  .Include(p => p.Itens)
                                  .ThenInclude(i => i.Produto)
+                                 .Include(p => p.Pagamento)
                                  .OrderByDescending(p => p.DataHora)
                                  .ToListAsync();
 
             return pedidos.Select(ToResponse).ToList();
         }
 
-        [Authorize(Roles = "Cliente,Colaborador")]
+        [Authorize(Roles = "Colaborador")]
         [HttpGet("{id}")]
         public async Task<ActionResult<PedidoResponseDto>> GetPedido(int id)
         {
@@ -42,74 +41,95 @@ namespace Pim.Controllers
             if (pedido == null)
                 return NotFound("Pedido nao encontrado.");
 
-            if (!await UsuarioPodeAcessarCliente(pedido.IdCliente))
-                return Forbid();
-
             return ToResponse(pedido);
         }
 
         [Authorize(Roles = "Cliente,Colaborador")]
         [HttpGet("cliente/{idCliente}")]
-        public async Task<ActionResult<IEnumerable<PedidoResponseDto>>> GetPedidosDoCliente(int idCliente)
+        public IActionResult GetPedidosDoCliente(int idCliente)
         {
-            if (!await UsuarioPodeAcessarCliente(idCliente))
-                return Forbid();
-
-            var pedidos = await _context.Pedido
-                                 .Include(p => p.Itens)
-                                 .ThenInclude(i => i.Produto)
-                                 .Where(p => p.IdCliente == idCliente)
-                                 .OrderByDescending(p => p.DataHora)
-                                 .ToListAsync();
-
-            return pedidos.Select(ToResponse).ToList();
+            return BadRequest("O schema oficial do MVP nao vincula pedido a cliente logado.");
         }
 
         [Authorize(Roles = "Cliente,Colaborador")]
         [HttpPost("checkout-carrinho")]
-        public async Task<IActionResult> CheckoutCarrinho(CheckoutCarrinhoDto dto)
+        public IActionResult CheckoutCarrinho(CheckoutCarrinhoDto dto)
         {
-            if (!await UsuarioPodeAcessarCliente(dto.IdCliente))
-                return Forbid();
-
-            var carrinho = await _context.Carrinho
-                                         .Include(c => c.Itens)
-                                         .FirstOrDefaultAsync(c => c.IdCliente == dto.IdCliente);
-
-            if (carrinho == null || !carrinho.Itens.Any())
-                return BadRequest("O carrinho esta vazio.");
-
-            var pedido = new Pedido
-            {
-                IdCliente = dto.IdCliente,
-                TipoEntrega = dto.TipoEntrega,
-                EnderecoEntrega = dto.EnderecoEntrega,
-                Observacoes = dto.Observacoes,
-                Itens = carrinho.Itens.Select(item => new ItemPedido
-                {
-                    CodProd = item.CodProd,
-                    Quantidade = item.Quantidade,
-                    Observacoes = item.Observacoes
-                }).ToList()
-            };
-
-            var resultado = await CriarPedido(pedido);
-
-            if (resultado is ObjectResult objectResult && objectResult.StatusCode >= 400)
-                return resultado;
-
-            _context.ItemCarrinho.RemoveRange(carrinho.Itens);
-            _context.Carrinho.Remove(carrinho);
-            await _context.SaveChangesAsync();
-
-            return resultado;
+            return BadRequest("O checkout do MVP usa carrinho no localStorage. Use POST /api/Pedido/checkout-mvp.");
         }
 
         [Authorize(Roles = "Colaborador")]
         [HttpPost("checkout")]
         public async Task<IActionResult> Checkout(Pedido pedido)
         {
-            return await CriarPedido(pedido);
+            return await CriarPedido(pedido, pedido.Pagamento?.FormaPagamento);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("checkout-mvp")]
+        public async Task<IActionResult> CheckoutMvp(CheckoutMvpDto dto)
+        {
+            var tipoEntrega = NormalizarTipoEntrega(dto.TipoEntrega);
+            if (string.IsNullOrWhiteSpace(dto.NomeCliente))
+                return BadRequest("Nome do cliente e obrigatorio.");
+
+            if (string.IsNullOrWhiteSpace(dto.TelefoneCliente))
+                return BadRequest("Telefone do cliente e obrigatorio.");
+
+            if (tipoEntrega == null)
+                return BadRequest("Tipo de entrega invalido. Use: entrega ou retirada.");
+
+            if (tipoEntrega == TipoEntrega.Entrega &&
+                (string.IsNullOrWhiteSpace(dto.Rua) ||
+                 string.IsNullOrWhiteSpace(dto.Numero) ||
+                 string.IsNullOrWhiteSpace(dto.Bairro)))
+            {
+                return BadRequest("Rua, numero e bairro sao obrigatorios para entrega.");
+            }
+
+            if (dto.Itens == null || !dto.Itens.Any())
+                return BadRequest("O pedido precisa ter pelo menos um item.");
+
+            foreach (var item in dto.Itens)
+            {
+                if (item.IdProduto <= 0)
+                    return BadRequest("Todos os itens precisam informar um produto.");
+
+                if (item.Quantidade <= 0)
+                    return BadRequest("Todos os itens precisam ter quantidade maior que zero.");
+            }
+
+            var pedido = new Pedido
+            {
+                Codigo = $"PED-{DateTime.Now:yyyyMMddHHmmssfff}",
+                NomeCliente = dto.NomeCliente.Trim(),
+                TelefoneCliente = dto.TelefoneCliente.Trim(),
+                TipoEntrega = tipoEntrega,
+                RuaEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Rua?.Trim() : null,
+                NumeroEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Numero?.Trim() : null,
+                BairroEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Bairro?.Trim() : null,
+                ComplementoEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Complemento?.Trim() : null,
+                Observacoes = dto.Observacoes,
+                Itens = dto.Itens.Select(item => new ItemPedido
+                {
+                    CodProd = item.IdProduto,
+                    Quantidade = item.Quantidade
+                }).ToList()
+            };
+
+            var resultado = await CriarPedido(pedido, dto.FormaPagamento);
+
+            if (resultado is ObjectResult objectResult && objectResult.StatusCode >= 400)
+                return resultado;
+
+            return Ok(new
+            {
+                idPedido = pedido.Id,
+                codigo = pedido.Codigo,
+                status = pedido.Status,
+                valorTotal = pedido.ValorTotal,
+                mensagem = "Pedido recebido."
+            });
         }
 
         [Authorize(Roles = "Colaborador")]
@@ -121,24 +141,13 @@ namespace Pim.Controllers
             if (pedido == null)
                 return NotFound("Pedido nao encontrado.");
 
-            if (pedido.Status == PedidoStatus.Cancelado)
-                return BadRequest("Pedido cancelado nao pode ser aprovado.");
+            if (pedido.Status == PedidoStatus.Cancelado || pedido.Status == PedidoStatus.Finalizado)
+                return BadRequest("Pedido finalizado ou cancelado nao pode mudar de status.");
 
-            if (!EstaAguardandoAprovacao(pedido.Status))
-                return BadRequest("Apenas pedidos aguardando aprovacao podem ser aprovados.");
-
-            pedido.Status = PedidoStatus.Aprovado;
-            pedido.AprovadoEm = DateTime.Now;
-            pedido.TempoEstimadoMinutos = dto.TempoEstimadoMinutos;
-
+            pedido.Status = PedidoStatus.EmPreparo;
             await _context.SaveChangesAsync();
 
-            return Ok(new
-            {
-                message = $"Pedido {id} aprovado.",
-                pedido.Status,
-                pedido.TempoEstimadoMinutos
-            });
+            return Ok(new { message = $"Pedido {id} enviado para preparo.", pedido.Status });
         }
 
         [Authorize(Roles = "Colaborador")]
@@ -150,27 +159,11 @@ namespace Pim.Controllers
             if (pedido == null)
                 return NotFound("Pedido nao encontrado.");
 
-            if (pedido.Status == PedidoStatus.Cancelado)
-                return BadRequest("Pedido cancelado nao pode mudar de status.");
-
             var novoStatus = NormalizarStatus(dto.Status, PedidoStatus.StatusOperacionais);
             if (novoStatus == null)
-                return BadRequest("Status invalido. Use: Aprovado, Em Preparacao, Pronto para Retirada, Saiu para Entrega, Entregue ou Retirado.");
-
-            if (EstaAguardandoAprovacao(pedido.Status) && novoStatus != PedidoStatus.Aprovado)
-                return BadRequest("A loja precisa aprovar o pedido antes de avancar o status.");
-
-            if (novoStatus == PedidoStatus.SaiuParaEntrega && pedido.TipoEntrega != TipoEntrega.Entrega)
-                return BadRequest("Somente pedidos de entrega podem usar o status 'Saiu para Entrega'.");
-
-            if (novoStatus == PedidoStatus.Entregue && pedido.TipoEntrega != TipoEntrega.Entrega)
-                return BadRequest("Somente pedidos de entrega podem usar o status 'Entregue'.");
+                return BadRequest("Status invalido. Use: recebido, em_preparo, pronto, finalizado ou cancelado.");
 
             pedido.Status = novoStatus;
-
-            if (novoStatus == PedidoStatus.Aprovado && pedido.AprovadoEm == null)
-                pedido.AprovadoEm = DateTime.Now;
-
             await _context.SaveChangesAsync();
 
             return Ok(new { message = $"Status do pedido {id} atualizado para {novoStatus}." });
@@ -185,13 +178,10 @@ namespace Pim.Controllers
             if (pedido == null)
                 return NotFound("Pedido nao encontrado.");
 
-            if (!await UsuarioPodeAcessarCliente(pedido.IdCliente))
-                return Forbid();
+            if (pedido.Status != PedidoStatus.Recebido)
+                return BadRequest("O cliente so pode cancelar pedidos ainda recebidos.");
 
-            if (pedido.Status != PedidoStatus.AguardandoAprovacao && pedido.Status != PedidoStatus.Aprovado)
-                return BadRequest("O cliente so pode cancelar pedidos antes da preparacao comecar.");
-
-            return await CancelarPedido(pedido, "Cliente", dto.Motivo);
+            return await CancelarPedido(pedido);
         }
 
         [Authorize(Roles = "Colaborador")]
@@ -203,24 +193,30 @@ namespace Pim.Controllers
             if (pedido == null)
                 return NotFound("Pedido nao encontrado.");
 
-            if (pedido.Status == PedidoStatus.Entregue || pedido.Status == PedidoStatus.Retirado)
+            if (pedido.Status == PedidoStatus.Finalizado)
                 return BadRequest("Pedido finalizado nao pode ser cancelado.");
 
-            return await CancelarPedido(pedido, "Loja", dto.Motivo);
+            return await CancelarPedido(pedido);
         }
 
-        private async Task<IActionResult> CriarPedido(Pedido pedido)
+        private async Task<IActionResult> CriarPedido(Pedido pedido, string? formaPagamento)
         {
             if (!TipoEntrega.Todos.Contains(pedido.TipoEntrega))
-                return BadRequest("Tipo de entrega invalido. Use: Retirada ou Entrega.");
+                return BadRequest("Tipo de entrega invalido. Use: entrega ou retirada.");
 
-            if (pedido.TipoEntrega == TipoEntrega.Entrega && string.IsNullOrWhiteSpace(pedido.EnderecoEntrega))
-                return BadRequest("Informe o endereco para pedidos com entrega.");
+            if (pedido.TipoEntrega == TipoEntrega.Entrega &&
+                (string.IsNullOrWhiteSpace(pedido.RuaEntrega) ||
+                 string.IsNullOrWhiteSpace(pedido.NumeroEntrega) ||
+                 string.IsNullOrWhiteSpace(pedido.BairroEntrega)))
+            {
+                return BadRequest("Rua, numero e bairro sao obrigatorios para entrega.");
+            }
 
             if (pedido.Itens == null || !pedido.Itens.Any())
                 return BadRequest("O pedido precisa ter pelo menos um item.");
 
-            pedido.TaxaEntrega = pedido.TipoEntrega == TipoEntrega.Entrega ? TaxaEntregaFixa : 0;
+            if (!FormaPagamentoValida(formaPagamento))
+                return BadRequest("Forma de pagamento invalida. Use: dinheiro, cartao ou pix.");
 
             using var transaction = await _context.Database.BeginTransactionAsync();
 
@@ -248,19 +244,26 @@ namespace Pim.Controllers
                         produto.Estoque -= item.Quantidade;
                 }
 
-                pedido.ValorTotal = totalProdutos + pedido.TaxaEntrega;
-                pedido.DataHora = DateTime.Now;
-                pedido.Status = PedidoStatus.AguardandoAprovacao;
+                pedido.ValorTotal = totalProdutos;
+                pedido.DataHora = DateTime.UtcNow;
+                pedido.Status = PedidoStatus.Recebido;
+                pedido.Pagamento = new Pagamento
+                {
+                    FormaPagamento = formaPagamento!.Trim().ToLower(),
+                    StatusPagamento = "pendente",
+                    ValorPago = pedido.ValorTotal,
+                    DataHoraPagamento = DateTime.UtcNow
+                };
 
                 _context.Pedido.Add(pedido);
                 await _context.SaveChangesAsync();
-
                 await transaction.CommitAsync();
 
                 return Ok(new
                 {
-                    message = "Pedido recebido e aguardando aprovacao da loja.",
+                    message = "Pedido recebido.",
                     id_pedido = pedido.Id,
+                    codigo = pedido.Codigo,
                     pedido.Status,
                     pedido.ValorTotal
                 });
@@ -273,7 +276,7 @@ namespace Pim.Controllers
             }
         }
 
-        private async Task<IActionResult> CancelarPedido(Pedido pedido, string canceladoPor, string? motivo)
+        private async Task<IActionResult> CancelarPedido(Pedido pedido)
         {
             if (pedido.Status == PedidoStatus.Cancelado)
                 return BadRequest("Pedido ja esta cancelado.");
@@ -287,13 +290,13 @@ namespace Pim.Controllers
             }
 
             pedido.Status = PedidoStatus.Cancelado;
-            pedido.CanceladoEm = DateTime.Now;
-            pedido.CanceladoPor = canceladoPor;
-            pedido.MotivoCancelamento = motivo;
+
+            if (pedido.Pagamento != null)
+                pedido.Pagamento.StatusPagamento = "cancelado";
 
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = $"Pedido {pedido.Id} cancelado por {canceladoPor}." });
+            return Ok(new { message = $"Pedido {pedido.Id} cancelado." });
         }
 
         private async Task<Pedido?> BuscarPedidoCompleto(int id)
@@ -301,6 +304,7 @@ namespace Pim.Controllers
             return await _context.Pedido
                                  .Include(p => p.Itens)
                                  .ThenInclude(i => i.Produto)
+                                 .Include(p => p.Pagamento)
                                  .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -309,19 +313,20 @@ namespace Pim.Controllers
             return new PedidoResponseDto
             {
                 Id = pedido.Id,
-                IdCliente = pedido.IdCliente,
+                Codigo = pedido.Codigo,
+                NomeCliente = pedido.NomeCliente,
+                TelefoneCliente = pedido.TelefoneCliente,
                 Observacoes = pedido.Observacoes,
                 DataHora = pedido.DataHora,
                 Status = pedido.Status,
                 ValorTotal = pedido.ValorTotal,
                 TipoEntrega = pedido.TipoEntrega,
-                EnderecoEntrega = pedido.EnderecoEntrega,
-                TaxaEntrega = pedido.TaxaEntrega,
-                TempoEstimadoMinutos = pedido.TempoEstimadoMinutos,
-                AprovadoEm = pedido.AprovadoEm,
-                CanceladoEm = pedido.CanceladoEm,
-                CanceladoPor = pedido.CanceladoPor,
-                MotivoCancelamento = pedido.MotivoCancelamento,
+                RuaEntrega = pedido.RuaEntrega,
+                NumeroEntrega = pedido.NumeroEntrega,
+                BairroEntrega = pedido.BairroEntrega,
+                ComplementoEntrega = pedido.ComplementoEntrega,
+                FormaPagamento = pedido.Pagamento?.FormaPagamento,
+                StatusPagamento = pedido.Pagamento?.StatusPagamento,
                 Itens = pedido.Itens.Select(item => new ItemPedidoResponseDto
                 {
                     Id = item.Id,
@@ -329,22 +334,20 @@ namespace Pim.Controllers
                     Produto = item.Produto?.Nome,
                     Quantidade = item.Quantidade,
                     PrecoUnitario = item.PrecoUnitario,
-                    Subtotal = item.Subtotal,
-                    Observacoes = item.Observacoes
+                    Subtotal = item.Subtotal
                 }).ToList()
             };
         }
 
-        private async Task<bool> UsuarioPodeAcessarCliente(int idCliente)
+        private static string? NormalizarTipoEntrega(string? tipoEntrega)
         {
-            if (User.IsInRole("Colaborador"))
-                return true;
+            if (string.Equals(tipoEntrega?.Trim(), TipoEntrega.Entrega, StringComparison.CurrentCultureIgnoreCase))
+                return TipoEntrega.Entrega;
 
-            var email = User.FindFirstValue(ClaimTypes.Email);
-            if (string.IsNullOrWhiteSpace(email))
-                return false;
+            if (string.Equals(tipoEntrega?.Trim(), TipoEntrega.Retirada, StringComparison.CurrentCultureIgnoreCase))
+                return TipoEntrega.Retirada;
 
-            return await _context.Clientes.AnyAsync(c => c.Id == idCliente && c.Email == email);
+            return null;
         }
 
         private static string? NormalizarStatus(string status, IEnumerable<string> statusValidos)
@@ -353,14 +356,10 @@ namespace Pim.Controllers
                 string.Equals(s, status?.Trim(), StringComparison.CurrentCultureIgnoreCase));
         }
 
-        private static bool EstaAguardandoAprovacao(string status)
+        private static bool FormaPagamentoValida(string? formaPagamento)
         {
-            var statusNormalizado = status?.Trim();
-
-            return string.Equals(statusNormalizado, PedidoStatus.AguardandoAprovacao, StringComparison.CurrentCultureIgnoreCase)
-                || string.Equals(statusNormalizado, "Aguardando Aprovacao", StringComparison.CurrentCultureIgnoreCase)
-                || string.Equals(statusNormalizado, "Aguardando", StringComparison.CurrentCultureIgnoreCase)
-                || string.Equals(statusNormalizado, "Pendente", StringComparison.CurrentCultureIgnoreCase);
+            var forma = formaPagamento?.Trim().ToLower();
+            return forma == "dinheiro" || forma == "cartao" || forma == "pix";
         }
     }
 }

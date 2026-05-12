@@ -15,15 +15,15 @@ namespace Pim.Models
         public string Nome { get; set; }
 
         [Column("cpf_cliente")]
-        public string Cpf { get; set; }
+        public string? Cpf { get; set; }
 
         [Column("celular_cliente")]
-        public string Celular { get; set; }
+        public string? Celular { get; set; }
 
         [Column("email_cliente")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Column("senha_cliente")]
-        public string Senha { get; set; }
+        public string? Senha { get; set; }
     }
 }

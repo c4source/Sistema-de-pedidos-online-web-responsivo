@@ -11,7 +11,6 @@ namespace Pim.Models
         [Column("id_item_pedido")]
         public int Id { get; set; }
 
-        // Ajuste aqui: Forçamos o nome da coluna e removemos propriedades duplicadas
         [Column("id_pedido")]
         public int IdPedido { get; set; }
 
@@ -26,9 +25,6 @@ namespace Pim.Models
 
         [Column("subtotal")]
         public decimal Subtotal { get; set; }
-
-        [Column("observacoes")]
-        public string? Observacoes { get; set; }
 
         [ForeignKey("IdPedido")]
         public virtual Pedido? Pedido { get; set; }

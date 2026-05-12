@@ -18,7 +18,7 @@ namespace Pim.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Cliente,Colaborador")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoResponseDto>>> GetProduto(
             [FromQuery] string? categoria,
@@ -56,7 +56,7 @@ namespace Pim.Controllers
                 .ToListAsync();
         }
 
-        [Authorize(Roles = "Cliente,Colaborador")]
+        [AllowAnonymous]
         [HttpGet("categorias")]
         public async Task<ActionResult<IEnumerable<string>>> GetCategorias()
         {
@@ -68,7 +68,7 @@ namespace Pim.Controllers
                 .ToListAsync();
         }
 
-        [Authorize(Roles = "Cliente,Colaborador")]
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProdutoResponseDto>> GetProduto(int id)
         {

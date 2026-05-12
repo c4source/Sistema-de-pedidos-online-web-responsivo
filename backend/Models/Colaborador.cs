@@ -8,7 +8,7 @@ namespace Pim.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("id_usuario")]
+        [Column("id_colaborador")]
         public int Id { get; set; }
 
         [Column("nome_usuario")]

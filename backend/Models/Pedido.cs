@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pim.Models
@@ -11,45 +11,43 @@ namespace Pim.Models
         [Column("id_pedido")]
         public int Id { get; set; }
 
-        [Column("id_cliente")]
-        public int IdCliente { get; set; }
+        [Column("codigo")]
+        public string? Codigo { get; set; }
+
+        [Column("nome_cliente")]
+        public string NomeCliente { get; set; } = string.Empty;
+
+        [Column("telefone_cliente")]
+        public string TelefoneCliente { get; set; } = string.Empty;
+
+        [Column("tipo_entrega")]
+        public string TipoEntrega { get; set; } = Models.TipoEntrega.Retirada;
+
+        [Column("rua_entrega")]
+        public string? RuaEntrega { get; set; }
+
+        [Column("numero_entrega")]
+        public string? NumeroEntrega { get; set; }
+
+        [Column("bairro_entrega")]
+        public string? BairroEntrega { get; set; }
+
+        [Column("complemento_entrega")]
+        public string? ComplementoEntrega { get; set; }
 
         [Column("observacoes")]
         public string? Observacoes { get; set; }
 
         [Column("data_hora_pedido")]
-        public DateTime? DataHora { get; set; }
+        public DateTime DataHora { get; set; } = DateTime.Now;
 
         [Column("status_pedido")]
-        public string Status { get; set; } = PedidoStatus.AguardandoAprovacao;
+        public string Status { get; set; } = PedidoStatus.Recebido;
 
         [Column("valor_total")]
         public decimal ValorTotal { get; set; }
 
-        [Column("tipo_entrega")]
-        public string TipoEntrega { get; set; } = Models.TipoEntrega.Retirada;
-
-        [Column("endereco_entrega")]
-        public string? EnderecoEntrega { get; set; }
-
-        [Column("taxa_entrega", TypeName = "decimal(10,2)")]
-        public decimal TaxaEntrega { get; set; }
-
-        [Column("tempo_estimado_minutos")]
-        public int? TempoEstimadoMinutos { get; set; }
-
-        [Column("aprovado_em")]
-        public DateTime? AprovadoEm { get; set; }
-
-        [Column("cancelado_em")]
-        public DateTime? CanceladoEm { get; set; }
-
-        [Column("cancelado_por")]
-        public string? CanceladoPor { get; set; }
-
-        [Column("motivo_cancelamento")]
-        public string? MotivoCancelamento { get; set; }
-
-        public List<ItemPedido> Itens { get; set; } = new List<ItemPedido>();
+        public List<ItemPedido> Itens { get; set; } = new();
+        public Pagamento? Pagamento { get; set; }
     }
 }
