@@ -1,3 +1,20 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+INSERT INTO colaborador (
+    nome_usuario,
+    email_usuario,
+    senha_usuario
+)
+VALUES (
+    'Admin',
+    'admin@pim.com',
+    crypt('123456', gen_salt('bf'))
+)
+ON CONFLICT (email_usuario) DO UPDATE
+SET
+    nome_usuario = EXCLUDED.nome_usuario,
+    senha_usuario = EXCLUDED.senha_usuario;
+
 INSERT INTO produto (
     nome_produto,
     categoria,
