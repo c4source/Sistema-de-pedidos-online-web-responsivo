@@ -42,6 +42,37 @@ function normalizeApiStatus(status) {
   return String(status || '').trim().toLowerCase().replace(/\s+/g, '_');
 }
 
+function normalizeApiProduct(product) {
+  var status = String(product.status || product.Status || product.status_disponibilidade || '').toLowerCase();
+  var isUnavailable = product.disponivel === false ||
+    status === 'false' ||
+    status === 'indisponivel' ||
+    status === 'indisponível';
+
+  return {
+    id: product.id || product.Id || product.codprod,
+    nome: product.nome || product.Nome || product.nome_produto || '',
+    categoria: product.categoria || product.Categoria || '',
+    preco: Number(product.preco || product.Preco || 0),
+    imagem: product.imagemUrl || product.ImagemUrl || product.imagem || product.imagem_url || '',
+    descricao: product.descricao || product.Descricao || '',
+    estoque: Number.isInteger(Number(product.estoque || product.Estoque)) && Number(product.estoque || product.Estoque) >= 0 ? Number(product.estoque || product.Estoque) : 0,
+    disponivel: !isUnavailable
+  };
+}
+
+function createProductPayload(productData) {
+  return {
+    nome: productData.nome,
+    preco: productData.preco,
+    descricao: productData.descricao,
+    categoria: productData.categoria,
+    status: productData.disponivel === false ? 'indisponivel' : 'disponivel',
+    estoque: productData.estoque,
+    imagemUrl: productData.imagem
+  };
+}
+
 function normalizeApiOrder(apiOrder) {
   var rua = apiOrder.ruaEntrega || apiOrder.RuaEntrega;
   var numero = apiOrder.numeroEntrega || apiOrder.NumeroEntrega;
@@ -119,6 +150,86 @@ async function updateAdminOrderStatus(orderId, status) {
 
   if (!response.ok) {
     throw new Error('Não foi possível atualizar o status do pedido.');
+  }
+
+  return true;
+}
+
+async function fetchAdminProducts() {
+  var response = await fetch(ADMIN_API_BASE_URL + '/Produto', {
+    headers: {
+      Authorization: 'Bearer ' + getAdminToken()
+    }
+  });
+
+  if (handleUnauthorized(response)) {
+    return [];
+  }
+
+  if (!response.ok) {
+    throw new Error('Não foi possível carregar os produtos.');
+  }
+
+  var products = await response.json();
+  return products.map(normalizeApiProduct);
+}
+
+async function createAdminProduct(productData) {
+  var response = await fetch(ADMIN_API_BASE_URL + '/Produto', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + getAdminToken(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(createProductPayload(productData))
+  });
+
+  if (handleUnauthorized(response)) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error('Não foi possível cadastrar o produto.');
+  }
+
+  return normalizeApiProduct(await response.json());
+}
+
+async function updateAdminProduct(productId, productData) {
+  var response = await fetch(ADMIN_API_BASE_URL + '/Produto/' + productId, {
+    method: 'PUT',
+    headers: {
+      Authorization: 'Bearer ' + getAdminToken(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(createProductPayload(productData))
+  });
+
+  if (handleUnauthorized(response)) {
+    return false;
+  }
+
+  if (!response.ok) {
+    throw new Error('Não foi possível atualizar o produto.');
+  }
+
+  return true;
+}
+
+async function deleteAdminProduct(productId) {
+  var response = await fetch(ADMIN_API_BASE_URL + '/Produto/' + productId, {
+    method: 'DELETE',
+    headers: {
+      Authorization: 'Bearer ' + getAdminToken()
+    }
+  });
+
+  if (handleUnauthorized(response)) {
+    return false;
+  }
+
+  if (!response.ok) {
+    throw new Error('Não foi possível excluir o produto.');
   }
 
   return true;
