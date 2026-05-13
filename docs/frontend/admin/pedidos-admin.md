@@ -2,29 +2,29 @@
 
 ## Objetivo
 
-A tela Admin Pedidos permite que o administrador acompanhe o historico de pedidos e atualize o status de cada pedido conforme o fluxo operacional da pizzaria.
+A tela Admin Pedidos permite que o administrador acompanhe o histórico de pedidos e atualize o status de cada pedido conforme o fluxo operacional da pizzaria.
 
 ## Funcionalidades
 
 - Listagem dos pedidos salvos.
 - Filtros por status.
-- Visualizacao dos dados completos de cada pedido.
-- Atualizacao de status conforme regras do fluxo.
-- Cancelamento de pedido quando ainda esta recebido.
-- Estado vazio quando nao ha pedidos ou quando nenhum pedido corresponde ao filtro.
+- Visualização dos dados completos de cada pedido.
+- Atualização de status conforme regras do fluxo.
+- Cancelamento de pedido quando ainda está recebido.
+- Estado vazio quando não há pedidos ou quando nenhum pedido corresponde ao filtro.
 
 ## Dados Utilizados
 
-Os pedidos sao lidos da chave `pedidos` no `localStorage`.
+Os pedidos são lidos da API pela rota protegida `GET /api/Pedido`, usando `Authorization: Bearer {adminToken}`.
 
 Cada card de pedido exibe:
 
-- Codigo do pedido.
+- Código do pedido.
 - Cliente.
 - Telefone.
 - Tipo de entrega.
 - Itens do pedido.
-- Endereco, quando o tipo de entrega e entrega.
+- Endereço, quando o tipo de entrega é entrega.
 - Total.
 - Data/hora.
 - Status.
@@ -33,7 +33,7 @@ Cada card de pedido exibe:
 
 ## Regras de Negocio
 
-A tela possui protecao de rota por meio da chave `adminLogado`. Sem login administrativo, o usuario e redirecionado para o Login Admin.
+A tela possui proteção de rota por meio da chave `adminToken`. Sem login administrativo, o usuário é redirecionado para o Login Admin.
 
 Os filtros disponiveis sao:
 
@@ -48,9 +48,9 @@ O fluxo principal de status e:
 
 recebido -> em_preparo -> pronto -> finalizado
 
-O cancelamento e permitido apenas quando o pedido esta com status `recebido`. Pedidos `finalizado` ou `cancelado` sao exibidos em modo somente leitura, sem acoes de avancar status.
+O cancelamento é permitido apenas quando o pedido está com status `recebido`. Pedidos `finalizado` ou `cancelado` são exibidos em modo somente leitura, sem ações de avançar status.
 
-O pagamento e exibido apenas como informacao operacional. Nesta etapa, o Admin Pedidos nao altera forma de pagamento nem status do pagamento.
+O pagamento é exibido apenas como informação operacional. Nesta etapa, o Admin Pedidos não altera forma de pagamento nem status do pagamento.
 
 ## Fluxo da Tela
 
@@ -58,13 +58,13 @@ O administrador acessa a tela, visualiza os pedidos e pode filtrar por status. E
 
 Quando o pedido esta recebido, o administrador pode iniciar o preparo ou cancelar. Quando esta em preparo, pode marcar como pronto. Quando esta pronto, pode finalizar o pedido. Pedidos finalizados ou cancelados permanecem apenas para consulta.
 
-## Integracao com localStorage
+## Integração com API
 
-Ao alterar o status de um pedido, o sistema atualiza o objeto correspondente dentro do array `pedidos` e salva novamente em `localStorage.pedidos`.
+Ao alterar o status de um pedido, o sistema envia a atualização para a API pela rota `PATCH /api/Pedido/{id}/status`.
 
-Essa persistencia local permite que o Dashboard e a Fila da Cozinha reflitam as alteracoes quando carregados novamente.
+Essa persistência no PostgreSQL permite que o Dashboard e a Fila da Cozinha reflitam as alterações quando carregados novamente.
 
-Quando o pedido possui o objeto `pagamento`, a tela exibe a forma escolhida pelo cliente e o status do pagamento. Pedidos antigos sem esse objeto continuam compativeis e mostram pagamento como nao informado.
+Quando o pedido possui dados de pagamento, a tela exibe a forma escolhida pelo cliente e o status do pagamento.
 
 ## Observacoes
 

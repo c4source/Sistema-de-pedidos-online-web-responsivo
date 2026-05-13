@@ -20,7 +20,7 @@ O fluxo principal do cliente segue a sequencia:
 
 Cardapio -> Detalhe do Produto -> Carrinho -> Checkout -> Confirmacao
 
-Na tela de cardapio, o usuario consulta os produtos disponiveis, utiliza busca e filtros por categoria e escolhe um item. Em seguida, a tela de detalhe permite revisar informacoes e definir a quantidade antes de adicionar ao carrinho. No carrinho, o pedido pode ser revisado, com alteracao de quantidades ou remocao de itens. O checkout coleta dados do cliente e tipo de entrega. Por fim, a tela de confirmacao apresenta o resumo final do pedido.
+Na tela de cardapio, o usuario consulta os produtos disponiveis, utiliza busca e filtros por categoria e escolhe um item. Em seguida, a tela de detalhe permite revisar informacoes e definir a quantidade antes de adicionar ao carrinho. No carrinho, o pedido pode ser revisado, com alteracao de quantidades ou remocao de itens. O checkout coleta dados do cliente e tipo de entrega, e envia o pedido para a API publica `POST /api/Pedido/checkout-mvp`. Por fim, a tela de confirmacao apresenta o resumo final do pedido.
 
 ## Persistencia no frontend
 
@@ -32,8 +32,8 @@ Principais informacoes armazenadas:
 - `carrinho`: lista de itens adicionados ao pedido, com nome, preco, quantidade e, quando disponivel, imagem do produto.
 - `pedidoAtual`: pedido confirmado no checkout. Essa chave armazena os dados do cliente, tipo de entrega, endereco quando necessario, itens, total, status e codigo do pedido. Ela e utilizada pela tela de confirmacao para apresentar o resumo final do pedido confirmado.
 
-Essas informacoes permitem que o usuario avance entre as telas sem perder o estado do fluxo. A persistencia ainda e local e temporaria, adequada ao comportamento do frontend no MVP.
+Essas informacoes permitem que o usuario avance entre as telas sem perder o estado do fluxo. O carrinho continua local e temporario no MVP, mas o checkout salva o pedido definitivo no PostgreSQL por meio da API.
 
-## Integracao futura
+## Integracao com API
 
-A integracao com API, backend e banco de dados sera tratada em outra etapa do projeto. Portanto, esta documentacao descreve o comportamento atual do frontend estatico e interativo, sem assumir persistencia definitiva em servidor.
+O cardapio consulta produtos pela API publica `GET /api/Produto`, e o checkout cria o pedido pela rota publica `POST /api/Pedido/checkout-mvp`. O cliente comum nao usa login nem JWT no MVP.

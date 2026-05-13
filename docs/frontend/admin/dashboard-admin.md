@@ -2,19 +2,19 @@
 
 ## Objetivo
 
-O Dashboard Admin e a tela principal da area administrativa. Ele apresenta uma visao geral dos pedidos e oferece atalhos para as demais telas de operacao do sistema.
+O Dashboard Admin é a tela principal da área administrativa. Ele apresenta uma visão geral dos pedidos e oferece atalhos para as demais telas de operação do sistema.
 
 ## Funcionalidades
 
-- Exibicao de metricas administrativas.
+- Exibição de métricas administrativas.
 - Listagem dos pedidos recentes.
-- Acoes rapidas para navegar entre as telas Admin.
-- Botao para visualizar o cardapio do cliente.
-- Botao para sair da area administrativa.
+- Ações rápidas para navegar entre as telas Admin.
+- Botão para visualizar o cardápio do cliente.
+- Botão para sair da área administrativa.
 
 ## Dados Utilizados
 
-O Dashboard le os pedidos a partir da chave `pedidos` no `localStorage`.
+O Dashboard lê os pedidos reais pela rota protegida `GET /api/Pedido`, usando `Authorization: Bearer {adminToken}`.
 
 As metricas exibidas sao:
 
@@ -26,13 +26,13 @@ As metricas exibidas sao:
 
 ## Regras de Negocio
 
-A tela possui protecao de rota. Se `adminLogado` nao estiver definido como `true`, o usuario e redirecionado para o Login Admin.
+A tela possui proteção de rota. Se `adminToken` não estiver disponível, o usuário é redirecionado para o Login Admin.
 
-As metricas sao calculadas a partir dos pedidos salvos localmente. O faturamento total corresponde a soma dos valores dos pedidos registrados.
+As métricas são calculadas a partir dos pedidos retornados pela API. O faturamento total corresponde à soma dos valores dos pedidos registrados.
 
 ## Fluxo da Tela
 
-Apos o login, o administrador acessa o Dashboard. A tela carrega os dados de `localStorage.pedidos`, calcula as metricas e exibe os pedidos recentes.
+Após o login, o administrador acessa o Dashboard. A tela carrega os dados da API, calcula as métricas e exibe os pedidos recentes.
 
 Na area de acoes rapidas, o administrador pode acessar:
 
@@ -42,23 +42,22 @@ Na area de acoes rapidas, o administrador pode acessar:
 - Ver cardapio.
 - Sair.
 
-## Integracao com localStorage
+## Integração com API e localStorage
 
-As chaves utilizadas sao:
+As chaves utilizadas são:
 
-- `adminLogado`: valida o acesso administrativo.
-- `pedidos`: fornece os dados para metricas e pedidos recentes.
+- `adminToken`: valida o acesso administrativo e autoriza chamadas protegidas na API.
 
-Ao clicar em sair, o sistema remove `adminLogado` e redireciona para a tela de login.
+Ao clicar em sair, o sistema remove `adminToken` e redireciona para a tela de login.
 
 ## Relacao com outras telas Admin
 
-O Dashboard funciona como ponto central da area administrativa. Alteracoes feitas em Admin Pedidos ou Fila da Cozinha refletem no Dashboard quando a tela e aberta novamente, pois todas usam os mesmos dados de `localStorage.pedidos`.
+O Dashboard funciona como ponto central da área administrativa. Alterações feitas em Admin Pedidos ou Fila da Cozinha refletem no Dashboard quando a tela é aberta novamente, pois todas usam os pedidos persistidos no PostgreSQL por meio da API.
 
 ## Testes Realizados
 
-- Bloqueio de acesso sem `adminLogado`.
-- Exibicao das metricas com base nos pedidos salvos.
+- Bloqueio de acesso sem `adminToken`.
+- Exibição das métricas com base nos pedidos retornados pela API.
 - Listagem de pedidos recentes.
-- Navegacao para Admin Pedidos, Admin Produtos e Fila da Cozinha.
-- Remocao de `adminLogado` ao sair.
+- Navegação para Admin Pedidos, Admin Produtos e Fila da Cozinha.
+- Remoção de `adminToken` ao sair.

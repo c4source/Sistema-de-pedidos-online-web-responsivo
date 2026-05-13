@@ -43,6 +43,8 @@ O sistema deve permitir ao administrador editar informações dos produtos cadas
 ## RF05 – Remoção ou Inativação de Produtos
 O sistema deve permitir ao administrador remover ou inativar produtos para que deixem de aparecer para os clientes.
 
+Nota técnica do MVP atual: a API implementada realiza `DELETE /api/Produto/{id}` como exclusão física. A inativação lógica permanece como melhoria futura.
+
 ---
 
 ## RF06 – Listar Produtos
@@ -120,6 +122,8 @@ O sistema deve permitir que o administrador filtre pedidos por status ou data.
 ---
 ## RF22 – Carrinho de Compras
 O sistema pode permitir que clientes adicionem produtos a um carrinho antes de finalizar o pedido.
+
+Nota técnica do MVP atual: o carrinho do cliente é mantido no `localStorage` do navegador até a confirmação do checkout.
 
 ---
 # Requisitos Não Funcionais (RNF)
@@ -278,6 +282,8 @@ O sistema pode permitir que clientes realizem cadastro na plataforma para acessa
 
 ## RF21 – Login de Cliente
 O sistema pode permitir que clientes autenticados realizem login na plataforma.
+
+Nota técnica do MVP atual: o cliente comum não possui login obrigatório; o checkout público é feito sem JWT.
 
 ---
 

@@ -6,7 +6,7 @@ A tela de cardapio permite que o cliente visualize os produtos da pizzaria e ini
 
 ## Funcionalidades
 
-- Exibicao dos produtos cadastrados no array local do frontend.
+- Exibicao dos produtos retornados pela API publica `GET /api/Produto`.
 - Cards com imagens reais dos produtos, nome, descricao, preco e botao de acao.
 - Campo de busca para localizar produtos pelo nome.
 - Filtros por categoria.

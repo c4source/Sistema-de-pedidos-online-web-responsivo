@@ -29,7 +29,7 @@ A tela possui validacao bloqueante para o nome, telefone, forma de pagamento e, 
 
 A forma de pagamento e apenas informativa no MVP. As opcoes disponiveis sao dinheiro, cartao e Pix. Nao existe gateway real, validacao de cartao, QR Code Pix, comprovante ou pagamento online nesta etapa.
 
-Ao confirmar o pedido com dados validos, o frontend cria a chave `pedidoAtual` no `localStorage`. Esse registro contem codigo do pedido, dados do cliente, tipo de entrega, endereco quando houver, itens, total, status, data de criacao e o objeto `pagamento`. Em seguida, o usuario e direcionado para a tela de confirmacao. A integracao com backend para registro definitivo do pedido ainda nao esta implementada nesta etapa.
+Ao confirmar o pedido com dados validos, o frontend envia os dados para `POST /api/Pedido/checkout-mvp`, rota publica que nao exige login de cliente nem JWT. O pedido definitivo e salvo no PostgreSQL, incluindo pedido, itens e pagamento. O frontend tambem cria a chave `pedidoAtual` no `localStorage` para exibir o resumo na tela de confirmacao.
 
 ## Fluxo do usuario
 

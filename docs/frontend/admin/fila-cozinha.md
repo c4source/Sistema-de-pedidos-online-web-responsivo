@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-A tela Fila da Cozinha oferece uma visao operacional dos pedidos que precisam ser preparados. Ela foi criada para apoiar o acompanhamento da producao na cozinha, separando os pedidos por etapa de preparo.
+A tela Fila da Cozinha oferece uma visão operacional dos pedidos que precisam ser preparados. Ela foi criada para apoiar o acompanhamento da produção na cozinha, separando os pedidos por etapa de preparo.
 
 ## Funcionalidades
 
@@ -16,13 +16,13 @@ A tela Fila da Cozinha oferece uma visao operacional dos pedidos que precisam se
 
 ## Diferenca entre Admin Pedidos e Fila da Cozinha
 
-Admin Pedidos e a tela de gestao completa dos pedidos. Ela permite visualizar todos os status, cancelar pedidos recebidos e finalizar pedidos prontos.
+Admin Pedidos é a tela de gestão completa dos pedidos. Ela permite visualizar todos os status, cancelar pedidos recebidos e finalizar pedidos prontos.
 
-Fila da Cozinha e uma tela operacional de preparo. Ela mostra apenas pedidos que fazem parte da producao e permite somente avancar o preparo ate `pronto`.
+Fila da Cozinha é uma tela operacional de preparo. Ela mostra apenas pedidos que fazem parte da produção e permite somente avançar o preparo até `pronto`.
 
 ## Dados Utilizados
 
-Os pedidos sao lidos da chave `pedidos` no `localStorage`.
+Os pedidos são lidos da API pela rota protegida `GET /api/Pedido`, usando `Authorization: Bearer {adminToken}`.
 
 A tela exibe apenas pedidos com os status:
 
@@ -37,7 +37,7 @@ Os status abaixo nao aparecem na Fila da Cozinha:
 
 ## Regras de Negocio
 
-A tela possui protecao de rota por meio da chave `adminLogado`.
+A tela possui proteção de rota por meio da chave `adminToken`.
 
 As colunas da fila sao:
 
@@ -60,11 +60,11 @@ O administrador acessa a Fila da Cozinha pelo Dashboard. A tela separa os pedido
 
 Pedidos recebidos exibem o botao "Iniciar preparo". Pedidos em preparo exibem o botao "Marcar como pronto". Pedidos prontos exibem apenas a indicacao "Pedido pronto".
 
-## Integracao com localStorage
+## Integração com API
 
-Quando a cozinha avanca um pedido, o sistema altera apenas o campo `status` do pedido correspondente dentro de `localStorage.pedidos`.
+Quando a cozinha avança um pedido, o sistema altera apenas o campo `status` do pedido correspondente pela rota `PATCH /api/Pedido/{id}/status`.
 
-Como Admin Pedidos, Dashboard e Fila da Cozinha usam a mesma chave, as alteracoes feitas na cozinha refletem nas demais telas administrativas quando carregadas novamente.
+Como Admin Pedidos, Dashboard e Fila da Cozinha usam os pedidos persistidos pela API, as alterações feitas na cozinha refletem nas demais telas administrativas quando carregadas novamente.
 
 ## Observacoes
 

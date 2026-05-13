@@ -1,25 +1,27 @@
 # Documentacao de Integracao Front-end - PIM Restaurante
 
+> Nota de atualização do MVP: este arquivo contém documentação histórica de integração. O contrato oficial atual da API está em `docs/api/contrato-api-mvp.md`. No MVP atual, o cliente comum não usa login/JWT, o carrinho permanece no `localStorage`, o checkout público usa `POST /api/Pedido/checkout-mvp`, o Admin usa JWT de colaborador, e o banco oficial é PostgreSQL.
+
 Esta API atende dois perfis:
 
-- Cliente: navega no cardapio, usa carrinho, faz pedido, consulta e cancela o proprio pedido.
-- Colaborador: gerencia produtos, clientes, colaboradores e pedidos da loja.
+- Cliente: navega no cardapio, usa carrinho local e faz pedido pelo checkout publico.
+- Colaborador: gerencia produtos e pedidos da loja com JWT.
 
 Base URL local:
 
 ```text
-http://localhost:5000
+http://localhost:5162
 ```
 
 Swagger:
 
 ```text
-http://localhost:5000/swagger
+http://localhost:5162/swagger
 ```
 
 ## Autenticacao
 
-A API usa JWT Bearer Token.
+A API usa JWT Bearer Token nas rotas protegidas da area Admin/Colaborador. O cliente comum nao usa JWT no MVP atual.
 
 Depois do login, enviar o token em todas as rotas protegidas:
 
@@ -43,28 +45,7 @@ Bearer "eyJhbGciOi..."
 
 ## Login Cliente
 
-```http
-POST /api/Auth/login-cliente
-```
-
-Request:
-
-```json
-{
-  "email": "cliente@email.com",
-  "senha": "123456"
-}
-```
-
-Response:
-
-```json
-{
-  "token": "jwt",
-  "usuario": "Nome do Cliente",
-  "perfil": "Cliente"
-}
-```
+Fora do MVP atual. O cliente comum não faz login e não usa JWT para navegar, montar carrinho ou finalizar pedido.
 
 ## Login Colaborador
 
@@ -93,35 +74,7 @@ Response:
 
 ## Cadastro de Cliente
 
-Rota publica para criar conta de cliente.
-
-```http
-POST /api/Clientes
-```
-
-Request:
-
-```json
-{
-  "nome": "Gabriel Fuentes",
-  "cpf": "00000000000",
-  "celular": "11999999999",
-  "email": "gabriel@email.com",
-  "senha": "123456"
-}
-```
-
-Response:
-
-```json
-{
-  "id": 1,
-  "nome": "Gabriel Fuentes",
-  "cpf": "00000000000",
-  "celular": "11999999999",
-  "email": "gabriel@email.com"
-}
-```
+Fora do MVP atual. A tabela de cliente pode apoiar evolução futura, mas o checkout público atual não exige cadastro nem `idCliente`.
 
 Observacao: a senha nunca e retornada pela API.
 
@@ -184,231 +137,43 @@ GET /api/Produto/{id}
 
 ## Carrinho
 
-Requer token de Cliente ou Colaborador.
-
-Importante: cliente so consegue acessar o proprio carrinho. A API valida isso pelo e-mail do token.
-
-### Ver Carrinho
-
-```http
-GET /api/Carrinho/{idCliente}
-```
-
-Response:
-
-```json
-{
-  "id": 1,
-  "idCliente": 1,
-  "dataCriacao": "2026-05-11T20:00:00",
-  "atualizadoEm": "2026-05-11T20:05:00",
-  "itens": [
-    {
-      "id": 10,
-      "codProd": 1,
-      "produto": "X-Burger",
-      "precoUnitario": 28.9,
-      "quantidade": 2,
-      "observacoes": "Sem cebola",
-      "subtotal": 57.8
-    }
-  ],
-  "totalProdutos": 57.8
-}
-```
-
-### Adicionar Item
-
-```http
-POST /api/Carrinho/{idCliente}/itens
-```
-
-Request:
-
-```json
-{
-  "codProd": 1,
-  "quantidade": 2,
-  "observacoes": "Sem cebola"
-}
-```
-
-### Atualizar Item
-
-```http
-PUT /api/Carrinho/{idCliente}/itens/{idItem}
-```
-
-Request:
-
-```json
-{
-  "quantidade": 3,
-  "observacoes": "Sem cebola e sem tomate"
-}
-```
-
-### Remover Item
-
-```http
-DELETE /api/Carrinho/{idCliente}/itens/{idItem}
-```
-
-### Limpar Carrinho
-
-```http
-DELETE /api/Carrinho/{idCliente}/limpar
-```
+No MVP atual, o carrinho do cliente fica no `localStorage` do navegador. Não há rota de carrinho persistido no contrato oficial atual.
 
 ## Checkout e Pedidos do Cliente
 
-### Confirmar Pedido a Partir do Carrinho
+### Confirmar Pedido Público
 
-Requer token de Cliente ou Colaborador.
+Não requer login de cliente nem JWT.
 
 ```http
-POST /api/Pedido/checkout-carrinho
+POST /api/Pedido/checkout-mvp
 ```
 
-Retirada:
+Campos principais:
 
-```json
-{
-  "idCliente": 1,
-  "tipoEntrega": "Retirada",
-  "observacoes": "Vou buscar no balcao"
-}
-```
-
-Entrega:
-
-```json
-{
-  "idCliente": 1,
-  "tipoEntrega": "Entrega",
-  "enderecoEntrega": "Rua Exemplo, 123",
-  "observacoes": "Entregar na portaria"
-}
-```
+- `nomeCliente`
+- `telefoneCliente`
+- `tipoEntrega`
+- endereço, obrigatório somente quando `tipoEntrega = "entrega"`
+- `observacoes`
+- `itens`
+- `formaPagamento`
 
 Regras:
 
-- `tipoEntrega` aceita `Retirada` ou `Entrega`.
-- Para `Entrega`, `enderecoEntrega` e obrigatorio.
-- Taxa de entrega e fixa no backend: `10`.
-- Retirada tem taxa `0`.
-- Ao finalizar, o carrinho e limpo.
-- O pedido nasce com status `Aguardando Aprovação`.
-
-Response:
-
-```json
-{
-  "message": "Pedido recebido e aguardando aprovacao da loja.",
-  "id_pedido": 1,
-  "status": "Aguardando Aprovação",
-  "valorTotal": 67.8
-}
-```
-
-### Ver Pedidos do Cliente
-
-```http
-GET /api/Pedido/cliente/{idCliente}
-```
-
-Response:
-
-```json
-[
-  {
-    "id": 1,
-    "idCliente": 1,
-    "observacoes": "Vou buscar no balcao",
-    "dataHora": "2026-05-11T20:10:00",
-    "status": "Aguardando Aprovação",
-    "valorTotal": 57.8,
-    "tipoEntrega": "Retirada",
-    "enderecoEntrega": null,
-    "taxaEntrega": 0,
-    "tempoEstimadoMinutos": null,
-    "aprovadoEm": null,
-    "canceladoEm": null,
-    "canceladoPor": null,
-    "motivoCancelamento": null,
-    "itens": [
-      {
-        "id": 1,
-        "codProd": 1,
-        "produto": "X-Burger",
-        "quantidade": 2,
-        "precoUnitario": 28.9,
-        "subtotal": 57.8,
-        "observacoes": "Sem cebola"
-      }
-    ]
-  }
-]
-```
-
-### Ver Pedido por ID
-
-```http
-GET /api/Pedido/{id}
-```
-
-Cliente so acessa pedido proprio. Colaborador pode acessar qualquer pedido.
-
-### Cliente Cancelar Pedido
-
-Requer token de Cliente.
-
-```http
-PATCH /api/Pedido/{id}/cancelar-cliente
-```
-
-Request:
-
-```json
-{
-  "motivo": "Desisti do pedido"
-}
-```
-
-Regra: cliente so pode cancelar antes da preparacao comecar, ou seja, enquanto estiver `Aguardando Aprovação` ou `Aprovado`.
+- `tipoEntrega` aceita `entrega` ou `retirada`.
+- `formaPagamento` aceita `pix`, `cartao` ou `dinheiro`.
+- O checkout cria registros em `pedido`, `itempedido` e `pagamento`.
+- O pedido nasce com status `recebido`.
 
 ## Pedidos da Loja
 
-Rotas exclusivas de Colaborador.
+Rotas protegidas por JWT de Colaborador.
 
 ### Listar Todos os Pedidos
 
 ```http
 GET /api/Pedido
-```
-
-### Aprovar Pedido
-
-```http
-PATCH /api/Pedido/{id}/aprovar
-```
-
-Request:
-
-```json
-{
-  "tempoEstimadoMinutos": 30
-}
-```
-
-Response:
-
-```json
-{
-  "message": "Pedido 1 aprovado.",
-  "status": "Aprovado",
-  "tempoEstimadoMinutos": 30
-}
 ```
 
 ### Atualizar Status
@@ -421,48 +186,21 @@ Request:
 
 ```json
 {
-  "status": "Em Preparação"
+  "status": "em_preparo"
 }
 ```
 
 Status aceitos:
 
 ```text
-Aprovado
-Em Preparação
-Pronto para Retirada
-Saiu para Entrega
-Entregue
-Retirado
+recebido
+em_preparo
+pronto
+finalizado
+cancelado
 ```
 
-Fluxo recomendado para Retirada:
-
-```text
-Aguardando Aprovação -> Aprovado -> Em Preparação -> Pronto para Retirada -> Retirado
-```
-
-Fluxo recomendado para Entrega:
-
-```text
-Aguardando Aprovação -> Aprovado -> Em Preparação -> Saiu para Entrega -> Entregue
-```
-
-### Loja Cancelar Pedido
-
-```http
-PATCH /api/Pedido/{id}/cancelar-loja
-```
-
-Request:
-
-```json
-{
-  "motivo": "Produto indisponivel"
-}
-```
-
-Regra: loja nao pode cancelar pedido ja `Entregue` ou `Retirado`.
+Fluxo operacional usado no Admin: `recebido -> em_preparo -> pronto -> finalizado`, com possibilidade de `cancelado` conforme regra da tela administrativa.
 
 ## Administracao de Produtos
 
@@ -566,9 +304,9 @@ Response de colaborador nunca retorna senha.
 
 ## Observacoes Importantes Para o Front
 
-- Sempre salvar o token apos login.
-- Usar `perfil` retornado no login para decidir qual interface mostrar.
-- Cliente deve usar `login-cliente`.
+- Sempre salvar o token apos login administrativo.
+- Usar `perfil` retornado no login para decidir qual interface administrativa mostrar.
+- Cliente comum nao usa login/JWT no MVP atual.
 - Colaborador deve usar `login-colaborador`.
 - Cliente nao deve acessar telas administrativas.
 - Mesmo que o front esconda botoes, o backend tambem bloqueia acessos indevidos.

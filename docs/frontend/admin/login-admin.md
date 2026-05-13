@@ -2,55 +2,56 @@
 
 ## Objetivo
 
-A tela Login Admin controla o acesso inicial a area administrativa do sistema. Seu objetivo e impedir que as telas administrativas sejam acessadas sem uma sessao local de administrador.
+A tela Login Admin controla o acesso inicial à área administrativa do sistema. Seu objetivo é impedir que as telas administrativas sejam acessadas sem uma sessão válida de administrador.
 
 ## Funcionalidades
 
-- Campo para usuario.
+- Campo para usuário/e-mail.
 - Campo para senha.
-- Validacao dos campos obrigatorios.
-- Mensagem de erro para usuario ou senha invalidos.
-- Botao para entrar no painel administrativo.
-- Botao para voltar ao cardapio do cliente.
-- Redirecionamento para o Dashboard quando o login e valido.
+- Validação dos campos obrigatórios.
+- Mensagem de erro para usuário/e-mail ou senha inválidos.
+- Botão para entrar no painel administrativo.
+- Botão para voltar ao cardápio do cliente.
+- Redirecionamento para o Dashboard quando o login é válido.
 
 ## Dados Utilizados
 
-As credenciais temporarias usadas no MVP sao:
+O login administrativo usa a API real:
 
-- Usuario: `admin`
-- Senha: `123456`
+```http
+POST /api/Auth/login-colaborador
+```
 
-A tela utiliza a chave `adminLogado` no `localStorage` para registrar que o administrador esta logado.
+A tela salva o JWT retornado na chave `adminToken` do `localStorage`.
 
 ## Regras de Negocio
 
-O usuario e normalizado antes da validacao, evitando problemas com letras maiusculas, comuns em teclados de celular. Dessa forma, entradas como `Admin` ou `ADMIN` podem ser tratadas corretamente.
+O usuário/e-mail é normalizado antes da validação, evitando problemas com letras maiúsculas, comuns em teclados de celular.
 
-Os campos de usuario e senha sao obrigatorios. Quando os dados nao correspondem as credenciais temporarias, a tela exibe uma mensagem de erro sem usar `alert()`.
+Os campos de usuário/e-mail e senha são obrigatórios. Quando a API rejeita as credenciais, a tela exibe uma mensagem de erro sem usar `alert()`.
 
 ## Fluxo da Tela
 
-O administrador acessa a tela de login, informa usuario e senha e confirma o acesso. Se as credenciais estiverem corretas, o sistema salva `adminLogado` como `true` e redireciona para o Dashboard Admin.
+O administrador acessa a tela de login, informa e-mail e senha e confirma o acesso. Se as credenciais estiverem corretas, o sistema salva `adminToken` e redireciona para o Dashboard Admin.
 
-Caso o usuario ja esteja logado, a aplicacao pode redireciona-lo diretamente para o Dashboard Admin, evitando novo preenchimento de login.
+Caso o usuário já possua token válido, a aplicação pode redirecioná-lo diretamente para o Dashboard Admin, evitando novo preenchimento de login.
 
-## Integracao com localStorage
+## Integração com API e localStorage
 
-A chave utilizada e:
+A chave utilizada é:
 
-- `adminLogado`: indica se o administrador esta autenticado na sessao local.
+- `adminToken`: token JWT do administrador autenticado.
 
-Ao fazer login corretamente, essa chave e gravada. Ao sair pela area administrativa, ela e removida.
+Ao fazer login corretamente, essa chave é gravada. Ao sair pela área administrativa ou receber `401 Unauthorized`, ela é removida.
 
 ## Observacoes
 
-A autenticacao e simulada no frontend enquanto nao ha backend. Em uma versao futura, o login devera ser validado por uma API, com controle real de usuario, senha, sessao e permissao.
+A autenticação não é mais simulada no frontend. Ela é validada pela rota `POST /api/Auth/login-colaborador`.
 
 ## Testes Realizados
 
-- Validacao de campos vazios.
-- Validacao de usuario e senha incorretos.
-- Login com credenciais temporarias corretas.
-- Redirecionamento para o Dashboard apos login.
-- Retorno ao cardapio pelo botao da tela.
+- Validação de campos vazios.
+- Validação de usuário/e-mail e senha incorretos.
+- Login com credenciais de colaborador cadastradas no backend.
+- Redirecionamento para o Dashboard após login.
+- Retorno ao cardápio pelo botão da tela.

@@ -28,7 +28,7 @@ O pagamento exibido e informativo. No MVP, o status do pagamento e registrado in
 
 Ao clicar em "Voltar ao Cardapio", o sistema remove `carrinho` e `pedidoAtual` do `localStorage` e redireciona o usuario para a tela de cardapio. Esse comportamento prepara o fluxo para uma nova compra.
 
-A tela representa a confirmacao visual do MVP. O envio real do pedido para API ou backend ainda nao esta implementado nesta etapa.
+A tela representa a confirmacao visual do MVP. O envio real do pedido ocorre no checkout pela rota publica `POST /api/Pedido/checkout-mvp`; esta tela apenas apresenta o resumo ao cliente.
 
 ## Fluxo do usuario
 

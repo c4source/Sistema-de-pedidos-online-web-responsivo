@@ -32,6 +32,8 @@ Como administrador
 Quero remover ou desativar produtos  
 Para que eles deixem de aparecer no cardápio quando saírem de linha.
 
+Nota técnica do MVP atual: a remoção implementada na API usa `DELETE /api/Produto/{id}` com exclusão física. A desativação/inativação lógica permanece como melhoria futura.
+
 ### US06 – listar produtos
 Como cliente  
 Quero visualizar os produtos disponíveis divididos por categorias  
@@ -46,6 +48,8 @@ Para entender melhor suas características (ingredientes, tamanho) antes de real
 Como cliente  
 Quero adicionar produtos a um carrinho e realizar um pedido  
 Para solicitar os itens desejados ao estabelecimento.
+
+Nota técnica do MVP atual: o carrinho fica no `localStorage` do navegador e o pedido é salvo no banco pelo checkout público `POST /api/Pedido/checkout-mvp`, sem login de cliente.
 
 ### US09 – Informar dados do pedido
 
@@ -117,7 +121,7 @@ Embora as User Stories estejam organizadas no backlog, o desenvolvimento seguir�
 *Permite alimentar o banco de dados com os itens que serão vendidos.*
 - US03 – Cadastro de produtos  
 - US04 – Editar produtos  
-- US05 – Inativar produtos  
+- US05 – Remover produtos no estado atual da API; inativação lógica como melhoria futura
 - US16 – Controlar disponibilidade de produtos  
 
 ### 3. Vitrine e Seleção (Interface do Cliente)
