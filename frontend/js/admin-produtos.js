@@ -1,6 +1,4 @@
-if (localStorage.getItem('adminLogado') !== 'true') {
-  window.location.href = './admin-login.html';
-} else {
+if (requireAdminSession()) {
   initializeAdminProducts();
 }
 
@@ -442,7 +440,7 @@ productsBackDashboardButton.addEventListener('click', function () {
 });
 
 productsLogoutButton.addEventListener('click', function () {
-  localStorage.removeItem('adminLogado');
+  clearAdminSession();
   window.location.href = './admin-login.html';
 });
 

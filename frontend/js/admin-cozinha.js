@@ -1,8 +1,8 @@
-if (localStorage.getItem('adminLogado') !== 'true') {
-  window.location.href = './admin-login.html';
-} else {
-  initializeKitchenQueue();
+if (!requireAdminSession()) {
+  throw new Error('Sessao admin ausente.');
 }
+
+initializeKitchenQueue();
 
 function initializeKitchenQueue() {
   var backDashboardButton = document.getElementById('admin-kitchen-back-dashboard');
@@ -15,19 +15,7 @@ function initializeKitchenQueue() {
   var receivedListElement = document.getElementById('kitchen-received-list');
   var preparingListElement = document.getElementById('kitchen-preparing-list');
   var readyListElement = document.getElementById('kitchen-ready-list');
-  var pedidos = loadOrders();
-
-  function loadOrders() {
-    try {
-      return JSON.parse(localStorage.getItem('pedidos')) || [];
-    } catch (error) {
-      return [];
-    }
-  }
-
-  function saveOrders() {
-    localStorage.setItem('pedidos', JSON.stringify(pedidos));
-  }
+  var pedidos = [];
 
   function normalizeStatus(status) {
     return String(status || '').toLowerCase().replace(/\s+/g, '_');
@@ -40,17 +28,9 @@ function initializeKitchenQueue() {
   function formatStatus(status) {
     var normalizedStatus = normalizeStatus(status);
 
-    if (normalizedStatus === 'recebido') {
-      return 'Recebido';
-    }
-
-    if (normalizedStatus === 'em_preparo') {
-      return 'Em preparo';
-    }
-
-    if (normalizedStatus === 'pronto') {
-      return 'Pronto';
-    }
+    if (normalizedStatus === 'recebido') return 'Recebido';
+    if (normalizedStatus === 'em_preparo') return 'Em preparo';
+    if (normalizedStatus === 'pronto') return 'Pronto';
 
     return status || 'Sem status';
   }
@@ -159,7 +139,7 @@ function initializeKitchenQueue() {
       (status === 'em_preparo' && nextStatus === 'pronto');
   }
 
-  function updateOrderStatus(orderCode, nextStatus) {
+  async function updateOrderStatus(orderCode, nextStatus) {
     var order = pedidos.find(function (pedido) {
       return pedido.codigo === orderCode;
     });
@@ -168,9 +148,13 @@ function initializeKitchenQueue() {
       return;
     }
 
-    order.status = nextStatus;
-    saveOrders();
-    renderKitchen();
+    try {
+      await updateAdminOrderStatus(order.id, nextStatus);
+      pedidos = await fetchAdminOrders();
+      renderKitchen();
+    } catch (error) {
+      alert('Não foi possível atualizar o status do pedido.');
+    }
   }
 
   function createActionButton(label, nextStatus, orderCode) {
@@ -298,6 +282,21 @@ function initializeKitchenQueue() {
     updateSummary();
   }
 
+  function showLoadError() {
+    renderColumn(receivedListElement, [], 'Não foi possível carregar os pedidos.');
+    renderColumn(preparingListElement, [], 'Verifique se o backend está rodando.');
+    renderColumn(readyListElement, [], 'Tente novamente em instantes.');
+  }
+
+  async function loadKitchenOrders() {
+    try {
+      pedidos = await fetchAdminOrders();
+      renderKitchen();
+    } catch (error) {
+      showLoadError();
+    }
+  }
+
   backDashboardButton.addEventListener('click', function () {
     window.location.href = './admin-dashboard.html';
   });
@@ -307,9 +306,9 @@ function initializeKitchenQueue() {
   });
 
   logoutButton.addEventListener('click', function () {
-    localStorage.removeItem('adminLogado');
+    clearAdminSession();
     window.location.href = './admin-login.html';
   });
 
-  renderKitchen();
+  loadKitchenOrders();
 }

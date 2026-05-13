@@ -1,5 +1,5 @@
-if (localStorage.getItem('adminLogado') !== 'true') {
-  window.location.href = './admin-login.html';
+if (!requireAdminSession()) {
+  throw new Error('Sessao admin ausente.');
 }
 
 var ordersBackDashboardButton = document.getElementById('admin-orders-back-dashboard');
@@ -7,7 +7,7 @@ var ordersLogoutButton = document.getElementById('admin-orders-logout');
 var ordersListElement = document.getElementById('admin-orders-list');
 var ordersEmptyElement = document.getElementById('admin-orders-empty');
 var filterButtons = document.querySelectorAll('.admin-orders-filter-chip');
-var pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+var pedidos = [];
 var currentFilter = 'todos';
 
 function formatPrice(value) {
@@ -21,59 +21,29 @@ function normalizeStatus(status) {
 function formatStatus(status) {
   var normalizedStatus = normalizeStatus(status);
 
-  if (normalizedStatus === 'recebido') {
-    return 'Recebido';
-  }
-
-  if (normalizedStatus === 'em_preparo') {
-    return 'Em preparo';
-  }
-
-  if (normalizedStatus === 'pronto') {
-    return 'Pronto';
-  }
-
-  if (normalizedStatus === 'finalizado') {
-    return 'Finalizado';
-  }
-
-  if (normalizedStatus === 'cancelado') {
-    return 'Cancelado';
-  }
+  if (normalizedStatus === 'recebido') return 'Recebido';
+  if (normalizedStatus === 'em_preparo') return 'Em preparo';
+  if (normalizedStatus === 'pronto') return 'Pronto';
+  if (normalizedStatus === 'finalizado') return 'Finalizado';
+  if (normalizedStatus === 'cancelado') return 'Cancelado';
 
   return status || 'Sem status';
 }
 
 function formatPaymentMethod(method) {
-  if (method === 'dinheiro') {
-    return 'Dinheiro';
-  }
+  if (method === 'dinheiro') return 'Dinheiro';
+  if (method === 'cartao') return 'Cartão';
+  if (method === 'pix') return 'Pix';
 
-  if (method === 'cartao') {
-    return 'CartÃ£o';
-  }
-
-  if (method === 'pix') {
-    return 'Pix';
-  }
-
-  return 'Nao informado';
+  return 'Não informado';
 }
 
 function formatPaymentStatus(status) {
-  if (status === 'pendente') {
-    return 'Pendente';
-  }
+  if (status === 'pendente') return 'Pendente';
+  if (status === 'pago') return 'Pago';
+  if (status === 'cancelado') return 'Cancelado';
 
-  if (status === 'pago') {
-    return 'Pago';
-  }
-
-  if (status === 'cancelado') {
-    return 'Cancelado';
-  }
-
-  return 'Nao informado';
+  return 'Não informado';
 }
 
 function formatDeliveryType(tipoEntrega) {
@@ -139,10 +109,6 @@ function getFilteredOrders() {
   });
 }
 
-function saveOrders() {
-  localStorage.setItem('pedidos', JSON.stringify(pedidos));
-}
-
 function canUpdateStatus(currentStatus, nextStatus) {
   var status = normalizeStatus(currentStatus);
 
@@ -151,7 +117,7 @@ function canUpdateStatus(currentStatus, nextStatus) {
          (status === 'pronto' && nextStatus === 'finalizado');
 }
 
-function updateOrderStatus(orderCode, nextStatus) {
+async function updateOrderStatus(orderCode, nextStatus) {
   var order = pedidos.find(function (pedido) {
     return pedido.codigo === orderCode;
   });
@@ -160,9 +126,13 @@ function updateOrderStatus(orderCode, nextStatus) {
     return;
   }
 
-  order.status = nextStatus;
-  saveOrders();
-  renderOrders();
+  try {
+    await updateAdminOrderStatus(order.id, nextStatus);
+    pedidos = await fetchAdminOrders();
+    renderOrders();
+  } catch (error) {
+    alert('Não foi possível atualizar o status do pedido.');
+  }
 }
 
 function createInfoRow(label, value) {
@@ -343,6 +313,22 @@ function setActiveFilter(selectedButton) {
   renderOrders();
 }
 
+function showLoadError() {
+  ordersListElement.hidden = true;
+  ordersEmptyElement.hidden = false;
+  ordersEmptyElement.querySelector('.admin-orders-empty-title').textContent = 'Não foi possível carregar os pedidos.';
+  ordersEmptyElement.querySelector('.admin-orders-empty-text').textContent = 'Verifique se o backend está rodando e tente novamente.';
+}
+
+async function loadOrdersFromApi() {
+  try {
+    pedidos = await fetchAdminOrders();
+    renderOrders();
+  } catch (error) {
+    showLoadError();
+  }
+}
+
 filterButtons.forEach(function (button) {
   button.addEventListener('click', function () {
     setActiveFilter(button);
@@ -354,8 +340,8 @@ ordersBackDashboardButton.addEventListener('click', function () {
 });
 
 ordersLogoutButton.addEventListener('click', function () {
-  localStorage.removeItem('adminLogado');
+  clearAdminSession();
   window.location.href = './admin-login.html';
 });
 
-renderOrders();
+loadOrdersFromApi();

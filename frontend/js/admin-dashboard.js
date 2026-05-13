@@ -1,5 +1,5 @@
-if (localStorage.getItem('adminLogado') !== 'true') {
-  window.location.href = './admin-login.html';
+if (!requireAdminSession()) {
+  throw new Error('Sessao admin ausente.');
 }
 
 var totalOrdersElement = document.getElementById('admin-total-orders');
@@ -14,7 +14,7 @@ var menuButton = document.getElementById('admin-menu-button');
 var ordersLink = document.getElementById('admin-orders-link');
 var productsLink = document.getElementById('admin-products-link');
 var kitchenLink = document.getElementById('admin-kitchen-link');
-var pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+var pedidos = [];
 
 function formatPrice(value) {
   return 'R$ ' + value.toFixed(2).replace('.', ',');
@@ -33,6 +33,10 @@ function formatStatus(status) {
 
   if (normalizedStatus === 'em_preparo') {
     return 'Em preparo';
+  }
+
+  if (normalizedStatus === 'pronto') {
+    return 'Pronto';
   }
 
   if (normalizedStatus === 'finalizado' || normalizedStatus === 'finalizados') {
@@ -164,9 +168,26 @@ function renderRecentOrders() {
   });
 }
 
+function showLoadError() {
+  recentOrdersList.hidden = true;
+  emptyOrdersElement.hidden = false;
+  emptyOrdersElement.querySelector('.admin-empty-title').textContent = 'Não foi possível carregar os pedidos.';
+  emptyOrdersElement.querySelector('.admin-empty-text').textContent = 'Verifique se o backend está rodando e tente novamente.';
+}
+
+async function loadDashboardOrders() {
+  try {
+    pedidos = await fetchAdminOrders();
+    renderMetrics();
+    renderRecentOrders();
+  } catch (error) {
+    showLoadError();
+  }
+}
+
 function setupNavigation() {
   logoutButton.addEventListener('click', function () {
-    localStorage.removeItem('adminLogado');
+    clearAdminSession();
     window.location.href = './admin-login.html';
   });
 
@@ -187,6 +208,5 @@ function setupNavigation() {
   });
 }
 
-renderMetrics();
-renderRecentOrders();
 setupNavigation();
+loadDashboardOrders();

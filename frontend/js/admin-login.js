@@ -4,7 +4,7 @@ var adminLoginButton = document.getElementById('admin-login-button');
 var adminLoginError = document.getElementById('admin-login-error');
 var adminBackButton = document.getElementById('admin-back-button');
 
-if (localStorage.getItem('adminLogado') === 'true') {
+if (hasAdminSession()) {
   window.location.href = './admin-dashboard.html';
 }
 
@@ -16,23 +16,54 @@ function clearAdminLoginError() {
   adminLoginError.textContent = '';
 }
 
-function validateAdminLogin() {
-  var username = adminUsernameInput.value.trim();
+async function validateAdminLogin() {
+  var email = adminUsernameInput.value.trim();
   var password = adminPasswordInput.value.trim();
 
-  if (!username || !password) {
-    showAdminLoginError('Informe usuário e senha.');
+  if (!email || !password) {
+    showAdminLoginError('Informe e-mail e senha.');
     return false;
   }
 
-  if (username !== 'admin' || password !== '123456') {
-    showAdminLoginError('Usuário ou senha inválidos.');
-    return false;
-  }
+  adminLoginButton.disabled = true;
+  clearAdminLoginError();
 
-  localStorage.setItem('adminLogado', 'true');
-  window.location.href = './admin-dashboard.html';
-  return true;
+  try {
+    var response = await fetch(ADMIN_API_BASE_URL + '/Auth/login-colaborador', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        senha: password
+      })
+    });
+
+    if (!response.ok) {
+      showAdminLoginError('E-mail ou senha inválidos.');
+      return false;
+    }
+
+    var data = await response.json();
+
+    if (!data.token) {
+      showAdminLoginError('Login sem token retornado pela API.');
+      return false;
+    }
+
+    localStorage.setItem('adminToken', data.token);
+    localStorage.setItem('adminNome', data.usuario || '');
+    localStorage.setItem('adminPerfil', data.perfil || '');
+    localStorage.setItem('adminLogado', 'true');
+    window.location.href = './admin-dashboard.html';
+    return true;
+  } catch (error) {
+    showAdminLoginError('Não foi possível conectar ao servidor.');
+    return false;
+  } finally {
+    adminLoginButton.disabled = false;
+  }
 }
 
 adminLoginButton.addEventListener('click', validateAdminLogin);
