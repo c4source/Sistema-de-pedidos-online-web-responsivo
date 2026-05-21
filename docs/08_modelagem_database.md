@@ -4,11 +4,11 @@ Este documento apresenta a modelagem do banco de dados do MVP de pedidos para pi
 
 ## Modelagem Simples
 
-![Modelagem Simples](../diagrams/modelagem_banco_simples.svg)
+![Modelagem Simples](../diagrams/modelagem_bd_simplesatualiza.png)
 
 ## Modelagem Detalhada
 
-![Modelagem Detalhada](../diagrams/modelagem_banco_detalhada.svg)
+![Modelagem Detalhada](../diagrams/modelagem_banco_atualizada.png)
 
 ## Contexto do MVP
 

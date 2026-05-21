@@ -10,7 +10,7 @@ Este documento apresenta os wireframes do sistema de pedidos, com foco na experi
 Representar a jornada do usuário do cardápio até a confirmação do pedido.
 
 ## Diagrama
-![Fluxo do Usuário](./wireframes/fluxo-user.png)
+![Fluxo do Usuário](./wireframes/fluxo-userv1.png)
 
 ## Fluxo Resumido
 Cardápio → Detalhe → Carrinho → Checkout → Pedido Confirmado

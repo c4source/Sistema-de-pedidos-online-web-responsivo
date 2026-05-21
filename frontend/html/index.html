@@ -3,54 +3,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cardápio | Pizzaria MVP</title>
+  <title>Cardápio | Madalena Pizzaria</title>
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <div class="app menu-app">
-    <header class="app-header">
+  <div class="menu-page">
+    <section class="header-area app-header">
       <div class="app-header-content">
-        <div class="app-brand">
-          <h1 class="app-title">Pizzaria MVP</h1>
-          <p class="app-meta" aria-label="Localização e status da pizzaria">
-            <span class="app-location">
-              <svg class="location-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 21s7-6.1 7-12A7 7 0 0 0 5 9c0 5.9 7 12 7 12Z"></path>
-                <circle cx="12" cy="9" r="2.5"></circle>
-              </svg>
-              Marília - SP
-            </span>
-            <span class="app-meta-divider" aria-hidden="true">•</span>
-            <span class="store-status store-status-open">
-              <span class="status-dot" aria-hidden="true"></span>
-              Aberto agora
-            </span>
-          </p>
-        </div>
+        <p class="app-meta" aria-label="Status, localização e telefone da pizzaria">
+          <span class="store-status store-status-open">
+            <span class="status-dot" aria-hidden="true"></span>
+            Aberto agora
+          </span>
+          <span class="app-meta-divider" aria-hidden="true">•</span>
+          <span class="app-location">Assis - SP</span>
+          <span class="app-meta-divider" aria-hidden="true">•</span>
+          <span class="app-phone">(18) 99999-6666</span>
+        </p>
 
-        <a class="cart-shortcut" href="./carrinho.html" aria-label="Abrir carrinho">
-          <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M6.2 6h15l-1.7 8.5a2 2 0 0 1-2 1.6H8.7a2 2 0 0 1-2-1.7L5.4 3.8H2.8"></path>
-            <circle cx="9" cy="20" r="1.4"></circle>
-            <circle cx="18" cy="20" r="1.4"></circle>
-          </svg>
-          <span class="cart-badge" id="cart-badge" hidden>0</span>
-        </a>
+        <div class="app-header-card-row">
+          <div class="app-header-main">
+            <div class="app-brand">
+              <img class="app-logo" src="/img/logo512-transparente.png" alt="Madalena Pizzaria">
+              <div class="app-brand-text">
+                <h1 class="app-title">Madalena Pizzaria</h1>
+              </div>
+            </div>
+
+            <div class="app-header-actions">
+              <nav class="app-nav" aria-label="Navegação principal">
+                <a class="app-nav-link" href="#product-section">Cardápio</a>
+                <a class="app-nav-link" href="#">Promoções</a>
+                <a class="app-nav-link" href="#">Contato</a>
+              </nav>
+
+              <a class="cart-shortcut" href="./carrinho.html" aria-label="Abrir carrinho">
+                <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.2 6h15l-1.7 8.5a2 2 0 0 1-2 1.6H8.7a2 2 0 0 1-2-1.7L5.4 3.8H2.8"></path>
+                  <circle cx="9" cy="20" r="1.4"></circle>
+                  <circle cx="18" cy="20" r="1.4"></circle>
+                </svg>
+                <span class="cart-badge" id="cart-badge" hidden>0</span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
-    </header>
+    </section>
 
-    <main class="menu-screen">
-      <section class="search-section" aria-label="Busca visual do cardápio">
-        <div class="search-control">
-          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="11" cy="11" r="6"></circle>
-            <path d="m16 16 4 4"></path>
-          </svg>
-          <input class="search-box" id="search-input" type="search" placeholder="Buscar produto..." aria-label="Buscar produto">
-        </div>
-      </section>
+    <div class="app menu-app">
+      <main class="menu-screen">
+        <section class="search-section" aria-label="Busca visual do cardápio">
+          <div class="search-control">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6"></circle>
+              <path d="m16 16 4 4"></path>
+            </svg>
+            <input class="search-box" id="search-input" type="search" placeholder="Buscar produto..." aria-label="Buscar produto">
+          </div>
+        </section>
 
-      <section class="filter-section" aria-label="Categorias do cardápio">
+        <section class="filter-section" aria-label="Categorias do cardápio">
         <h2 class="filter-title">Categorias</h2>
         <div class="filter-list">
           <button class="filter-chip" type="button" data-category="pizza">
@@ -92,6 +105,7 @@
 
       <section class="product-section" id="product-section" aria-label="Lista de produtos"></section>
     </main>
+    </div>
   </div>
 
   <script src="../js/api.js"></script>
