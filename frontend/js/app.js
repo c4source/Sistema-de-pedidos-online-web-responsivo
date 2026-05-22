@@ -52,7 +52,7 @@ var defaultProducts = [
     nome: 'Coca-Cola Lata',
     categoria: 'bebida',
     preco: 6.5,
-    imagem: '../assets/coca-cola-lata.jpg',
+    imagem: '/img/cocalata800.jpg',
     descricao: 'Refrigerante gelado em lata'
   },
   {
@@ -60,7 +60,7 @@ var defaultProducts = [
     nome: 'Coca-Cola 600ml',
     categoria: 'bebida',
     preco: 8.9,
-    imagem: '../assets/coca-cola-600ml.jpg',
+    imagem: '/img/agua600-800.jpg',
     descricao: 'Refrigerante gelado 600ml'
   },
   {
@@ -68,7 +68,7 @@ var defaultProducts = [
     nome: 'Coca-Cola 2L',
     categoria: 'bebida',
     preco: 12.9,
-    imagem: '../assets/coca-cola-2l.jpg',
+    imagem: '/img/coca2l800.jpg',
     descricao: 'Refrigerante gelado 2 litros'
   },
   {
@@ -76,7 +76,7 @@ var defaultProducts = [
     nome: 'Guaraná 2L',
     categoria: 'bebida',
     preco: 10.9,
-    imagem: '../assets/guarana-2l.jpg',
+    imagem: '/img/guarana2l800.jpg',
     descricao: 'Refrigerante guaraná 2 litros'
   },
   {
@@ -84,7 +84,7 @@ var defaultProducts = [
     nome: 'Água sem gás',
     categoria: 'bebida',
     preco: 4.5,
-    imagem: '../assets/agua-sem-gas.jpg',
+    imagem: '/img/aguasemgass800.jpg',
     descricao: 'Água mineral sem gás'
   },
   {
@@ -92,7 +92,7 @@ var defaultProducts = [
     nome: 'Água com gás',
     categoria: 'bebida',
     preco: 4.9,
-    imagem: '../assets/agua-com-gas.jpg',
+    imagem: '/img/aguacmgas800.jpg',
     descricao: 'Água mineral com gás'
   },
   {
