@@ -170,8 +170,15 @@ async function loadProductsFromApi() {
 
 var productSection = document.getElementById('product-section');
 var searchInput = document.getElementById('search-input');
+var stickyHeader = document.querySelector('.sticky-header');
+var stickySearchInput = document.getElementById('sticky-search-input');
+var stickySearchForm = document.querySelector('.sticky-header__search');
+var stickyMenuButton = document.querySelector('.sticky-header__menu');
+var stickyMenuDropdown = document.getElementById('sticky-menu-dropdown');
+var stickyMenuLinks = document.querySelectorAll('.sticky-header__dropdown-link');
 var filterChips = document.querySelectorAll('.filter-chip');
 var cartBadgeElement = document.getElementById('cart-badge');
+var stickyCartBadgeElement = document.getElementById('sticky-cart-badge');
 var selectedCategory = '';
 
 function formatPrice(value) {
@@ -261,13 +268,114 @@ function updateCartBadge() {
   if (totalItems > 0) {
     cartBadgeElement.textContent = totalItems;
     cartBadgeElement.hidden = false;
+    if (stickyCartBadgeElement) {
+      stickyCartBadgeElement.textContent = totalItems;
+      stickyCartBadgeElement.hidden = false;
+    }
     return;
   }
 
   cartBadgeElement.hidden = true;
+  if (stickyCartBadgeElement) {
+    stickyCartBadgeElement.hidden = true;
+  }
 }
 
-searchInput.addEventListener('input', renderProducts);
+function updateStickyHeaderVisibility() {
+  if (!stickyHeader) {
+    return;
+  }
+
+  var shouldShow = window.scrollY > 220;
+  stickyHeader.classList.toggle('is-visible', shouldShow);
+  stickyHeader.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
+  stickyHeader.toggleAttribute('inert', !shouldShow);
+
+  if (!shouldShow) {
+    closeStickyMenu();
+  }
+}
+
+function closeStickyMenu() {
+  if (!stickyMenuButton || !stickyMenuDropdown) {
+    return;
+  }
+
+  stickyMenuButton.setAttribute('aria-expanded', 'false');
+  stickyMenuDropdown.classList.remove('is-open');
+  stickyMenuDropdown.setAttribute('aria-hidden', 'true');
+}
+
+function toggleStickyMenu() {
+  if (!stickyMenuButton || !stickyMenuDropdown) {
+    return;
+  }
+
+  var isOpen = stickyMenuButton.getAttribute('aria-expanded') === 'true';
+  stickyMenuButton.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+  stickyMenuDropdown.classList.toggle('is-open', !isOpen);
+  stickyMenuDropdown.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+}
+
+function syncSearchFromSticky() {
+  if (!stickySearchInput) {
+    return;
+  }
+
+  searchInput.value = stickySearchInput.value;
+  renderProducts();
+}
+
+searchInput.addEventListener('input', function () {
+  if (stickySearchInput && stickySearchInput.value !== searchInput.value) {
+    stickySearchInput.value = searchInput.value;
+  }
+
+  renderProducts();
+});
+
+if (stickySearchInput) {
+  stickySearchInput.addEventListener('input', syncSearchFromSticky);
+}
+
+if (stickySearchForm) {
+  stickySearchForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    syncSearchFromSticky();
+    productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+if (stickyMenuButton) {
+  stickyMenuButton.addEventListener('click', function (event) {
+    event.stopPropagation();
+    toggleStickyMenu();
+  });
+}
+
+stickyMenuLinks.forEach(function (link) {
+  link.addEventListener('click', function () {
+    closeStickyMenu();
+  });
+});
+
+document.addEventListener('click', function (event) {
+  if (!stickyHeader || !stickyMenuDropdown || !stickyMenuButton) {
+    return;
+  }
+
+  if (!stickyHeader.contains(event.target)) {
+    closeStickyMenu();
+  }
+});
+
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    closeStickyMenu();
+  }
+});
+
+window.addEventListener('scroll', updateStickyHeaderVisibility, { passive: true });
 
 filterChips.forEach(function (chip) {
   chip.addEventListener('click', function () {
@@ -279,4 +387,5 @@ filterChips.forEach(function (chip) {
 
 renderProducts();
 updateCartBadge();
+updateStickyHeaderVisibility();
 loadProductsFromApi();

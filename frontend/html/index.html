@@ -7,7 +7,50 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <div class="menu-page">
+  <div class="menu-page" id="top">
+    <header class="sticky-header" aria-label="Header fixo do cardápio" aria-hidden="true" inert>
+      <div class="sticky-header__inner">
+        <a href="#top" class="sticky-header__brand" aria-label="Voltar ao topo do cardápio">
+          <img class="sticky-header__logo" src="../../img/logo512-transparente.png" alt="Madalena Pizzaria">
+        </a>
+
+        <form class="sticky-header__search" role="search">
+          <svg class="sticky-header__search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+          <input class="sticky-header__input" id="sticky-search-input" type="search" placeholder="Busque por um produto." aria-label="Busque por um produto.">
+        </form>
+
+        <div class="sticky-header__menu-wrap">
+          <button class="sticky-header__menu" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="sticky-menu-dropdown">
+            <span>Menu</span>
+            <svg class="sticky-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16"></path>
+              <path d="M4 12h16"></path>
+              <path d="M4 17h16"></path>
+            </svg>
+          </button>
+
+          <nav class="sticky-header__dropdown" id="sticky-menu-dropdown" aria-label="Menu rápido do cardápio" aria-hidden="true">
+            <a class="sticky-header__dropdown-link" href="#top">Início</a>
+            <a class="sticky-header__dropdown-link" href="#product-section">Cardápio</a>
+            <span class="sticky-header__dropdown-link is-disabled" aria-disabled="true">Promoções</span>
+            <span class="sticky-header__dropdown-link is-disabled" aria-disabled="true">Contato</span>
+          </nav>
+        </div>
+
+        <a href="./carrinho.html" class="sticky-header__cart" aria-label="Abrir sacola">
+          <svg class="sticky-header__cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.2 6h15l-1.7 8.5a2 2 0 0 1-2 1.6H8.7a2 2 0 0 1-2-1.7L5.4 3.8H2.8"></path>
+            <circle cx="9" cy="20" r="1.4"></circle>
+            <circle cx="18" cy="20" r="1.4"></circle>
+          </svg>
+          <span class="cart-badge sticky-header__badge" id="sticky-cart-badge" hidden>0</span>
+        </a>
+      </div>
+    </header>
+
     <section class="header-area app-header">
       <div class="app-header-content">
         <p class="app-meta" aria-label="Status, localização e telefone da pizzaria">
