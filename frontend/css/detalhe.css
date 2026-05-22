@@ -1,0 +1,237 @@
+/* =========================================================
+   DETALHE DO PRODUTO
+   ---------------------------------------------------------
+   Tudo aqui mexe SOMENTE na tela detalhe.html
+========================================================= */
+
+/* Cabeçalho do detalhe */
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 18px 8px;
+  margin-bottom: 16px;
+  background: #F8F9FA;
+}
+
+/* Título da tela detalhe */
+.detail-page-title {
+  flex: 1;
+  min-width: 0;
+  color: #212529;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+  letter-spacing: 0.2px;
+}
+
+.detail-header .back-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 12px;
+  color: #212529;
+  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+/* Estrutura principal da tela de detalhe */
+.detail-screen {
+  padding: 0 16px 28px;
+  background: #F8F9FA;
+}
+
+/* Card principal do produto */
+.detail-card {
+  overflow: hidden;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(33, 37, 41, 0.06);
+}
+
+/* Centraliza a imagem do produto */
+.detail-image-section {
+  padding: 18px 18px 8px;
+}
+
+/* Imagem principal do detalhe */
+.detail-image {
+  width: 100%;
+  height: 220px;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: #F8F9FA;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 12px;
+}
+
+/* Blocos internos da tela de detalhe */
+.detail-info,
+.detail-description,
+.detail-quantity,
+.detail-action {
+  padding: 16px 18px;
+}
+
+/* Nome do produto no detalhe */
+.detail-product-name {
+  margin-bottom: 8px;
+  color: #212529;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Preço do produto no detalhe */
+.detail-product-price {
+  color: #E63946;
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+/* Título da descrição e label da quantidade */
+.detail-description-title,
+.quantity-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #6C757D;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Texto da descrição */
+.detail-description-text {
+  color: #7A828A;
+  font-size: 1rem;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.detail-description,
+.detail-quantity {
+  margin-top: 16px;
+}
+
+/* Linha de quantidade no detalhe */
+.detail-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.detail-quantity .quantity-label {
+  margin-bottom: 0;
+}
+
+/* Ajustes específicos do controle de quantidade no detalhe */
+.detail-quantity .quantity-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 4px;
+  gap: 8px;
+  background: #F8F9FA;
+  border: 1px solid rgba(33, 37, 41, 0.1);
+  border-radius: 14px;
+}
+
+/* Botões - e + no detalhe */
+.detail-quantity .quantity-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(33, 37, 41, 0.1);
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: #E63946;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+/* Número da quantidade no detalhe */
+.detail-quantity .quantity-value {
+  min-width: 28px;
+  color: #212529;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+/* Ação principal do detalhe */
+.detail-action {
+  padding-top: 8px;
+  padding-bottom: 18px;
+}
+
+.detail-action .primary-button {
+  max-width: none;
+  padding: 13px 18px;
+  background: #E63946;
+  border: 1px solid #E63946;
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(230, 57, 70, 0.18);
+}
+
+
+@media (hover: hover) {
+  .detail-action .primary-button:hover {
+    background: #d62f3d;
+    box-shadow: 0 12px 24px rgba(230, 57, 70, 0.26);
+    transform: scale(1.015);
+  }
+
+  .detail-quantity .quantity-button:hover {
+    background: #FFFFFF;
+    border-color: rgba(230, 57, 70, 0.22);
+    color: #E63946;
+    box-shadow: 0 8px 18px rgba(33, 37, 41, 0.08);
+  }
+
+  .detail-header .back-button:hover {
+    background: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(33, 37, 41, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+.detail-header .back-button:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+  .detail-app {
+    max-width: 620px;
+  }
+
+  .detail-header {
+    padding: 28px 28px 12px;
+  }
+
+  .detail-screen {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .detail-image {
+    height: 260px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .detail-app {
+    max-width: 660px;
+  }
+}

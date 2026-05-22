@@ -1,0 +1,322 @@
+/* =========================================================
+   CHECKOUT
+   ---------------------------------------------------------
+   Tudo aqui mexe SOMENTE na tela checkout.html
+========================================================= */
+
+/* Estrutura geral da tela checkout */
+.checkout-app {
+  display: flex;
+  flex-direction: column;
+  background: #F8F9FA;
+}
+
+/* Área principal do checkout */
+.checkout-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px 28px;
+  background: #F8F9FA;
+}
+
+/* Cabeçalho do checkout */
+.checkout-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 18px 12px;
+  margin-bottom: 16px;
+  background: #F8F9FA;
+}
+
+.checkout-header .back-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 10px;
+  color: #212529;
+  box-shadow: 0 4px 12px rgba(33, 37, 41, 0.08);
+}
+
+/* Título "Checkout" */
+.checkout-title {
+  flex: 1;
+  min-width: 0;
+  color: #212529;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Cada seção do checkout */
+.checkout-section {
+  padding: 0;
+}
+
+/* Card principal dos dados do checkout */
+.checkout-form-card,
+.checkout-summary-section {
+  padding: 18px;
+  background: #FFFFFF;
+  border: 1px solid rgba(33, 37, 41, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(33, 37, 41, 0.06);
+}
+
+.checkout-form-card .checkout-section + .checkout-section {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(33, 37, 41, 0.08);
+}
+
+/* Título das seções */
+.checkout-section-title {
+  margin-bottom: 16px;
+  color: #212529;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* Campo do formulário */
+.checkout-field {
+  margin-bottom: 14px;
+}
+
+/* Último campo sem margem */
+.checkout-field:last-child {
+  margin-bottom: 0;
+}
+
+/* Label dos campos */
+.checkout-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #6C757D;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Inputs do checkout */
+.checkout-input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid rgba(33, 37, 41, 0.14);
+  border-radius: 12px;
+  background: #FFFFFF;
+  color: #212529;
+  font-size: 1rem;
+  line-height: 1.35;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.checkout-input:focus {
+  border-color: rgba(230, 57, 70, 0.55);
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+}
+
+.checkout-input.input-error {
+  border-color: #E63946;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+}
+
+.checkout-error-message {
+  display: block;
+  margin-top: 6px;
+  color: #E63946;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.checkout-input::placeholder {
+  color: #ADB5BD;
+}
+
+/* Campo telefone menor */
+.checkout-input[type="tel"] {
+  width: 70%;
+  max-width: 260px;
+}
+
+/* Grupo dos radios entrega/retirada */
+.checkout-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Cada opção de rádio */
+.checkout-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid rgba(33, 37, 41, 0.1);
+  border-radius: 12px;
+  color: #212529;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.checkout-radio:has(input:checked) {
+  background: rgba(239, 143, 143, 0.06);
+  border-color: rgba(150, 36, 44, 0.4);
+  box-shadow: 0 6px 14px rgba(230, 57, 70, 0.12);
+}
+
+/* Bolinha do rádio */
+.checkout-radio input {
+  width: 16px;
+  height: 16px;
+  accent-color: #E63946;
+}
+
+/* Seção de endereço escondida */
+.checkout-address-section[hidden] {
+  display: none;
+}
+
+/* Observação/título do endereço */
+.checkout-address-note {
+  margin-bottom: 16px;
+  color: #212529;
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* Campo número menor */
+.checkout-number-field {
+  width: 38%;
+  max-width: 140px;
+  min-width: 104px;
+}
+
+/* Lista do resumo do pedido */
+.checkout-summary-list {
+  list-style: none;
+  display: grid;
+  gap: 0;
+  margin-bottom: 16px;
+}
+
+/* Cada item do resumo */
+.checkout-summary-item {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(33, 37, 41, 0.08);
+  color: #495057;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+/* Último item sem divisor */
+.checkout-summary-item:last-child {
+  border-bottom: 0;
+}
+
+/* Total do checkout */
+.checkout-total {
+  padding-top: 16px;
+  border-top: 1px solid rgba(33, 37, 41, 0.08);
+  color: #E63946;
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+/* Rodapé do checkout */
+.checkout-footer {
+  margin-top: auto;
+  padding: 4px 0 0;
+}
+
+/* Padroniza largura dos botões principais
+   dessas telas finais */
+
+/* Padroniza largura do botão principal do checkout */
+.checkout-footer .primary-button {
+  width: 100%;
+  max-width: 320px;
+}
+
+.checkout-footer .primary-button {
+  max-width: none;
+  padding: 13px 18px;
+  background: #E63946;
+  border: 1px solid #E63946;
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(230, 57, 70, 0.18);
+}
+
+
+@media (hover: hover) {
+  .checkout-header .back-button:hover {
+    background: #f8f9fa;
+    border-color: rgba(33, 37, 41, 0.12);
+    box-shadow: 0 6px 14px rgba(33, 37, 41, 0.10);
+  }
+
+  .checkout-footer .primary-button:hover {
+    background: #d62f3d;
+    box-shadow: 0 12px 24px rgba(230, 57, 70, 0.26);
+    transform: scale(1.015);
+  }
+
+  .checkout-container .primary-button:hover {
+    background: #d62f3d;
+    box-shadow: 0 12px 24px rgba(230, 57, 70, 0.26);
+    transform: scale(1.015);
+  }
+}
+
+@media (min-width: 768px) {
+  .checkout-app {
+    max-width: 640px;
+  }
+
+  .checkout-header {
+    padding: 28px 28px 12px;
+  }
+
+  .checkout-main {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .checkout-radio-group {
+    flex-direction: row;
+  }
+
+  .checkout-radio {
+    flex: 1;
+  }
+
+  .checkout-number-field {
+    width: 160px;
+    max-width: 180px;
+  }
+
+  .checkout-footer {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .checkout-app {
+    max-width: 700px;
+  }
+}
