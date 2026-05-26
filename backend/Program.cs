@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using Pim.Data;
 using System.Text;
 using System.Text.Json.Serialization;
+using Pim.Repositories;
+using Pim.Services;
 
 namespace Pim
 {
@@ -66,6 +68,9 @@ namespace Pim
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(connectionString));
+                
+                builder.Services.AddScoped<ProdutoRepository>();
+                builder.Services.AddScoped<ProdutoService>();
 
             // 4. AUTENTICAÇÃO JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

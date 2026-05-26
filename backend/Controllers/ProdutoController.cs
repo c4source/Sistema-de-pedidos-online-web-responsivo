@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Pim.Data;
 using Pim.DTOs;
-using Pim.Models;
+using Pim.Services;
 
 namespace Pim.Controllers
 {
@@ -11,11 +9,11 @@ namespace Pim.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ProdutoService _produtoService;
 
-        public ProdutoController(AppDbContext context)
+        public ProdutoController(ProdutoService produtoService)
         {
-            _context = context;
+            _produtoService = produtoService;
         }
 
         [AllowAnonymous]
@@ -24,101 +22,47 @@ namespace Pim.Controllers
             [FromQuery] string? categoria,
             [FromQuery] bool somenteDisponiveis = false)
         {
-            var query = _context.Produto.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(categoria))
-            {
-                query = query.Where(p => p.Categoria != null && p.Categoria.ToLower() == categoria.ToLower());
-            }
-
-            if (somenteDisponiveis)
-            {
-                query = query.Where(p =>
-                    p.Status == null ||
-                    p.Status.ToLower() == "disponível" ||
-                    p.Status.ToLower() == "disponivel");
-            }
-
-            return await query
-                .OrderBy(p => p.Categoria)
-                .ThenBy(p => p.Nome)
-                .Select(produto => new ProdutoResponseDto
-                {
-                    Id = produto.Id,
-                    Nome = produto.Nome,
-                    Preco = produto.Preco,
-                    Descricao = produto.Descricao,
-                    Categoria = produto.Categoria,
-                    Status = produto.Status,
-                    Estoque = produto.Estoque,
-                    ImagemUrl = produto.ImagemUrl
-                })
-                .ToListAsync();
+            var produtos = await _produtoService.ListarAsync(categoria, somenteDisponiveis);
+            return Ok(produtos);
         }
 
         [AllowAnonymous]
         [HttpGet("categorias")]
         public async Task<ActionResult<IEnumerable<string>>> GetCategorias()
         {
-            return await _context.Produto
-                .Where(p => p.Categoria != null && p.Categoria != "")
-                .Select(p => p.Categoria!)
-                .Distinct()
-                .OrderBy(categoria => categoria)
-                .ToListAsync();
+            var categorias = await _produtoService.ListarCategoriasAsync();
+            return Ok(categorias);
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProdutoResponseDto>> GetProduto(int id)
         {
-            var produto = await _context.Produto.FindAsync(id);
+            var produto = await _produtoService.BuscarPorIdAsync(id);
 
             if (produto == null)
                 return NotFound("Produto nao encontrado.");
 
-            return ToResponse(produto);
+            return Ok(produto);
         }
 
         [Authorize(Roles = "Colaborador")]
         [HttpPost]
         public async Task<ActionResult<ProdutoResponseDto>> PostProduto(ProdutoCreateDto dto)
         {
-            var produto = new Produto
-            {
-                Nome = dto.Nome,
-                Preco = dto.Preco,
-                Descricao = dto.Descricao,
-                Categoria = dto.Categoria,
-                Status = dto.Status,
-                Estoque = dto.Estoque,
-                ImagemUrl = dto.ImagemUrl
-            };
+            var produtoCriado = await _produtoService.CriarAsync(dto);
 
-            _context.Produto.Add(produto);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetProduto), new { id = produto.Id }, ToResponse(produto));
+            return CreatedAtAction(nameof(GetProduto), new { id = produtoCriado.Id }, produtoCriado);
         }
 
         [Authorize(Roles = "Colaborador")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduto(int id, ProdutoUpdateDto dto)
         {
-            var produto = await _context.Produto.FindAsync(id);
+            var atualizado = await _produtoService.AtualizarAsync(id, dto);
 
-            if (produto == null)
+            if (!atualizado)
                 return NotFound("Produto nao encontrado.");
-
-            produto.Nome = dto.Nome;
-            produto.Preco = dto.Preco;
-            produto.Descricao = dto.Descricao;
-            produto.Categoria = dto.Categoria;
-            produto.Status = dto.Status;
-            produto.Estoque = dto.Estoque;
-            produto.ImagemUrl = dto.ImagemUrl;
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -127,29 +71,12 @@ namespace Pim.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduto(int id)
         {
-            var produto = await _context.Produto.FindAsync(id);
-            if (produto == null)
-                return NotFound();
+            var removido = await _produtoService.RemoverAsync(id);
 
-            _context.Produto.Remove(produto);
-            await _context.SaveChangesAsync();
+            if (!removido)
+                return NotFound("Produto nao encontrado.");
 
             return NoContent();
-        }
-
-        private static ProdutoResponseDto ToResponse(Produto produto)
-        {
-            return new ProdutoResponseDto
-            {
-                Id = produto.Id,
-                Nome = produto.Nome,
-                Preco = produto.Preco,
-                Descricao = produto.Descricao,
-                Categoria = produto.Categoria,
-                Status = produto.Status,
-                Estoque = produto.Estoque,
-                ImagemUrl = produto.ImagemUrl
-            };
         }
     }
 }
