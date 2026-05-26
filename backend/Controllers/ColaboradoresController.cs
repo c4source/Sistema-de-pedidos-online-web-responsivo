@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Pim.Data;
 using Pim.DTOs;
-using Pim.Models;
+using Pim.Services;
 
 namespace Pim.Controllers
 {
@@ -12,69 +10,53 @@ namespace Pim.Controllers
     [Authorize(Roles = "Colaborador")]
     public class ColaboradoresController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ColaboradorService _colaboradorService;
 
-        public ColaboradoresController(AppDbContext context)
+        public ColaboradoresController(ColaboradorService colaboradorService)
         {
-            _context = context;
+            _colaboradorService = colaboradorService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ColaboradorResponseDto>>> GetColaboradores()
         {
-            return await _context.Colaboradores
-                .Select(colaborador => new ColaboradorResponseDto
-                {
-                    Id = colaborador.Id,
-                    Nome = colaborador.Nome,
-                    Email = colaborador.Email
-                })
-                .ToListAsync();
+            var colaboradores = await _colaboradorService.ListarAsync();
+            return Ok(colaboradores);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ColaboradorResponseDto>> GetColaborador(int id)
         {
-            var colaborador = await _context.Colaboradores.FindAsync(id);
+            var colaborador = await _colaboradorService.BuscarPorIdAsync(id);
 
             if (colaborador == null)
                 return NotFound("Colaborador nao encontrado.");
 
-            return ToResponse(colaborador);
+            return Ok(colaborador);
         }
 
         [HttpPost]
         public async Task<ActionResult<ColaboradorResponseDto>> PostColaborador(ColaboradorCreateDto dto)
         {
-            var emailJaExiste = await _context.Colaboradores.AnyAsync(c => c.Email == dto.Email);
-            if (emailJaExiste)
-                return BadRequest("Ja existe um colaborador cadastrado com este e-mail.");
+            var resultado = await _colaboradorService.CriarAsync(dto);
 
-            var colaborador = new Colaborador
-            {
-                Nome = dto.Nome,
-                Email = dto.Email,
-                Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha)
-            };
+            if (!resultado.Sucesso)
+                return BadRequest(resultado.Mensagem);
 
-            _context.Colaboradores.Add(colaborador);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetColaborador), new { id = colaborador.Id }, ToResponse(colaborador));
+            return CreatedAtAction(
+                nameof(GetColaborador),
+                new { id = resultado.Colaborador!.Id },
+                resultado.Colaborador
+            );
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutColaborador(int id, ColaboradorUpdateDto dto)
         {
-            var colaborador = await _context.Colaboradores.FindAsync(id);
+            var atualizado = await _colaboradorService.AtualizarAsync(id, dto);
 
-            if (colaborador == null)
+            if (!atualizado)
                 return NotFound("Colaborador nao encontrado.");
-
-            colaborador.Nome = dto.Nome;
-            colaborador.Email = dto.Email;
-
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -82,25 +64,12 @@ namespace Pim.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteColaborador(int id)
         {
-            var colaborador = await _context.Colaboradores.FindAsync(id);
+            var removido = await _colaboradorService.RemoverAsync(id);
 
-            if (colaborador == null)
-                return NotFound();
-
-            _context.Colaboradores.Remove(colaborador);
-            await _context.SaveChangesAsync();
+            if (!removido)
+                return NotFound("Colaborador nao encontrado.");
 
             return NoContent();
-        }
-
-        private static ColaboradorResponseDto ToResponse(Colaborador colaborador)
-        {
-            return new ColaboradorResponseDto
-            {
-                Id = colaborador.Id,
-                Nome = colaborador.Nome,
-                Email = colaborador.Email
-            };
         }
     }
 }

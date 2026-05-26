@@ -76,6 +76,9 @@ namespace Pim
                 builder.Services.AddScoped<PedidoRepository>();
                 builder.Services.AddScoped<PedidoService>();
 
+                builder.Services.AddScoped<ColaboradorRepository>();
+                builder.Services.AddScoped<ColaboradorService>();
+
             // 4. AUTENTICAÇÃO JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
