@@ -51,7 +51,7 @@ namespace Pim.Services
                 BairroEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Bairro?.Trim() : null,
                 ComplementoEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Complemento?.Trim() : null,
                 Observacoes = dto.Observacoes,
-                DataHora = DateTime.UtcNow,
+                DataHora = DateTime.Now, 
                 Status = PedidoStatus.Recebido
             };
 
@@ -95,7 +95,7 @@ namespace Pim.Services
                 FormaPagamento = dto.FormaPagamento!.Trim().ToLower(),
                 StatusPagamento = "pendente",
                 ValorPago = pedido.ValorTotal,
-                DataHoraPagamento = DateTime.UtcNow
+                DataHoraPagamento = DateTime.Now
             };
 
             await _pedidoRepository.SalvarPedidoAsync(pedido);
