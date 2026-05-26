@@ -51,7 +51,7 @@ namespace Pim.Services
                 BairroEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Bairro?.Trim() : null,
                 ComplementoEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Complemento?.Trim() : null,
                 Observacoes = dto.Observacoes,
-                DataHora = DateTime.Now, 
+                DataHora = DateTime.Now,
                 Status = PedidoStatus.Recebido
             };
 
@@ -83,9 +83,6 @@ namespace Pim.Services
 
                 pedido.Itens.Add(itemPedido);
                 totalProdutos += itemPedido.Subtotal;
-
-                if (produto.Estoque.HasValue)
-                    produto.Estoque -= itemDto.Quantidade;
             }
 
             pedido.ValorTotal = totalProdutos;
@@ -103,6 +100,103 @@ namespace Pim.Services
             return PedidoResultadoDto.Ok(pedido);
         }
 
+        public async Task<IEnumerable<PedidoResponseDto>> ListarAsync()
+        {
+            var pedidos = await _pedidoRepository.ListarPedidosAsync();
+            return pedidos.Select(ToResponse);
+        }
+
+        public async Task<PedidoResponseDto?> BuscarPorIdAsync(int id)
+        {
+            var pedido = await _pedidoRepository.BuscarPedidoCompletoAsync(id);
+
+            if (pedido == null)
+                return null;
+
+            return ToResponse(pedido);
+        }
+
+        public async Task<(bool Sucesso, string Mensagem)> AprovarAsync(int id)
+        {
+            var pedido = await _pedidoRepository.BuscarPedidoCompletoAsync(id);
+
+            if (pedido == null)
+                return (false, "Pedido nao encontrado.");
+
+            if (pedido.Status == PedidoStatus.Cancelado || pedido.Status == PedidoStatus.Finalizado)
+                return (false, "Pedido finalizado ou cancelado nao pode mudar de status.");
+
+            await _pedidoRepository.AtualizarStatusAsync(id, PedidoStatus.EmPreparo);
+
+            return (true, $"Pedido {id} enviado para preparo.");
+        }
+
+        public async Task<(bool Sucesso, string Mensagem)> AtualizarStatusAsync(int id, AtualizarStatusPedidoDto dto)
+        {
+            var pedido = await _pedidoRepository.BuscarPedidoCompletoAsync(id);
+
+            if (pedido == null)
+                return (false, "Pedido nao encontrado.");
+
+            var novoStatus = NormalizarStatus(dto.Status, PedidoStatus.StatusOperacionais);
+
+            if (novoStatus == null)
+                return (false, "Status invalido. Use: recebido, em_preparo, pronto, finalizado ou cancelado.");
+
+            await _pedidoRepository.AtualizarStatusAsync(id, novoStatus);
+
+            return (true, $"Status do pedido {id} atualizado para {novoStatus}.");
+        }
+
+        public async Task<(bool Sucesso, string Mensagem)> CancelarPelaLojaAsync(int id)
+        {
+            var pedido = await _pedidoRepository.BuscarPedidoCompletoAsync(id);
+
+            if (pedido == null)
+                return (false, "Pedido nao encontrado.");
+
+            if (pedido.Status == PedidoStatus.Finalizado)
+                return (false, "Pedido finalizado nao pode ser cancelado.");
+
+            if (pedido.Status == PedidoStatus.Cancelado)
+                return (false, "Pedido ja esta cancelado.");
+
+            await _pedidoRepository.CancelarPedidoAsync(pedido);
+
+            return (true, $"Pedido {id} cancelado.");
+        }
+
+        private static PedidoResponseDto ToResponse(Pedido pedido)
+        {
+            return new PedidoResponseDto
+            {
+                Id = pedido.Id,
+                Codigo = pedido.Codigo,
+                NomeCliente = pedido.NomeCliente,
+                TelefoneCliente = pedido.TelefoneCliente,
+                Observacoes = pedido.Observacoes,
+                DataHora = pedido.DataHora,
+                Status = pedido.Status,
+                ValorTotal = pedido.ValorTotal,
+                TipoEntrega = pedido.TipoEntrega,
+                RuaEntrega = pedido.RuaEntrega,
+                NumeroEntrega = pedido.NumeroEntrega,
+                BairroEntrega = pedido.BairroEntrega,
+                ComplementoEntrega = pedido.ComplementoEntrega,
+                FormaPagamento = pedido.Pagamento?.FormaPagamento,
+                StatusPagamento = pedido.Pagamento?.StatusPagamento,
+                Itens = pedido.Itens.Select(item => new ItemPedidoResponseDto
+                {
+                    Id = item.Id,
+                    CodProd = item.CodProd,
+                    Produto = item.Produto?.Nome,
+                    Quantidade = item.Quantidade,
+                    PrecoUnitario = item.PrecoUnitario,
+                    Subtotal = item.Subtotal
+                }).ToList()
+            };
+        }
+
         private static string? NormalizarTipoEntrega(string? tipoEntrega)
         {
             if (string.Equals(tipoEntrega?.Trim(), TipoEntrega.Entrega, StringComparison.CurrentCultureIgnoreCase))
@@ -118,6 +212,12 @@ namespace Pim.Services
         {
             var forma = formaPagamento?.Trim().ToLower();
             return forma == "dinheiro" || forma == "cartao" || forma == "pix";
+        }
+
+        private static string? NormalizarStatus(string status, IEnumerable<string> statusValidos)
+        {
+            return statusValidos.FirstOrDefault(s =>
+                string.Equals(s, status?.Trim(), StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }
