@@ -68,7 +68,7 @@ namespace Pim.Services
             produto.Estoque = dto.Estoque;
             produto.ImagemUrl = dto.ImagemUrl;
 
-            await _produtoRepository.SalvarAlteracoesAsync();
+            await _produtoRepository.AtualizarAsync(produto);
 
             return true;
         }
