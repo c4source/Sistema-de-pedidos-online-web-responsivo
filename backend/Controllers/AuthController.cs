@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Pim.Data;
+using Npgsql;
+using NpgsqlTypes;
 using Pim.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,13 +13,14 @@ namespace Pim.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly string _connectionString;
         private readonly IConfiguration _config;
 
-        public AuthController(AppDbContext context, IConfiguration config)
+        public AuthController(IConfiguration config)
         {
-            _context = context;
             _config = config;
+            _connectionString = config.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' nao encontrada.");
         }
 
         /// <summary>
@@ -28,8 +29,7 @@ namespace Pim.Controllers
         [HttpPost("login-colaborador")]
         public async Task<ActionResult> LoginColaborador([FromBody] LoginDto login)
         {
-            var colaborador = await _context.Colaboradores
-                .FirstOrDefaultAsync(c => c.Email == login.Email);
+            var colaborador = await BuscarColaboradorPorEmailAsync(login.Email);
 
             if (colaborador == null || !BCrypt.Net.BCrypt.Verify(login.Senha, colaborador.Senha))
             {
@@ -44,6 +44,34 @@ namespace Pim.Controllers
                 usuario = colaborador.Nome,
                 perfil = "Colaborador"
             });
+        }
+
+        private async Task<ColaboradorLogin?> BuscarColaboradorPorEmailAsync(string email)
+        {
+            const string sql = @"
+                SELECT id_colaborador, nome_usuario, email_usuario, senha_usuario
+                FROM colaborador
+                WHERE email_usuario = @email;
+            ";
+
+            await using var connection = new NpgsqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            await using var command = new NpgsqlCommand(sql, connection);
+            command.Parameters.Add("@email", NpgsqlDbType.Varchar).Value = email;
+
+            await using var reader = await command.ExecuteReaderAsync();
+
+            if (!await reader.ReadAsync())
+                return null;
+
+            return new ColaboradorLogin
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("id_colaborador")),
+                Nome = reader.GetString(reader.GetOrdinal("nome_usuario")),
+                Email = reader.GetString(reader.GetOrdinal("email_usuario")),
+                Senha = reader.GetString(reader.GetOrdinal("senha_usuario"))
+            };
         }
 
         // Método privado para gerar token do colaborador.
@@ -76,6 +104,14 @@ namespace Pim.Controllers
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private class ColaboradorLogin
+        {
+            public int Id { get; set; }
+            public string Nome { get; set; } = string.Empty;
+            public string Email { get; set; } = string.Empty;
+            public string Senha { get; set; } = string.Empty;
         }
     }
 }
