@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Pim.Data;
 using System.Text;
 using System.Text.Json.Serialization;
 using Pim.Repositories;
@@ -66,10 +64,6 @@ namespace Pim
             });
 
             // 3. BANCO DE DADOS
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(connectionString));
-                
                 builder.Services.AddScoped<ProdutoRepository>();
                 builder.Services.AddScoped<ProdutoService>();
 
