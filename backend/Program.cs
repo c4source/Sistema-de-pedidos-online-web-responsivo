@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using Pim.Repositories;
 using Pim.Services;
 
+
 namespace Pim
 {
     public class Program
@@ -71,6 +72,9 @@ namespace Pim
                 
                 builder.Services.AddScoped<ProdutoRepository>();
                 builder.Services.AddScoped<ProdutoService>();
+
+                builder.Services.AddScoped<PedidoRepository>();
+                builder.Services.AddScoped<PedidoService>();
 
             // 4. AUTENTICAÇÃO JWT
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

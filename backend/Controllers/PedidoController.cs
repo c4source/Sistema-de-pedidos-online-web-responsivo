@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Pim.Data;
 using Pim.DTOs;
 using Pim.Models;
+using Pim.Services;
 
 namespace Pim.Controllers
 {
@@ -12,10 +13,12 @@ namespace Pim.Controllers
     public class PedidoController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly PedidoService _pedidoService;
 
-        public PedidoController(AppDbContext context)
+        public PedidoController(AppDbContext context, PedidoService pedidoService)
         {
             _context = context;
+            _pedidoService = pedidoService;
         }
 
         [Authorize(Roles = "Colaborador")]
@@ -65,71 +68,31 @@ namespace Pim.Controllers
             return await CriarPedido(pedido, pedido.Pagamento?.FormaPagamento);
         }
 
-        [AllowAnonymous]
-        [HttpPost("checkout-mvp")]
+       [AllowAnonymous]
+[HttpPost("checkout-mvp")]
         public async Task<IActionResult> CheckoutMvp(CheckoutMvpDto dto)
         {
-            var tipoEntrega = NormalizarTipoEntrega(dto.TipoEntrega);
-            if (string.IsNullOrWhiteSpace(dto.NomeCliente))
-                return BadRequest("Nome do cliente e obrigatorio.");
-
-            if (string.IsNullOrWhiteSpace(dto.TelefoneCliente))
-                return BadRequest("Telefone do cliente e obrigatorio.");
-
-            if (tipoEntrega == null)
-                return BadRequest("Tipo de entrega invalido. Use: entrega ou retirada.");
-
-            if (tipoEntrega == TipoEntrega.Entrega &&
-                (string.IsNullOrWhiteSpace(dto.Rua) ||
-                 string.IsNullOrWhiteSpace(dto.Numero) ||
-                 string.IsNullOrWhiteSpace(dto.Bairro)))
+            try
             {
-                return BadRequest("Rua, numero e bairro sao obrigatorios para entrega.");
-            }
+                var resultado = await _pedidoService.CheckoutMvpAsync(dto);
 
-            if (dto.Itens == null || !dto.Itens.Any())
-                return BadRequest("O pedido precisa ter pelo menos um item.");
+                if (!resultado.Sucesso)
+                    return BadRequest(resultado.Mensagem);
 
-            foreach (var item in dto.Itens)
-            {
-                if (item.IdProduto <= 0)
-                    return BadRequest("Todos os itens precisam informar um produto.");
-
-                if (item.Quantidade <= 0)
-                    return BadRequest("Todos os itens precisam ter quantidade maior que zero.");
-            }
-
-            var pedido = new Pedido
-            {
-                Codigo = $"PED-{DateTime.Now:yyyyMMddHHmmssfff}",
-                NomeCliente = dto.NomeCliente.Trim(),
-                TelefoneCliente = dto.TelefoneCliente.Trim(),
-                TipoEntrega = tipoEntrega,
-                RuaEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Rua?.Trim() : null,
-                NumeroEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Numero?.Trim() : null,
-                BairroEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Bairro?.Trim() : null,
-                ComplementoEntrega = tipoEntrega == TipoEntrega.Entrega ? dto.Complemento?.Trim() : null,
-                Observacoes = dto.Observacoes,
-                Itens = dto.Itens.Select(item => new ItemPedido
+                return Ok(new
                 {
-                    CodProd = item.IdProduto,
-                    Quantidade = item.Quantidade
-                }).ToList()
-            };
-
-            var resultado = await CriarPedido(pedido, dto.FormaPagamento);
-
-            if (resultado is ObjectResult objectResult && objectResult.StatusCode >= 400)
-                return resultado;
-
-            return Ok(new
+                    idPedido = resultado.IdPedido,
+                    codigo = resultado.Codigo,
+                    status = resultado.Status,
+                    valorTotal = resultado.ValorTotal,
+                    mensagem = resultado.Mensagem
+                });
+            }
+            catch (Exception ex)
             {
-                idPedido = pedido.Id,
-                codigo = pedido.Codigo,
-                status = pedido.Status,
-                valorTotal = pedido.ValorTotal,
-                mensagem = "Pedido recebido."
-            });
+                var mensagemErro = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                return StatusCode(500, $"Erro Detalhado: {mensagemErro}");
+            }
         }
 
         [Authorize(Roles = "Colaborador")]
