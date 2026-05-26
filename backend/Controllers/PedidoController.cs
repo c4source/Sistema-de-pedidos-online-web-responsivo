@@ -20,6 +20,33 @@ namespace Pim.Controllers
             _context = context;
             _pedidoService = pedidoService;
         }
+        [AllowAnonymous]
+        [HttpPost("checkout-mvp")]
+        public async Task<IActionResult> CheckoutMvp(CheckoutMvpDto dto)
+        {
+            try
+            {
+                var resultado = await _pedidoService.CheckoutMvpAsync(dto);
+
+                if (!resultado.Sucesso)
+                    return BadRequest(resultado.Mensagem);
+
+                return Ok(new
+                {
+                    idPedido = resultado.IdPedido,
+                    codigo = resultado.Codigo,
+                    status = resultado.Status,
+                    valorTotal = resultado.ValorTotal,
+                    mensagem = resultado.Mensagem
+                });
+            }
+            catch (Exception ex)
+            {
+                var mensagemErro = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                return StatusCode(500, $"Erro Detalhado: {mensagemErro}");
+            }
+        }
+
 
         [Authorize(Roles = "Colaborador")]
         [HttpGet]
@@ -54,12 +81,6 @@ namespace Pim.Controllers
             return BadRequest("O schema oficial do MVP nao vincula pedido a cliente logado.");
         }
 
-        [Authorize(Roles = "Cliente,Colaborador")]
-        [HttpPost("checkout-carrinho")]
-        public IActionResult CheckoutCarrinho(CheckoutCarrinhoDto dto)
-        {
-            return BadRequest("O checkout do MVP usa carrinho no localStorage. Use POST /api/Pedido/checkout-mvp.");
-        }
 
         [Authorize(Roles = "Colaborador")]
         [HttpPost("checkout")]
@@ -68,33 +89,7 @@ namespace Pim.Controllers
             return await CriarPedido(pedido, pedido.Pagamento?.FormaPagamento);
         }
 
-       [AllowAnonymous]
-[HttpPost("checkout-mvp")]
-        public async Task<IActionResult> CheckoutMvp(CheckoutMvpDto dto)
-        {
-            try
-            {
-                var resultado = await _pedidoService.CheckoutMvpAsync(dto);
-
-                if (!resultado.Sucesso)
-                    return BadRequest(resultado.Mensagem);
-
-                return Ok(new
-                {
-                    idPedido = resultado.IdPedido,
-                    codigo = resultado.Codigo,
-                    status = resultado.Status,
-                    valorTotal = resultado.ValorTotal,
-                    mensagem = resultado.Mensagem
-                });
-            }
-            catch (Exception ex)
-            {
-                var mensagemErro = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
-                return StatusCode(500, $"Erro Detalhado: {mensagemErro}");
-            }
-        }
-
+      
         [Authorize(Roles = "Colaborador")]
         [HttpPatch("{id}/aprovar")]
         public async Task<IActionResult> AprovarPedido(int id, AprovarPedidoDto dto)

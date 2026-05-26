@@ -9,24 +9,13 @@ namespace Pim.Data
 
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Colaborador> Colaboradores { get; set; }
-
         public DbSet<Produto> Produto { get; set; }
-
         public DbSet<Pedido> Pedido { get; set; }
         public DbSet<ItemPedido> ItemPedido { get; set; }
         public DbSet<Pagamento> Pagamento { get; set; }
-        public DbSet<Colaborador> Colaborador { get; set; }
-        public DbSet<Carrinho> Carrinho { get; set; }
-        public DbSet<ItemCarrinho> ItemCarrinho { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Carrinho>()
-                .HasMany(c => c.Itens)
-                .WithOne(i => i.Carrinho)
-                .HasForeignKey(i => i.IdCarrinho)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<Pedido>()
                 .HasMany(p => p.Itens)
                 .WithOne(i => i.Pedido)
@@ -39,16 +28,10 @@ namespace Pim.Data
                 .HasForeignKey<Pagamento>(p => p.IdPedido)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<ItemCarrinho>()
-                .HasOne(i => i.Produto)
-                .WithMany()
-                .HasForeignKey(i => i.CodProd);
-
             modelBuilder.Entity<ItemPedido>()
                 .HasOne(i => i.Produto)
                 .WithMany()
                 .HasForeignKey(i => i.CodProd);
         }
     }
-        
 }
