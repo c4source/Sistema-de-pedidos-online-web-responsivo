@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Pim.Data;
 using Pim.DTOs;
-using Pim.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -24,12 +23,13 @@ namespace Pim.Controllers
         }
 
         /// <summary>
-        /// Login para funcionários e administradores
+        /// Login para funcionários e administradores.
         /// </summary>
         [HttpPost("login-colaborador")]
         public async Task<ActionResult> LoginColaborador([FromBody] LoginDto login)
         {
-            var colaborador = await _context.Colaboradores.FirstOrDefaultAsync(c => c.Email == login.Email);
+            var colaborador = await _context.Colaboradores
+                .FirstOrDefaultAsync(c => c.Email == login.Email);
 
             if (colaborador == null || !BCrypt.Net.BCrypt.Verify(login.Senha, colaborador.Senha))
             {
@@ -38,55 +38,32 @@ namespace Pim.Controllers
 
             var token = GerarToken(colaborador.Nome, colaborador.Email, "Colaborador");
 
-            return Ok(new { token, usuario = colaborador.Nome, perfil = "Colaborador" });
-        }
-
-        /// <summary>
-        /// Login para clientes do e-commerce
-        /// </summary>
-        [HttpPost("login-cliente")]
-        public async Task<ActionResult> LoginCliente([FromBody] LoginDto login)
-        {
-            var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == login.Email);
-
-            if (cliente == null || !BCrypt.Net.BCrypt.Verify(login.Senha, cliente.Senha))
+            return Ok(new
             {
-                return Unauthorized("E-mail ou senha de cliente incorretos.");
-            }
-
-            var token = GerarToken(cliente.Nome, cliente.Email, "Cliente");
-
-            return Ok(new { token, usuario = cliente.Nome, perfil = "Cliente" });
+                token,
+                usuario = colaborador.Nome,
+                perfil = "Colaborador"
+            });
         }
 
-        /// <summary>
-        /// Redefinição de senha (Esqueci minha senha)
-        /// </summary>
-        [HttpPost("reset-senha-cliente")]
-        public async Task<IActionResult> ResetSenhaCliente([FromBody] ResetSenhaDto dto)
-        {
-            var cliente = await _context.Clientes
-                .FirstOrDefaultAsync(c => c.Email == dto.Email && c.Cpf == dto.Cpf);
-
-            if (cliente == null) return BadRequest("Dados de validação incorretos.");
-
-            cliente.Senha = BCrypt.Net.BCrypt.HashPassword(dto.NovaSenha);
-            await _context.SaveChangesAsync();
-
-            return Ok("Senha redefinida com sucesso.");
-        }
-
-        // Método privado genérico para gerar tokens para ambos os perfis
+        // Método privado para gerar token do colaborador.
         private string GerarToken(string nome, string email, string papel)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var jwtKey = _config["Jwt:Key"];
+
+            if (string.IsNullOrWhiteSpace(jwtKey))
+            {
+                throw new InvalidOperationException("A chave JWT não foi configurada em appsettings.json.");
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, nome),
                 new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, papel), // Define se é Cliente ou Colaborador no Token
+                new Claim(ClaimTypes.Role, papel),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
