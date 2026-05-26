@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models; // Aqui está o segredo
+using Microsoft.OpenApi.Models;
 using Pim.Data;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -29,11 +29,11 @@ namespace Pim
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Meu PIM API",
+                    Title = "API do Sistema de Pedidos - PIM",
                     Version = "v1"
                 });
 
-                // Configuração do esquema de segurança (Cadeado)
+                // Configuração do esquema de segurança JWT
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
@@ -41,7 +41,7 @@ namespace Pim
                     Scheme = "bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Cole aqui o seu Token JWT"
+                    Description = "Informe o token JWT para acessar rotas protegidas."
                 };
 
                 c.AddSecurityDefinition("Bearer", securityScheme);
