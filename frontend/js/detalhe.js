@@ -54,6 +54,7 @@ function loadSelectedProduct() {
   detailTitleElement.textContent = selectedProduct.nome;
   detailImageElement.src = selectedProduct.imagem;
   detailImageElement.alt = selectedProduct.nome;
+  detailImageElement.classList.toggle('detail-image--contain', selectedProduct.categoria === 'bebida');
   productNameElement.textContent = selectedProduct.nome;
   productPriceElement.textContent = getFormattedPrice(selectedProduct.preco);
   productDescriptionElement.textContent = selectedProduct.descricao;

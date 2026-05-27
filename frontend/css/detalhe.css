@@ -65,14 +65,21 @@
 /* Imagem principal do detalhe */
 .detail-image {
   width: 100%;
-  height: 220px;
+  height: 260px;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  background: #F8F9FA;
+  background: #f8f3ea;
   border: 1px solid rgba(33, 37, 41, 0.08);
   border-radius: 12px;
 }
+
+.detail-image--contain {
+  object-fit: contain;
+  object-position: center;
+  background: #f8f3ea;
+}
+
 
 /* Blocos internos da tela de detalhe */
 .detail-info,
