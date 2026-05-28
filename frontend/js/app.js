@@ -176,6 +176,11 @@ var stickySearchForm = document.querySelector('.sticky-header__search');
 var stickyMenuButton = document.querySelector('.sticky-header__menu');
 var stickyMenuDropdown = document.getElementById('sticky-menu-dropdown');
 var stickyMenuLinks = document.querySelectorAll('.sticky-header__dropdown-link');
+var modalTriggers = document.querySelectorAll('[data-modal-open]');
+var modalOverlays = document.querySelectorAll('.modal-overlay');
+var modalCloseButtons = document.querySelectorAll('[data-modal-close]');
+var activeModal = null;
+var lastFocusedElement = null;
 var filterChips = document.querySelectorAll('.filter-chip');
 var cartBadgeElement = document.getElementById('cart-badge');
 var stickyCartBadgeElement = document.getElementById('sticky-cart-badge');
@@ -326,6 +331,56 @@ function syncSearchFromSticky() {
   renderProducts();
 }
 
+function openMenuModal(modalId, triggerElement) {
+  var modalOverlay = document.getElementById(modalId);
+
+  if (!modalOverlay) {
+    return;
+  }
+
+  var modalDialog = modalOverlay.querySelector('.menu-modal');
+  var closeButton = modalOverlay.querySelector('[data-modal-close]');
+
+  closeMenuModal();
+  lastFocusedElement = triggerElement || document.activeElement;
+  activeModal = modalOverlay;
+  modalOverlay.classList.add('is-open');
+  modalOverlay.setAttribute('aria-hidden', 'false');
+
+  if (modalDialog) {
+    modalDialog.classList.add('is-open');
+  }
+
+  document.body.classList.add('menu-modal-open');
+
+  if (closeButton) {
+    closeButton.focus();
+  }
+}
+
+function closeMenuModal() {
+  if (!activeModal) {
+    return;
+  }
+
+  var modalDialog = activeModal.querySelector('.menu-modal');
+  activeModal.classList.remove('is-open');
+  activeModal.setAttribute('aria-hidden', 'true');
+
+  if (modalDialog) {
+    modalDialog.classList.remove('is-open');
+  }
+
+  document.body.classList.remove('menu-modal-open');
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+    lastFocusedElement.focus();
+  }
+
+  activeModal = null;
+  lastFocusedElement = null;
+}
+
 searchInput.addEventListener('input', function () {
   if (stickySearchInput && stickySearchInput.value !== searchInput.value) {
     stickySearchInput.value = searchInput.value;
@@ -353,6 +408,25 @@ if (stickyMenuButton) {
   });
 }
 
+modalTriggers.forEach(function (trigger) {
+  trigger.addEventListener('click', function (event) {
+    event.preventDefault();
+    openMenuModal(trigger.getAttribute('data-modal-open'), trigger);
+  });
+});
+
+modalCloseButtons.forEach(function (button) {
+  button.addEventListener('click', closeMenuModal);
+});
+
+modalOverlays.forEach(function (overlay) {
+  overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) {
+      closeMenuModal();
+    }
+  });
+});
+
 stickyMenuLinks.forEach(function (link) {
   link.addEventListener('click', function () {
     closeStickyMenu();
@@ -371,6 +445,7 @@ document.addEventListener('click', function (event) {
 
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
+    closeMenuModal();
     closeStickyMenu();
   }
 });
