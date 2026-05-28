@@ -32,14 +32,14 @@ function formatPaymentMethod(method) {
   }
 
   if (method === 'cartao') {
-    return 'CartÃ£o';
+    return 'Cartão';
   }
 
   if (method === 'pix') {
     return 'Pix';
   }
 
-  return 'Nao informado';
+  return 'Não informado';
 }
 
 function formatPaymentStatus(status) {
@@ -55,7 +55,7 @@ function formatPaymentStatus(status) {
     return 'Cancelado';
   }
 
-  return 'Nao informado';
+  return 'Não informado';
 }
 
 function renderConfirmationSummary() {
@@ -67,7 +67,7 @@ function renderConfirmationSummary() {
   confirmationOrderType.textContent = tipoEntregaLabel;
   confirmationPaymentMethod.textContent = formatPaymentMethod(pedidoAtual.pagamento && pedidoAtual.pagamento.formaPagamento);
   confirmationPaymentStatus.textContent = formatPaymentStatus(pedidoAtual.pagamento && pedidoAtual.pagamento.statusPagamento);
-  confirmationOrderTime.textContent = '30–45 min';
+  confirmationOrderTime.textContent = '30-45 min';
   confirmationSummaryList.innerHTML = '';
 
   if (!pedidoAtual.itens || pedidoAtual.itens.length === 0) {
