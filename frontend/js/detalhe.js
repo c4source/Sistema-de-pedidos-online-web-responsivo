@@ -10,9 +10,14 @@ var productPriceElement = document.querySelector('.detail-product-price');
 var productDescriptionElement = document.querySelector('.detail-description-text');
 var selectedProduct = JSON.parse(localStorage.getItem('produtoSelecionado'));
 var quantity = 1;
+var unitPrice = getProductPrice();
 
 function updateQuantity() {
   quantityValueElement.textContent = quantity;
+}
+
+function updateDisplayedPrice() {
+  productPriceElement.textContent = getFormattedPrice(unitPrice * quantity);
 }
 
 function getProductPrice() {
@@ -21,11 +26,15 @@ function getProductPrice() {
 }
 
 function saveProductToCart() {
+  if (!selectedProduct) {
+    return;
+  }
+
   var cart = JSON.parse(localStorage.getItem('carrinho')) || [];
   var product = {
     id: selectedProduct ? selectedProduct.id : null,
     nome: productNameElement.textContent,
-    preco: getProductPrice(),
+    preco: unitPrice,
     quantidade: quantity,
     imagem: selectedProduct ? selectedProduct.imagem : ''
   };
@@ -48,15 +57,28 @@ function saveProductToCart() {
 
 function loadSelectedProduct() {
   if (!selectedProduct) {
+    productNameElement.textContent = 'Produto não encontrado';
+    productDescriptionElement.textContent = 'Volte ao cardápio e escolha um produto para ver os detalhes.';
+    detailImageElement.removeAttribute('src');
+    detailImageElement.alt = 'Produto não encontrado';
+    detailImageElement.classList.add('detail-image--loading');
+    detailAddButton.disabled = true;
+    unitPrice = 0;
+    updateDisplayedPrice();
     return;
   }
 
   detailTitleElement.textContent = selectedProduct.nome;
+  detailImageElement.classList.add('detail-image--loading');
+  detailImageElement.onload = function () {
+    detailImageElement.classList.remove('detail-image--loading');
+  };
   detailImageElement.src = selectedProduct.imagem;
   detailImageElement.alt = selectedProduct.nome;
   detailImageElement.classList.toggle('detail-image--contain', selectedProduct.categoria === 'bebida');
   productNameElement.textContent = selectedProduct.nome;
-  productPriceElement.textContent = getFormattedPrice(selectedProduct.preco);
+  unitPrice = selectedProduct.preco;
+  updateDisplayedPrice();
   productDescriptionElement.textContent = selectedProduct.descricao;
 }
 
@@ -67,12 +89,14 @@ function getFormattedPrice(price) {
 increaseButton.addEventListener('click', function () {
   quantity += 1;
   updateQuantity();
+  updateDisplayedPrice();
 });
 
 decreaseButton.addEventListener('click', function () {
   if (quantity > 1) {
     quantity -= 1;
     updateQuantity();
+    updateDisplayedPrice();
   }
 });
 

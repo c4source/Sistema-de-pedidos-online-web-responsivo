@@ -1,6 +1,8 @@
 var totalElement = document.getElementById('cart-total');
 var cartListElement = document.getElementById('cart-list');
 var cartTotalSection = document.getElementById('cart-total-section');
+var cartSummaryElement = document.getElementById('cart-summary');
+var cartSummaryItemsElement = document.getElementById('cart-summary-items');
 var cartFooter = document.getElementById('cart-footer');
 var emptyCartElement = document.getElementById('empty-cart');
 var cartBackButton = document.getElementById('cart-back-button');
@@ -59,18 +61,22 @@ function updateCartState() {
 
   cartListElement.style.display = hasItems ? '' : 'none';
   cartTotalSection.style.display = hasItems ? '' : 'none';
+  cartSummaryElement.style.display = hasItems ? '' : 'none';
   cartFooter.style.display = hasItems ? 'flex' : 'none';
   emptyCartElement.style.display = hasItems ? 'none' : 'flex';
 }
 
 function updateTotal() {
   var total = 0;
+  var totalItems = 0;
 
   cart.forEach(function (item) {
     total += item.preco * item.quantidade;
+    totalItems += item.quantidade;
   });
 
   totalElement.textContent = formatPrice(total);
+  cartSummaryItemsElement.textContent = totalItems === 1 ? '🛍️ 1 item no pedido' : '🛍️ ' + totalItems + ' itens no pedido';
 }
 
 function getCartItemImageMarkup(item) {

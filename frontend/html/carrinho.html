@@ -64,8 +64,15 @@
       </section>
 
       <section class="cart-total-section" id="cart-total-section" aria-label="Total do pedido">
-        <p class="cart-total-label">Total do pedido</p>
-        <p class="cart-total-text"><span id="cart-total">R$ 100,00</span></p>
+        <div class="cart-total-row">
+          <p class="cart-total-label">Total do pedido</p>
+          <p class="cart-total-text"><span id="cart-total">R$ 100,00</span></p>
+        </div>
+        <div class="cart-summary" id="cart-summary" aria-label="Resumo do pedido">
+          <p class="cart-summary-item" id="cart-summary-items">🛍️ 0 itens no pedido</p>
+          <p class="cart-summary-item">🕒 Entrega estimada: 35-45 min</p>
+          <p class="cart-summary-item">🚚 Taxa calculada no checkout</p>
+        </div>
       </section>
 
       <section class="cart-footer" id="cart-footer" aria-label="Ação principal">
@@ -75,7 +82,7 @@
 
       <section class="empty-cart" id="empty-cart" aria-label="Carrinho vazio" hidden>
         <h2 class="empty-cart-title">Seu carrinho está vazio</h2>
-        <p class="empty-cart-text">Adicione produtos pelo cardápio para continuar.</p>
+        <p class="empty-cart-text">Que tal escolher algo delicioso?</p>
         <button class="primary-button" id="empty-cart-button" type="button">Ir para o Cardápio</button>
       </section>
     </main>
