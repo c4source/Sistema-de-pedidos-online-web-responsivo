@@ -4,6 +4,10 @@
    Tudo aqui mexe SOMENTE na tela checkout.html
 ========================================================= */
 
+body:has(.checkout-app) {
+  background: #fffaf0;
+}
+
 /* Estrutura geral da tela checkout */
 .checkout-app {
   display: flex;
@@ -18,7 +22,7 @@
   flex-direction: column;
   gap: 16px;
   padding: 0 16px 28px;
-  background: #F8F9FA;
+  background: #fffdf8;
 }
 
 /* Cabeçalho do checkout */
@@ -28,7 +32,7 @@
   gap: 12px;
   padding: 24px 18px 12px;
   margin-bottom: 16px;
-  background: #F8F9FA;
+  background: #fffdf8;
 }
 
 .checkout-header .back-button {
@@ -40,7 +44,7 @@
   background: #FFFFFF;
   border: 1px solid rgba(33, 37, 41, 0.08);
   border-radius: 10px;
-  color: #212529;
+  color: #5d2417;
   box-shadow: 0 4px 12px rgba(33, 37, 41, 0.08);
 }
 
@@ -48,9 +52,9 @@
 .checkout-title {
   flex: 1;
   min-width: 0;
-  color: #212529;
+  color: #22120f;
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
 }
 
@@ -78,9 +82,9 @@
 /* Título das seções */
 .checkout-section-title {
   margin-bottom: 16px;
-  color: #212529;
+  color: #3f2d22;
   font-size: 1.12rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.25;
 }
 
@@ -98,9 +102,9 @@
 .checkout-label {
   display: block;
   margin-bottom: 6px;
-  color: #6C757D;
+  color: #3f2d22;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Inputs do checkout */
@@ -110,7 +114,7 @@
   border: 1px solid rgba(33, 37, 41, 0.14);
   border-radius: 12px;
   background: #FFFFFF;
-  color: #212529;
+  color: #22120f;
   font-size: 1rem;
   line-height: 1.35;
   outline: none;
@@ -118,8 +122,8 @@
 }
 
 .checkout-input:focus {
-  border-color: rgba(230, 57, 70, 0.55);
-  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.12);
+  border-color: rgba(249, 249, 249, 0.268);
+  box-shadow: 0 0 0 3px rgba(14, 14, 14, 0.12);
 }
 
 .checkout-input.input-error {
@@ -136,7 +140,7 @@
 }
 
 .checkout-input::placeholder {
-  color: #ADB5BD;
+  color: #6C757D;
 }
 
 /* Campo telefone menor */
@@ -159,27 +163,27 @@
   gap: 10px;
   min-height: 42px;
   padding: 10px 12px;
-  background: #ffffff;
-  border: 1px solid rgba(33, 37, 41, 0.1);
+  background: #fffdfb;
+  border: 1px solid rgba(179, 179, 179, 0.229);
   border-radius: 12px;
-  color: #212529;
+  color: #3f2d22;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .checkout-radio:has(input:checked) {
-  background: rgba(239, 143, 143, 0.06);
-  border-color: rgba(150, 36, 44, 0.4);
-  box-shadow: 0 6px 14px rgba(230, 57, 70, 0.12);
+  background: rgba(244, 223, 204, 0.246);
+  border-color: rgba(187, 187, 187, 0.349);
+  box-shadow: 0 6px 14px rgba(246, 246, 246, 0.12);
 }
 
 /* Bolinha do rádio */
 .checkout-radio input {
   width: 16px;
   height: 16px;
-  accent-color: #E63946;
+  accent-color: #4c3c36;
 }
 
 /* Seção de endereço escondida */
@@ -190,9 +194,9 @@
 /* Observação/título do endereço */
 .checkout-address-note {
   margin-bottom: 16px;
-  color: #212529;
+  color: #3f2d22;
   font-size: 1.12rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.25;
 }
 
@@ -215,8 +219,9 @@
 .checkout-summary-item {
   padding: 10px 0;
   border-bottom: 1px solid rgba(33, 37, 41, 0.08);
-  color: #495057;
+  color: #4b5563;
   font-size: 0.98rem;
+  font-weight: 600;
   line-height: 1.35;
 }
 
@@ -229,7 +234,7 @@
 .checkout-total {
   padding-top: 16px;
   border-top: 1px solid rgba(33, 37, 41, 0.08);
-  color: #E63946;
+  color: #22120f;
   font-size: 1.6rem;
   font-weight: 800;
   line-height: 1.2;
@@ -317,6 +322,6 @@
 
 @media (min-width: 1024px) {
   .checkout-app {
-    max-width: 700px;
+    max-width: 780px;
   }
 }

@@ -106,7 +106,7 @@ body.menu-modal-open {
 
 .menu-modal__content h2 {
   margin: 0;
-  color: #54582f;
+  color: #22120f;
   font-size: 1.65rem;
   font-weight: 800;
   line-height: 1.1;
@@ -114,8 +114,9 @@ body.menu-modal-open {
 
 .menu-modal__content p {
   margin: 0;
-  color: #5f666d;
+  color: #4b5563;
   font-size: 0.98rem;
+  font-weight: 500;
   line-height: 1.55;
 }
 
@@ -168,7 +169,7 @@ body.menu-modal-open {
 
 .promo-modal-card h3 {
   margin: 0 0 6px;
-  color: #5d2417;
+  color: #3f2d22;
   font-size: 1rem;
   font-weight: 800;
 }
@@ -182,7 +183,7 @@ body.menu-modal-open {
   gap: 10px;
   margin: 0;
   padding: 0;
-  color: #343a40;
+  color: #3f2d22;
   list-style: none;
 }
 
@@ -797,9 +798,9 @@ body.menu-modal-open {
   background: #FFFFFF;
   border: 1px solid #dfe3e7;
   border-radius: 999px;
-  color: #343a40;
+  color: #3f2d22;
   font-size: 0.93rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   white-space: nowrap;
   box-shadow: none;
@@ -869,7 +870,7 @@ body.menu-modal-open {
 /* Nome do produto */
 .product-name {
   margin-bottom: 0;
-  color: #212529;
+  color: #22120f;
   font-size: 1.14rem;
   font-weight: 800;
   line-height: 1.25;
@@ -877,8 +878,9 @@ body.menu-modal-open {
 
 .product-description {
   min-height: 44px;
-  color: #6C757D;
+  color: #4b5563;
   font-size: 0.93rem;
+  font-weight: 500;
   line-height: 1.48;
 }
 

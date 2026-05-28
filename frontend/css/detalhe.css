@@ -32,7 +32,7 @@ body:has(.detail-app) {
 .detail-page-title {
   flex: 1;
   min-width: 0;
-  color: #212529;
+  color: #22120f;
   font-size: 1.22rem;
   font-weight: 800;
   line-height: 1.2;
@@ -102,7 +102,7 @@ body:has(.detail-app) {
 
 .detail-product-name {
   margin-bottom: 10px;
-  color: #212529;
+  color: #22120f;
   font-size: 1.45rem;
   font-weight: 800;
   line-height: 1.2;
@@ -119,14 +119,15 @@ body:has(.detail-app) {
 .quantity-label {
   display: block;
   margin-bottom: 8px;
-  color: #212529;
+  color: #3f2d22;
   font-size: 0.95rem;
   font-weight: 800;
 }
 
 .detail-description-text {
-  color: #251300;
+  color: #4b5563;
   font-size: 1rem;
+  font-weight: 500;
   line-height: 1.5;
   white-space: pre-line;
 }
@@ -176,7 +177,7 @@ body:has(.detail-app) {
 
 .detail-quantity .quantity-value {
   min-width: 28px;
-  color: #212529;
+  color: #22120f;
   font-size: 1.1rem;
   font-weight: 800;
   text-align: center;

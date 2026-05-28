@@ -32,7 +32,7 @@ body:has(.cart-app) {
 .cart-title {
   flex: 1;
   min-width: 0;
-  color: #212529;
+  color: #22120f;
   font-size: 1.28rem;
   font-weight: 800;
   line-height: 1.2;
@@ -117,21 +117,21 @@ body:has(.cart-app) {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ADB5BD;
+  color: #6C757D;
   font-size: 0.78rem;
   font-weight: 700;
 }
 
 .cart-item-name {
   margin-bottom: 0;
-  color: #212529;
+  color: #22120f;
   line-height: 1.2;
   font-size: 1.12rem;
   font-weight: 800;
 }
 
 .cart-item-price {
-  color: #5d2417;
+  color: #3f2d22;
   font-size: 1rem;
   font-weight: 800;
   line-height: 1.2;
@@ -186,7 +186,7 @@ body:has(.cart-app) {
 
 .cart-item-actions .quantity-value {
   min-width: 24px;
-  color: #212529;
+  color: #22120f;
   font-size: 1rem;
   font-weight: 800;
   line-height: 1;
@@ -300,7 +300,7 @@ body:has(.cart-app) {
 
 .empty-cart-title {
   margin-bottom: 12px;
-  color: #212529;
+  color: #22120f;
   font-size: 1.45rem;
   font-weight: 800;
 }
@@ -308,8 +308,9 @@ body:has(.cart-app) {
 .empty-cart-text {
   max-width: 260px;
   margin-bottom: 24px;
-  color: #6C757D;
+  color: #4b5563;
   font-size: 1rem;
+  font-weight: 500;
   line-height: 1.45;
 }
 
